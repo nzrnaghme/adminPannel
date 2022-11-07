@@ -17,5 +17,13 @@ module.exports = {
     "eslint:recommended",
     "plugin:react/recommended",
     "plugin:prettier/recommended",
+
   ],
+  "rules": {
+    "prettier/prettier": ['warn', {
+      endOfLine: 'auto',
+    },
+    ],
+
+  }
 };
