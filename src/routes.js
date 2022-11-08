@@ -25,67 +25,67 @@ const dashboardRoutes = [
     name: "داشبرد",
     icon: Dashboard,
     component: DashboardPage,
-    layout: "/rtl",
+    layout: "/admin",
   },
   {
     path: "/user",
     name: "اطلاعات کاربر",
     icon: Person,
     component: UserProfile,
-    layout: "/rtl",
+    layout: "/admin",
   },
   {
     path: "/table",
     name: "جدول",
     icon: "content_paste",
     component: TableList,
-    layout: "/rtl",
+    layout: "/admin",
   },
   {
     path: "/typography",
     name: "گرافیک",
     icon: LibraryBooks,
     component: Typography,
-    layout: "/rtl",
+    layout: "/admin",
   },
   {
     path: "/icons",
     name: "آیکن",
     icon: BubbleChart,
     component: Icons,
-    layout: "/rtl",
+    layout: "/admin",
   },
   {
     path: "/maps",
     name: "نقشه",
     icon: LocationOn,
     component: Maps,
-    layout: "/rtl",
+    layout: "/admin",
   },
   {
     path: "/notifications",
     name: "پیام ها",
     icon: Notifications,
     component: NotificationsPage,
-    layout: "/rtl",
+    layout: "/admin",
   },
   {
     path: "/upgrade-to-pro",
     name: "Upgrade To PRO",
     icon: Unarchive,
     component: UpgradeToPro,
-    layout: "/rtl",
+    layout: "/admin",
   },
   {
     path: "/login-page",
-    name: "Login Page",
+    name: "ورود",
     icon: Login,
     component: LoginPage,
     layout: "/auth"
   },
   {
     path: "/register-page",
-    name: "Register Page",
+    name: "ثبت نام",
     icon: Register,
     component: RegisterPage,
     layout: "/auth"
@@ -93,3 +93,4 @@ const dashboardRoutes = [
 ];
 
 export default dashboardRoutes;
+

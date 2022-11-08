@@ -1,5 +1,10 @@
 import React from "react";
 
 export default function RegisterPage() {
-    return (<>Hi Me</>);
+
+
+    return (
+        <>Hi</>
+
+    );
 }

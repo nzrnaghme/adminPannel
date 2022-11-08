@@ -9,6 +9,7 @@ import "assets/css/material-dashboard-react.css?v=1.10.0";
 import { Route, Switch, Redirect } from "react-router-dom";
 import Main from "layouts/Main.js";
 import Auth from "layouts/Authentication.js"
+import { getItem } from "api/storage/storage";
 
 
 const theme = createTheme({
@@ -21,15 +22,18 @@ const cacheRtl = createCache({
 });
 
 export default function App() {
+    const userId = getItem('id')
 
     return (
         <CacheProvider value={cacheRtl}>
             <ThemeProvider theme={theme}>
                 <BrowserRouter>
                     <Switch>
-                        <Route path="/" component={Main} />
+                        {userId ? <Route path="/admin" component={Main} /> : <Route path="/auth" component={Auth} />}
+                        {/* <Route path="/admin" component={Main} />
                         <Route path="/auth" component={Auth} />
-                        <Redirect from="/" to="/dashboard" />
+                        <Redirect from="/" to="/admin/dashboard" /> */}
+                        {userId ? <Redirect from="/" to="/admin/dashboard" /> : <Redirect from="/" to="/auth/register-page" />}
                     </Switch>
                 </BrowserRouter>
             </ThemeProvider>

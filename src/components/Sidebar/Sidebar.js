@@ -2,7 +2,7 @@
 import React from "react";
 import classNames from "classnames";
 import PropTypes from "prop-types";
-import { NavLink, useLocation } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
 import Drawer from "@material-ui/core/Drawer";
@@ -21,29 +21,29 @@ const useStyles = makeStyles(styles);
 
 export default function Sidebar(props) {
   const classes = useStyles();
-  let location = useLocation();
+
   // verifies if routeName is the one active (in browser input)
   function activeRoute(routeName) {
-    console.log(location.pathname, routeName, "location.pathname");
     return location.pathname === routeName;
   }
+
   const { color, logo, image, logoText, routes } = props;
   var links = (
     <List className={classes.list}>
       {routes.map((prop, key) => {
         var activePro = " ";
         var listItemClasses;
-        
-          listItemClasses = classNames({
-            [" " + classes[color]]: activeRoute(prop.path),
-          });
-        
+
+        listItemClasses = classNames({
+          [" " + classes[color]]: activeRoute(prop.layout +prop.path),
+        });
+
         const whiteFontClasses = classNames({
-          [" " + classes.whiteFont]: activeRoute(prop.path),
+          [" " + classes.whiteFont]: activeRoute(prop.layout +prop.path),
         });
         return (
           <NavLink
-            to={prop.path}
+            to={prop.layout +prop.path}
             className={activePro + classes.item}
             activeClassName="active"
             key={key}

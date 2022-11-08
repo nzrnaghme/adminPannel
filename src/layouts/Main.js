@@ -22,16 +22,16 @@ const switchRoutes = (
     {routes.map((prop, key) => {
       return (
         <>
-          {prop.layout === "/rtl" &&
+          {prop.layout === "/admin" &&
             <Route
-              path={prop.path}
+              path={prop.layout + prop.path}
               component={prop.component}
               key={key}
             />}
         </>
       );
     })}
-    <Redirect to="/dashboard" />
+    <Redirect to="/" />
   </Switch>
 );
 
