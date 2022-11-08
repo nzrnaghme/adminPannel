@@ -14,60 +14,54 @@ import Maps from "views/Maps/Maps.js";
 import NotificationsPage from "views/Notifications/Notifications.js";
 import UpgradeToPro from "views/UpgradeToPro/UpgradeToPro.js";
 import DashboardPage from "views/Dashboard/Dashboard";
+import Authentication from "layouts/Authentication";
 
 const dashboardRoutes = [
   {
     path: "/dashboard",
     name: "داشبرد",
-    rtlName: "داشبرد",
     icon: Dashboard,
     component: DashboardPage,
     layout: "/rtl",
   },
   {
     path: "/user",
-    name: "User Profile",
-    rtlName: "اطلاعات کاربر",
+    name: "اطلاعات کاربر",
     icon: Person,
     component: UserProfile,
     layout: "/rtl",
   },
   {
     path: "/table",
-    name: "Table List",
-    rtlName: "جدول",
+    name: "جدول",
     icon: "content_paste",
     component: TableList,
     layout: "/rtl",
   },
   {
     path: "/typography",
-    name: "Typography",
-    rtlName: "گرافیک",
+    name: "گرافیک",
     icon: LibraryBooks,
     component: Typography,
     layout: "/rtl",
   },
   {
     path: "/icons",
-    name: "Icons",
-    rtlName: "آیکن",
+    name: "آیکن",
     icon: BubbleChart,
     component: Icons,
     layout: "/rtl",
   },
   {
     path: "/maps",
-    name: "Maps",
-    rtlName: "نقشه",
+    name: "نقشه",
     icon: LocationOn,
     component: Maps,
     layout: "/rtl",
   },
   {
     path: "/notifications",
-    name: "Notifications",
-    rtlName: "اعلانات",
+    name: "پیام ها",
     icon: Notifications,
     component: NotificationsPage,
     layout: "/rtl",
@@ -75,10 +69,16 @@ const dashboardRoutes = [
   {
     path: "/upgrade-to-pro",
     name: "Upgrade To PRO",
-    rtlName: "التطور للاحترافية",
     icon: Unarchive,
     component: UpgradeToPro,
     layout: "/rtl",
+  },
+  {
+    path: "/auth/sign-in",
+    name: "ورود",
+    icon: Unarchive,
+    component: Authentication,
+    layout: "/auth",
   },
 ];
 
