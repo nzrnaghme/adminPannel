@@ -1,37 +1,67 @@
-import Card from "components/Card/Card";
-import CardHeader from "components/Card/CardHeader.js";
-import { makeStyles } from "@material-ui/core/styles";
+import routes from "routes.js";
 import "./signIn.css"
 import React from "react";
+import { Switch, Route, Redirect } from "react-router-dom";
+import Footer from "components/Footer/Footer.js";
+// import AuthNavbar from "components/Navbars/AuthNavbar.js";
+import styles from "assets/jss/material-dashboard-react/layouts/rtlStyle.js";
+import register from "assets/img/register.jpeg";
+import login from "assets/img/login.jpeg";
+import { makeStyles } from "@material-ui/core/styles";
 
-const styles = {
-    cardCategoryWhite: {
-        color: "rgba(255,255,255,.62)",
-        margin: "0",
-        fontSize: "14px",
-        marginTop: "0",
-        marginBottom: "0",
-    },
-    cardTitleWhite: {
-        color: "#FFFFFF",
-        marginTop: "0px",
-        minHeight: "auto",
-        fontWeight: "300",
-        fontFamily: "'Roboto', 'Helvetica', 'Arial', sans-serif",
-        marginBottom: "3px",
-        textDecoration: "none",
-    },
-};
+const switchRoutes = (
+    <Switch>
+        {routes.map((prop, key) => {
+            return (
+                <>
+                    {prop.layout === "/auth" &&
+                        <Route
+                            path={prop.path}
+                            component={prop.component}
+                            key={key}
+                        />}
+                </>
+            );
+        })}
+        <Redirect to="/auth" />
+    </Switch>
+);
 const useStyles = makeStyles(styles);
-
 export default function Authentication() {
     const classes = useStyles();
+
+    const getBgImage = () => {
+        if (window.location.pathname.indexOf("/auth/register-page") !== -1) {
+            return register;
+        } else if (window.location.pathname.indexOf("/auth/login-page") !== -1) {
+            return login;
+        }
+    };
+
+    // const getActiveRoute = routes => {
+    //     let activeRoute = "Default Brand Text";
+    //     for (let i = 0; i < routes.length; i++) {
+    //         if (
+    //             window.location.href.indexOf(routes[i].layout + routes[i].path) !== -1
+    //         ) {
+    //             return routes[i].name;
+    //         }
+    //     }
+    //     return activeRoute;
+    // };
+
     return (
-        <Card className="signIn">
-            <CardHeader color="primary">
-                <h4 className={classes.cardTitleWhite}>ورود ادمین</h4>
-              
-            </CardHeader>
-        </Card>
+        <div>
+            {/* <AuthNavbar brandText={getActiveRoute(routes)}/> */}
+            <div className={classes.wrapper}>
+                <div
+                    className={classes.fullPage}
+                    style={{ backgroundImage: "url(" + getBgImage() + ")" }}
+                >
+                    {switchRoutes}
+                    <Footer />
+                </div>
+            </div>
+        </div>
     )
 }

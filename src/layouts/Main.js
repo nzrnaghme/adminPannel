@@ -7,13 +7,13 @@ import "perfect-scrollbar/css/perfect-scrollbar.css";
 import { makeStyles } from "@material-ui/core/styles";
 // core components
 import Navbar from "components/Navbars/Navbar.js";
-import Footer from "components/Footer/Footer.js";
+// import Footer from "components/Footer/Footer.js";
 import Sidebar from "components/Sidebar/Sidebar.js";
 import routes from "routes.js";
 import styles from "assets/jss/material-dashboard-react/layouts/rtlStyle.js";
 import bgImage from "assets/img/sidebar-2.jpg";
 import logo from "assets/img/reactlogo.png";
-import { getItem } from "api/storage/storage";
+// import { getItem } from "api/storage/storage";
 
 let ps;
 
@@ -21,8 +21,14 @@ const switchRoutes = (
   <Switch>
     {routes.map((prop, key) => {
       return (
-        <Route path={prop.path} component={prop.component} key={key}
-        />
+        <>
+          {prop.layout === "/rtl" &&
+            <Route
+              path={prop.path}
+              component={prop.component}
+              key={key}
+            />}
+        </>
       );
     })}
     <Redirect to="/dashboard" />
@@ -33,7 +39,7 @@ const switchRoutes = (
 const useStyles = makeStyles(styles);
 
 export default function Main({ ...rest }) {
-  const userId = getItem('id')
+  // const userId = getItem('id')
   const classes = useStyles();
   const mainPanel = React.createRef();
   const [mobileOpen, setMobileOpen] = React.useState(false);
@@ -42,10 +48,10 @@ export default function Main({ ...rest }) {
     setMobileOpen(!mobileOpen);
   };
 
-  const getRoute = () => {
-    console.log(window.location.pathname !== "/auth/sign-in" && userId, "window.location.pathname !==");
-    return (window.location.pathname !== "/auth/sign-in" && userId);
-  };
+  // const getRoute = () => {
+  //   console.log(window.location.pathname !== "/auth/sign-in" && userId, "window.location.pathname !==");
+  //   return (window.location.pathname !== "/auth/sign-in" && userId);
+  // };
 
   const resizeFunction = () => {
     if (window.innerWidth >= 960) {
@@ -73,8 +79,9 @@ export default function Main({ ...rest }) {
 
 
   return (
-    <div className={getRoute() ? classes.wrapper : null}>
-      {getRoute() ? <Sidebar
+    <div className={classes.wrapper}>
+
+      <Sidebar
         routes={routes}
         logoText={"Norgon"}
         logo={logo}
@@ -84,24 +91,23 @@ export default function Main({ ...rest }) {
         color={"green"}
         rtlActive
         {...rest}
-      /> : null}
+      />
 
       <div className={classes.mainPanel} ref={mainPanel}>
-        {getRoute() ? <Navbar
+
+        <Navbar
           routes={routes}
           handleDrawerToggle={handleDrawerToggle}
           rtlActive
           {...rest}
-        /> : null}
+        />
         {/* On the /maps route we want the map to be on full screen - this is not possible if the content and conatiner classes are present because they have some paddings which would make the map smaller */}
-        {getRoute() ? (
-          <div className={classes.content}>
-            <div className={classes.container}>{switchRoutes}</div>
-          </div>
-        ) : (
-          <div className={classes.map}>{switchRoutes}</div>
-        )}
-        {getRoute() ? <Footer /> : null}
+
+        <div className={classes.content}>
+          <div className={classes.container}>{switchRoutes}</div>
+        </div>
+
+        {/* {getRoute() ? <Footer /> : null} */}
       </div>
     </div>
   );

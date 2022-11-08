@@ -8,6 +8,8 @@ import createCache from '@emotion/cache';
 import "assets/css/material-dashboard-react.css?v=1.10.0";
 import { Route, Switch, Redirect } from "react-router-dom";
 import Main from "layouts/Main.js";
+import Auth from "layouts/Authentication.js"
+
 
 const theme = createTheme({
     direction: 'rtl', // Both here and <body dir="rtl">
@@ -20,18 +22,15 @@ const cacheRtl = createCache({
 
 export default function App() {
 
-
-
-
     return (
         <CacheProvider value={cacheRtl}>
             <ThemeProvider theme={theme}>
                 <BrowserRouter>
                     <Switch>
                         <Route path="/" component={Main} />
-                        <Redirect to="/" />
+                        <Route path="/auth" component={Auth} />
+                        <Redirect from="/" to="/dashboard" />
                     </Switch>
-
                 </BrowserRouter>
             </ThemeProvider>
         </CacheProvider>

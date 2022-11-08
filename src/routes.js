@@ -5,6 +5,8 @@ import BubbleChart from "@material-ui/icons/BubbleChart";
 import LocationOn from "@material-ui/icons/LocationOn";
 import Notifications from "@material-ui/icons/Notifications";
 import Unarchive from "@material-ui/icons/Unarchive";
+import Register from "@material-ui/icons/GroupAdd";
+import Login from "@material-ui/icons/LockOpen";
 // core components/views for Admin layout
 import UserProfile from "views/UserProfile/UserProfile.js";
 import TableList from "views/TableList/TableList.js";
@@ -14,7 +16,8 @@ import Maps from "views/Maps/Maps.js";
 import NotificationsPage from "views/Notifications/Notifications.js";
 import UpgradeToPro from "views/UpgradeToPro/UpgradeToPro.js";
 import DashboardPage from "views/Dashboard/Dashboard";
-import Authentication from "layouts/Authentication";
+import LoginPage from "views/Pages/LoginPage";
+import RegisterPage from "views/Pages/RegisterPage";
 
 const dashboardRoutes = [
   {
@@ -74,12 +77,19 @@ const dashboardRoutes = [
     layout: "/rtl",
   },
   {
-    path: "/auth/sign-in",
-    name: "ورود",
-    icon: Unarchive,
-    component: Authentication,
-    layout: "/auth",
+    path: "/login-page",
+    name: "Login Page",
+    icon: Login,
+    component: LoginPage,
+    layout: "/auth"
   },
+  {
+    path: "/register-page",
+    name: "Register Page",
+    icon: Register,
+    component: RegisterPage,
+    layout: "/auth"
+  }
 ];
 
 export default dashboardRoutes;
