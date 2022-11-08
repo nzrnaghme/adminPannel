@@ -13,6 +13,7 @@ import routes from "routes.js";
 import styles from "assets/jss/material-dashboard-react/layouts/rtlStyle.js";
 import bgImage from "assets/img/sidebar-2.jpg";
 import logo from "assets/img/reactlogo.png";
+import { getItem } from "api/storage/storage";
 
 let ps;
 
@@ -24,13 +25,15 @@ const switchRoutes = (
         />
       );
     })}
-    <Redirect from="/" to="/dashboard" />
+    <Redirect to="/dashboard" />
   </Switch>
 );
+
 
 const useStyles = makeStyles(styles);
 
 export default function Main({ ...rest }) {
+  const userId = getItem('id')
   const classes = useStyles();
   const mainPanel = React.createRef();
   const [mobileOpen, setMobileOpen] = React.useState(false);
@@ -40,7 +43,8 @@ export default function Main({ ...rest }) {
   };
 
   const getRoute = () => {
-    return window.location.pathname !== "/admin/maps";
+    console.log(window.location.pathname !== "/auth/sign-in" && userId, "window.location.pathname !==");
+    return (window.location.pathname !== "/auth/sign-in" && userId);
   };
 
   const resizeFunction = () => {
@@ -67,10 +71,10 @@ export default function Main({ ...rest }) {
     };
   }, [mainPanel]);
 
-  
+
   return (
-    <div className={classes.wrapper}>
-      <Sidebar
+    <div className={getRoute() ? classes.wrapper : null}>
+      {getRoute() ? <Sidebar
         routes={routes}
         logoText={"Norgon"}
         logo={logo}
@@ -80,14 +84,15 @@ export default function Main({ ...rest }) {
         color={"green"}
         rtlActive
         {...rest}
-      />
+      /> : null}
+
       <div className={classes.mainPanel} ref={mainPanel}>
-        <Navbar
+        {getRoute() ? <Navbar
           routes={routes}
           handleDrawerToggle={handleDrawerToggle}
           rtlActive
           {...rest}
-        />
+        /> : null}
         {/* On the /maps route we want the map to be on full screen - this is not possible if the content and conatiner classes are present because they have some paddings which would make the map smaller */}
         {getRoute() ? (
           <div className={classes.content}>

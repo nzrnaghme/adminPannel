@@ -21,14 +21,17 @@ const cacheRtl = createCache({
 export default function App() {
 
 
+
+
     return (
         <CacheProvider value={cacheRtl}>
             <ThemeProvider theme={theme}>
                 <BrowserRouter>
                     <Switch>
                         <Route path="/" component={Main} />
-                        <Redirect from="/" to="/dashboard" />
+                        <Redirect to="/" />
                     </Switch>
+
                 </BrowserRouter>
             </ThemeProvider>
         </CacheProvider>
