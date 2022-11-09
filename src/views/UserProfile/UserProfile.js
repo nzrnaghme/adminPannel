@@ -1,7 +1,6 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
-import InputLabel from "@material-ui/core/InputLabel";
 // core components
 import GridItem from "components/Grid/GridItem.js";
 import GridContainer from "components/Grid/GridContainer.js";
@@ -13,7 +12,8 @@ import CardAvatar from "components/Card/CardAvatar.js";
 import CardBody from "components/Card/CardBody.js";
 import CardFooter from "components/Card/CardFooter.js";
 
-import avatar from "assets/img/faces/marc.jpg";
+import { getItem } from "api/storage/storage";
+import { getEmployeeById } from "api/Core/Employe_Manage";
 
 const styles = {
   cardCategoryWhite: {
@@ -38,141 +38,157 @@ const useStyles = makeStyles(styles);
 
 export default function UserProfile() {
   const classes = useStyles();
+  const userId = getItem('id')
+  const [dataUser, setDataUser] = useState()
+  const [topics, setTopics] = useState([])
+  const [name, setName] = useState()
+  const [phone, setPhone] = useState()
+  const [birth, setBirth] = useState()
+  const [address, setAddress] = useState()
+  const [email, setEmail] = useState()
+
+  useEffect(() => {
+    getDataUser()
+  }, [])
+
+  const getDataUser = async () => {
+    let response = await getEmployeeById(userId);
+    if (response.data.result) {
+      setDataUser(response.data.result)
+      const topic = response.data.result.courses.map((item) => (
+        { topic: item.lesson.topics[0] }
+      ))
+      setTopics(topic)
+      setName(response.data.result.fullName)
+      setPhone(response.data.result.phoneNumber)
+      setBirth(response.data.result.birthDate)
+      setAddress(response.data.result.address)
+      setEmail(response.data.result.email)
+    }
+  }
+
   return (
     <div>
-      <GridContainer>
-        <GridItem xs={12} sm={12} md={8}>
-          <Card>
-            <CardHeader color="primary">
-              <h4 className={classes.cardTitleWhite}>Edit Profile</h4>
-              <p className={classes.cardCategoryWhite}>Complete your profile</p>
-            </CardHeader>
-            <CardBody>
-              <GridContainer>
-                <GridItem xs={12} sm={12} md={5}>
-                  <CustomInput
-                    labelText="Company (disabled)"
-                    id="company-disabled"
-                    formControlProps={{
-                      fullWidth: true,
-                    }}
-                    inputProps={{
-                      disabled: true,
-                    }}
-                  />
-                </GridItem>
-                <GridItem xs={12} sm={12} md={3}>
-                  <CustomInput
-                    labelText="Username"
-                    id="username"
-                    formControlProps={{
-                      fullWidth: true,
-                    }}
-                  />
-                </GridItem>
-                <GridItem xs={12} sm={12} md={4}>
-                  <CustomInput
-                    labelText="Email address"
-                    id="email-address"
-                    formControlProps={{
-                      fullWidth: true,
-                    }}
-                  />
-                </GridItem>
-              </GridContainer>
-              <GridContainer>
-                <GridItem xs={12} sm={12} md={6}>
-                  <CustomInput
-                    labelText="First Name"
-                    id="first-name"
-                    formControlProps={{
-                      fullWidth: true,
-                    }}
-                  />
-                </GridItem>
-                <GridItem xs={12} sm={12} md={6}>
-                  <CustomInput
-                    labelText="Last Name"
-                    id="last-name"
-                    formControlProps={{
-                      fullWidth: true,
-                    }}
-                  />
-                </GridItem>
-              </GridContainer>
-              <GridContainer>
-                <GridItem xs={12} sm={12} md={4}>
-                  <CustomInput
-                    labelText="City"
-                    id="city"
-                    formControlProps={{
-                      fullWidth: true,
-                    }}
-                  />
-                </GridItem>
-                <GridItem xs={12} sm={12} md={4}>
-                  <CustomInput
-                    labelText="Country"
-                    id="country"
-                    formControlProps={{
-                      fullWidth: true,
-                    }}
-                  />
-                </GridItem>
-                <GridItem xs={12} sm={12} md={4}>
-                  <CustomInput
-                    labelText="Postal Code"
-                    id="postal-code"
-                    formControlProps={{
-                      fullWidth: true,
-                    }}
-                  />
-                </GridItem>
-              </GridContainer>
-              <GridContainer>
-                <GridItem xs={12} sm={12} md={12}>
-                  <InputLabel style={{ color: "#AAAAAA" }}>About me</InputLabel>
-                  <CustomInput
-                    labelText="Lamborghini Mercy, Your chick she so thirsty, I'm in that two seat Lambo."
-                    id="about-me"
-                    formControlProps={{
-                      fullWidth: true,
-                    }}
-                    inputProps={{
-                      multiline: true,
-                      rows: 5,
-                    }}
-                  />
-                </GridItem>
-              </GridContainer>
-            </CardBody>
-            <CardFooter>
-              <Button color="primary">Update Profile</Button>
-            </CardFooter>
-          </Card>
-        </GridItem>
-        <GridItem xs={12} sm={12} md={4}>
-          <Card profile>
-            <CardAvatar profile>
-              <a href="#pablo" onClick={(e) => e.preventDefault()}>
-                <img src={avatar} alt="..." />
-              </a>
-            </CardAvatar>
-            <CardBody profile>
-              <h6 className={classes.cardCategory}>CEO / CO-FOUNDER</h6>
-              <h4 className={classes.cardTitle}>Alec Thompson</h4>
-              <p className={classes.description}>
-                Don{"'"}t be scared of the truth because we need to restart the
-                human foundation in truth And I love you like Kanye loves Kanye
-                I love Rick Owens’ bed design but the back is...
-              </p>
-              <Button color="primary" round>
-                Follow
-              </Button>
-            </CardBody>
-          </Card>
-        </GridItem>
-      </GridContainer>
+      {dataUser && topics &&
+        <GridContainer>
+          <GridItem xs={12} sm={12} md={8}>
+            <Card>
+              <CardHeader color="primary">
+                <h4 className={classes.cardTitleWhite}> پروفایل</h4>
+              </CardHeader>
+              <CardBody>
+                <GridContainer>
+                  <GridItem xs={12} sm={12} md={5}>
+                    <CustomInput
+                      rtlActive
+                      labelText="نام"
+                      value={name}
+                      onChange={(e) => { setName(e) }}
+                      id="username"
+                      formControlProps={{
+                        fullWidth: true,
+                      }}
+                    />
+
+                  </GridItem>
+                  <GridItem xs={12} sm={12} md={3}>
+                    <CustomInput
+                      rtlActive
+                      labelText="کد ملی"
+                      id="company-disabled"
+                      formControlProps={{
+                        fullWidth: true,
+                      }}
+                      inputProps={{
+                        disabled: true,
+                      }}
+                      value={dataUser.nationalId}
+                    />
+                  </GridItem>
+                  <GridItem xs={12} sm={12} md={4}>
+                    <CustomInput
+                      rtlActive
+                      labelText="ایمیل"
+                      id="email-address"
+                      value={email}
+                      formControlProps={{
+                        fullWidth: true,
+                      }}
+                      onChange={(e) => { setEmail(e) }}
+                    />
+                  </GridItem>
+                </GridContainer>
+
+                <GridContainer>
+                  <GridItem xs={12} sm={12} md={4}>
+                    <CustomInput
+                      rtlActive
+                      labelText="موبایل"
+                      id="phone"
+                      formControlProps={{
+                        fullWidth: true,
+                      }}
+                      value={phone}
+                      onChange={(e) => { setPhone(e) }}
+                    />
+                  </GridItem>
+                  <GridItem xs={12} sm={12} md={4}>
+                    <CustomInput
+                      labelText="آدرس"
+                      id="address"
+                      formControlProps={{
+                        fullWidth: true,
+                      }}
+                      value={address}
+                      rtlActive
+                      onChange={(e) => { setAddress(e) }}
+                    />
+                  </GridItem>
+
+                  <GridItem xs={12} sm={12} md={4}>
+                    <CustomInput
+                      labelText="تاریخ تولد"
+                      id="birth"
+                      formControlProps={{
+                        fullWidth: true,
+                      }}
+                      value={birth}
+                      onChange={(e) => { setBirth(e) }}
+                      rtlActive
+                    />
+                  </GridItem>
+
+                </GridContainer>
+
+              </CardBody>
+              <CardFooter>
+                <Button color="primary">بروزرسانی</Button>
+              </CardFooter>
+            </Card>
+          </GridItem>
+          <GridItem xs={12} sm={12} md={4}>
+            <Card profile>
+              <CardAvatar profile>
+                <a href="#pablo" onClick={(e) => e.preventDefault()}>
+                  <img src={dataUser.profile} alt="..." />
+                </a>
+
+              </CardAvatar>
+              <CardBody profile>
+                <h6 className={classes.cardCategory}>{dataUser.role}</h6>
+                {topics.map((item, key) => (
+                  <p className={classes.description} key={key}>
+                    {item.topic}
+
+                  </p>
+                ))}
+                {/* <Button color="primary" round>
+                  تغییر عکس
+                </Button> */}
+              </CardBody>
+            </Card>
+          </GridItem>
+        </GridContainer>}
     </div>
   );
 }

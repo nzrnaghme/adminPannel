@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useHistory } from "react-router-dom";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
 import InputAdornment from "@material-ui/core/InputAdornment";
@@ -16,21 +17,38 @@ import styles from "assets/jss/material-dashboard-react/views/registerPageStyle.
 import CardBody from "components/Card/CardBody";
 import CustomInput from "components/CustomInput/CustomInput.js";
 // @material-ui/icons
-import Face from "@material-ui/icons/Face";
+import MailOutlineIcon from "@material-ui/icons/MailOutline";
+import { loginEmployee } from "api/Core/Login_Register";
+import { setItem } from "api/storage/storage";
 
 
 
 const useStyles = makeStyles(styles);
 export default function LoginPage() {
+    const history = useHistory();
     const classes = useStyles();
     const [check, setCheck] = useState(false)
-
+    const [email, setEmail] = useState()
+    const [pass, setPass] = useState()
 
     const handleToggle = (value) => {
         setCheck(value.target.checked)
     };
 
-    const login = () => {
+    const login = async (e) => {
+        e.preventDefault();
+        const data = {
+            email,
+            password: pass
+        }
+        let response = await loginEmployee(data);
+        if (response.data.message[0].eventId === 200) {
+            console.log(response.data.message[0].message);
+            setItem("id", response.data.result.employeeModel._id)
+            setItem("token", response.data.result.jwtToken)
+            history.push('/admin/dashboard');
+            
+        }
 
     }
 
@@ -67,6 +85,8 @@ export default function LoginPage() {
                                     rtlActive
                                     labelText="ایمیل"
                                     id="name"
+                                    value={email}
+                                    onChange={(e) => { setEmail(e) }}
                                     formControlProps={{
                                         fullWidth: true,
                                         className: classes.formControlClassName
@@ -76,7 +96,7 @@ export default function LoginPage() {
                                         name: "name",
                                         endAdornment: (
                                             <InputAdornment position="end">
-                                                <Face className={classes.inputAdornmentIcon} />
+                                                <MailOutlineIcon className={classes.inputAdornmentIcon} />
                                             </InputAdornment>
                                         )
                                     }}
@@ -89,7 +109,8 @@ export default function LoginPage() {
                                         fullWidth: true,
                                         className: classes.formControlClassName
                                     }}
-                                    // error={errors}
+                                    value={pass}
+                                    onChange={(e) => { setPass(e) }}
                                     inputProps={{
                                         required: true,
                                         name: "password",

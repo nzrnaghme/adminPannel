@@ -52,6 +52,7 @@ const tableStyle = (theme) => ({
     padding: "12px 8px",
     verticalAlign: "middle",
     fontSize: "0.8125rem",
+    textAlign:"center"
   },
   tableResponsive: {
     width: "100%",

@@ -1,5 +1,5 @@
 import api from "../interceptor";
-import { FORGET_PASS, LOGIN, REGISTER, REGISTER_EMPLOYEE, RESET_PASS } from "../endpoints"
+import { FORGET_PASS, LOGIN, LOGIN_EMPLOYEE, REGISTER, REGISTER_EMPLOYEE, RESET_PASS } from "../endpoints"
 
 export const registerUser = payload =>
     api.post(REGISTER, {
@@ -39,4 +39,9 @@ export const registerEmployee = payload => api.post(REGISTER_EMPLOYEE, {
     profile: payload.profile,
     address: payload.address,
     role: payload.role
+})
+
+export const loginEmployee = payload => api.post(LOGIN_EMPLOYEE, {
+    email: payload.email,
+    password: payload.password,
 })

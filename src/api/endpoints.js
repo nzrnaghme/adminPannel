@@ -64,5 +64,7 @@ export const ANSWER_COMMENT = `${API}comments/answer`
 //employee
 export const ALL_TEACHER = `${API}employee/getallteachers`
 export const LAST_TEACHERS = `${API}employee/getlastteachers`
+export const GET_EMPLOYEE_BY_ID = payload => `${API}employee/${payload}`
+export const UPDATE_EMPLOYEE = payload => `${API}employee${payload}`
 
 export const GETALL_MAIN_CATEGORY = `${API}category/getall`

@@ -1,5 +1,5 @@
 import React from "react";
-import { Switch, Route, Redirect } from "react-router-dom";
+// import { Switch, Route, Redirect } from "react-router-dom";
 // creates a beautiful scrollbar
 import PerfectScrollbar from "perfect-scrollbar";
 import "perfect-scrollbar/css/perfect-scrollbar.css";
@@ -13,27 +13,30 @@ import routes from "routes.js";
 import styles from "assets/jss/material-dashboard-react/layouts/rtlStyle.js";
 import bgImage from "assets/img/sidebar-2.jpg";
 import logo from "assets/img/reactlogo.png";
+import Dashboard from "views/Dashboard/Dashboard";
+import UserProfile from "views/UserProfile/UserProfile";
+import TableList from "views/TableList/TableList";
 // import { getItem } from "api/storage/storage";
 
 let ps;
 
-const switchRoutes = (
-  <Switch>
-    {routes.map((prop, key) => {
-      return (
-        <>
-          {prop.layout === "/admin" &&
-            <Route
-              path={prop.layout + prop.path}
-              component={prop.component}
-              key={key}
-            />}
-        </>
-      );
-    })}
-    <Redirect to="/" />
-  </Switch>
-);
+// const switchRoutes = (
+//   <Switch>
+//     {routes.map((prop, key) => {
+//       return (
+//         <>
+//           {prop.layout === "/admin" &&
+//             <Route
+//               path={prop.layout + prop.path}
+//               component={prop.component}
+//               key={key}
+//             />}
+//         </>
+//       );
+//     })}
+//     <Redirect to="/" />
+//   </Switch>
+// );
 
 
 const useStyles = makeStyles(styles);
@@ -104,7 +107,17 @@ export default function Main({ ...rest }) {
         {/* On the /maps route we want the map to be on full screen - this is not possible if the content and conatiner classes are present because they have some paddings which would make the map smaller */}
 
         <div className={classes.content}>
-          <div className={classes.container}>{switchRoutes}</div>
+          <div className={classes.container}>
+
+            {window.location.pathname === "/admin/dashboard" &&
+              <Dashboard />}
+            {window.location.pathname === "/admin/user" &&
+              <UserProfile />}
+            {window.location.pathname === "/admin/courses" &&
+              <TableList />}
+              
+
+          </div>
         </div>
 
         {/* {getRoute() ? <Footer /> : null} */}

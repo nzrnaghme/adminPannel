@@ -44,20 +44,21 @@ export default function RegisterPage() {
         setValue(event.target.value);
     };
 
-    const register = async () => {
-        const data = {
+    const register = async (e) => {
+        e.preventDefault();
+        const dataUser = {
             fullName: name,
-            email,
+            email: email,
             password: pass,
             phoneNumber: phone,
             birthDate: birth,
             nationalId: nationalCode,
-            address,
+            profile: photo,
             role: value,
-            profile: photo
+            address: address
         }
-        let response = await registerEmployee(data);
-        if(response.data.result) console.log(true)
+        let response = await registerEmployee(dataUser);
+        if (response.data.result) console.log(true)
     }
 
     return (
