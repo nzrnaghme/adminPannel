@@ -10,14 +10,14 @@ import GridContainer from "components/Grid/GridContainer";
 import GridItem from "components/Grid/GridItem";
 import Card from "components/Card/Card";
 import CardHeader from "components/Card/CardHeader";
+import CardFooter from "components/Card/CardFooter";
 import Button from "components/CustomButtons/Button.js";
 import styles from "assets/jss/material-dashboard-react/views/registerPageStyle.js";
 import CardBody from "components/Card/CardBody";
 import CustomInput from "components/CustomInput/CustomInput.js";
 // @material-ui/icons
-
 import Face from "@material-ui/icons/Face";
-import CardFooter from "components/Card/CardFooter";
+
 
 
 const useStyles = makeStyles(styles);

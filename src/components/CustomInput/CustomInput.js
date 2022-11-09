@@ -11,6 +11,7 @@ import Clear from "@material-ui/icons/Clear";
 import Check from "@material-ui/icons/Check";
 // core components
 import styles from "assets/jss/material-dashboard-react/components/customInputStyle.js";
+import { maskValue, unmaskValue } from "./Mask";
 
 const useStyles = makeStyles(styles);
 
@@ -25,6 +26,10 @@ export default function CustomInput(props) {
     error,
     success,
     rtlActive,
+    value,
+    onChange,
+    mask,
+    maskChar,
   } = props;
 
   const labelClasses = classNames({
@@ -41,11 +46,13 @@ export default function CustomInput(props) {
     [classes.marginTop]: labelText === undefined,
   });
   let newInputProps = {
+    inputMode: inputProps && inputProps.inputMode ? inputProps.inputMode : undefined,
     maxLength:
       inputProps && inputProps.maxLength ? inputProps.maxLength : undefined,
     minLength:
       inputProps && inputProps.minLength ? inputProps.minLength : undefined,
     step: inputProps && inputProps.step ? inputProps.step : undefined,
+
   };
   return (
     <FormControl
@@ -70,6 +77,13 @@ export default function CustomInput(props) {
         id={id}
         {...inputProps}
         inputProps={newInputProps}
+        value={mask ? maskValue(value, mask, maskChar) : value}
+        onChange={(e) => {
+          if (mask) {
+            onChange(unmaskValue(e.target.value, mask))
+          } else onChange(e.target.value)
+        }}
+
       />
       {error ? (
         <Clear className={classes.feedback + " " + classes.labelRootError} />
@@ -89,4 +103,8 @@ CustomInput.propTypes = {
   error: PropTypes.bool,
   success: PropTypes.bool,
   rtlActive: PropTypes.bool,
+  value: PropTypes.string,
+  onChange: PropTypes.object,
+  maskChar: PropTypes.string,
+  mask: PropTypes.string,
 };

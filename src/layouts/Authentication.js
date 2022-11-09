@@ -6,8 +6,7 @@ import styles from "assets/jss/material-dashboard-react/layouts/rtlStyle.js";
 import register from "assets/img/register.jpeg";
 import login from "assets/img/login.jpeg";
 import { makeStyles } from "@material-ui/core/styles";
-import "./auth.css"
-// import RegisterPage from "views/Pages/RegisterPage";
+import RegisterPage from "views/Pages/RegisterPage";
 import LoginPage from "views/Pages/LoginPage";
 
 // const switchRoutes = (
@@ -52,17 +51,18 @@ export default function Authentication() {
         return activeRoute;
     };
 
-    console.log(getActiveRoute(routes), "getActiveRoute(routes)");
     return (
-        <div style={{ overflowY: "hidden" }}>
+        <div>
             <AuthNavbar brandText={getActiveRoute(routes)} color="info" />
             <div className={classes.wrapper}>
                 <div
-                    className="fullPage"
+                   
                     style={{ backgroundImage: "url(" + getBgImage() + ")" }}
                 >
                     {window.location.pathname === "/auth/login-page" &&
                         <LoginPage />}
+                    {window.location.pathname === "/auth/register-page" &&
+                        <RegisterPage />}
                     {/* {switchRoutes} */}
                 </div>
             </div>

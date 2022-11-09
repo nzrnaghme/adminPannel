@@ -1,5 +1,5 @@
 import api from "../interceptor";
-import { FORGET_PASS, LOGIN, REGISTER, RESET_PASS } from "../endpoints"
+import { FORGET_PASS, LOGIN, REGISTER, REGISTER_EMPLOYEE, RESET_PASS } from "../endpoints"
 
 export const registerUser = payload =>
     api.post(REGISTER, {
@@ -27,3 +27,16 @@ export const resetPassUser = payload =>
     api.post(RESET_PASS(payload.tokenPass), {
         password: payload.password
     })
+
+//Employee
+export const registerEmployee = payload => api.post(REGISTER_EMPLOYEE, {
+    fullName: payload.fullName,
+    email: payload.email,
+    password: payload.password,
+    phoneNumber: payload.phoneNumber,
+    birthDate: payload.birthDate,
+    nationalId: payload.nationalId,
+    profile: payload.profile,
+    address: payload.address,
+    role: payload.role
+})

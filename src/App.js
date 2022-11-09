@@ -29,11 +29,12 @@ export default function App() {
             <ThemeProvider theme={theme}>
                 <BrowserRouter>
                     <Switch>
-                        {userId ? <Route path="/admin" component={Main} /> : <Route path="/auth" component={Auth} />}
-                        {/* <Route path="/admin" component={Main} />
-                        <Route path="/auth" component={Auth} />
-                        <Redirect from="/" to="/admin/dashboard" /> */}
-                        {userId ? <Redirect from="/" to="/admin/dashboard" /> : <Redirect from="/" to="/auth/register-page" />}
+                        {userId ?
+                            <Route path="/admin" component={Main} /> :
+                            <Route path="/auth" component={Auth} />}
+                        {userId ?
+                            <Redirect from="/" to="/admin/dashboard" /> :
+                            <Redirect from="/" to="/auth/login-page" />}
                     </Switch>
                 </BrowserRouter>
             </ThemeProvider>

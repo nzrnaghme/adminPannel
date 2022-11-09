@@ -32,13 +32,16 @@ api.interceptors.response.use(
 
             // if error doesnt expected when we log it
             if (!expectedError) {
+                console.log(expectedError);
                 // tweak it later
                 // get error message from backend (see object of response later... maybe its changed)
                 try {
                     alert(error.response.data.message[0].message);
-                } catch (error) { }
+                } catch (error) { console.log(error); }
             }
-        } catch (error) { }
+        } catch (error) {
+            console.log(error)
+        }
         return Promise.reject(error);
     }
 );
