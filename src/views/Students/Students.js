@@ -192,6 +192,12 @@ export default function Students() {
         }
         let response = await registerUser(data);
         if (response.data.result) {
+            setNameNew('');
+            setEmailNew('');
+            setPassNew('');
+            setPhoneNew('');
+            setNationalCodeNew('');
+            setBirthNew('')
             setOpenInsertStudent(false);
             getStudents()
         }
@@ -348,7 +354,7 @@ export default function Students() {
                         <GridItem xs={12} sm={12} md={12}>
                             <Card className="CardEditStudent">
                                 <CardHeader color="primary">
-                                    <h4 className={classes.cardTitleWhite}>آپدیت دانشجو</h4>
+                                    <h4 className={classes.cardTitleWhite}>افزودن دانشجو</h4>
                                 </CardHeader>
                                 <CardBody className="bodyEditStudent">
                                     <div>
