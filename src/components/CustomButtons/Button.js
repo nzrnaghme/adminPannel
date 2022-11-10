@@ -70,5 +70,5 @@ RegularButton.propTypes = {
   // use this to pass the classes props from Material-UI
   muiClasses: PropTypes.object,
   children: PropTypes.node,
-  onClick: PropTypes.object
+  onClick: PropTypes.func
 };

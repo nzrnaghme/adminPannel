@@ -42,30 +42,45 @@ const styles = {
 
 const useStyles = makeStyles(styles);
 
-export default function TableList() {
+export default function CourseList() {
+  const classes = useStyles();
   const [allCourse, setAllCourse] = useState([])
+  const [currentPage_MainbarMyCourses, setCurrentPage_MainbarMyCourses] = useState(1);
   useEffect(() => {
-    getCourses()
+    getCourses();
+    setCurrentPage_MainbarMyCourses(1)
   }, [])
 
   const getCourses = async () => {
     let response = await getAllCourse();
     if (response.data.result) {
       const data = response.data.result.map((item) => (
-        [
-          item.title,
-          item.teacher.fullName,
-          item.startDate.split("T")[0],
-          item.cost,
-          item.capacity
-        ]
+        {
+          title: item.title,
+          teacher: item.teacher.fullName,
+          date: item.startDate.split("T")[0],
+          cost: item.cost,
+          capacity: item.students.length + item.capacity,
+          id: item._id
+        }
       ));
       setAllCourse(data)
     }
   }
 
+  const removeCourse = (id) => {
+    console.log(id, "idR");
+  }
 
-  const classes = useStyles();
+  const editCourse = (id) => {
+    console.log(id, "idE");
+  }
+
+  const showStudents = (id) => {
+    console.log(id, "idS");
+  }
+
+
   return (
     <GridContainer>
       <GridItem xs={12} sm={12} md={12}>
@@ -78,48 +93,19 @@ export default function TableList() {
             {allCourse.length > 0 &&
               <Table
                 tableHeaderColor="primary"
-                tableHead={["عنوان", "استاد", "شروع دوره", "قیمت", "گنجایش"]}
+                tableHead={["عنوان", "استاد", "شروع دوره", "قیمت", "گنجایش", ""]}
                 tableData={allCourse}
+                currentPage={currentPage_MainbarMyCourses}
+                rowsCount={5}
+                removeCourse={removeCourse}
+                editCourse={editCourse}
+                showStudents={showStudents}
+                courses
               />}
           </CardBody>
-        </Card>
-      </GridItem>
-      <GridItem xs={12} sm={12} md={12}>
-        <Card plain>
-          <CardHeader plain color="primary">
-            <h4 className={classes.cardTitleWhite}>
-              Table on Plain Background
-            </h4>
-            <p className={classes.cardCategoryWhite}>
-              Here is a subtitle for this table
-            </p>
-          </CardHeader>
-          <CardBody>
-            <Table
-              tableHeaderColor="primary"
-              tableHead={["ID", "Name", "Country", "City", "Salary"]}
-              tableData={[
-                ["1", "Dakota Rice", "$36,738", "Niger", "Oud-Turnhout"],
-                ["2", "Minerva Hooper", "$23,789", "Curaçao", "Sinaai-Waas"],
-                ["3", "Sage Rodriguez", "$56,142", "Netherlands", "Baileux"],
-                [
-                  "4",
-                  "Philip Chaney",
-                  "$38,735",
-                  "Korea, South",
-                  "Overland Park",
-                ],
-                [
-                  "5",
-                  "Doris Greene",
-                  "$63,542",
-                  "Malawi",
-                  "Feldkirchen in Kärnten",
-                ],
-                ["6", "Mason Porter", "$78,615", "Chile", "Gloucester"],
-              ]}
-            />
-          </CardBody>
+          <div>
+
+          </div>
         </Card>
       </GridItem>
     </GridContainer>

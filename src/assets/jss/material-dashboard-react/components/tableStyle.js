@@ -10,6 +10,34 @@ import {
 } from "assets/jss/material-dashboard-react.js";
 
 const tableStyle = (theme) => ({
+  large: {
+    width: theme.spacing(7),
+    height: theme.spacing(7),
+  },
+  ActiveTeacher: {
+    width: 50,
+    height: 25,
+    backgroundColor: successColor[3],
+    textAlign: "center",
+    ...defaultFont,
+    borderRadius: 20,
+    cursor: "pointer"
+  },
+  deActiveTeacher: {
+    width: 50,
+    height: 25,
+    backgroundColor: dangerColor[3],
+    textAlign: "center",
+    ...defaultFont,
+    borderRadius: 20,
+    cursor: "pointer"
+  },
+  tableActions: {
+    display: "flex",
+    border: "none",
+    padding: "12px 8px !important",
+    verticalAlign: "middle",
+  },
   warningTableHeader: {
     color: warningColor[0],
   },
@@ -52,7 +80,7 @@ const tableStyle = (theme) => ({
     padding: "12px 8px",
     verticalAlign: "middle",
     fontSize: "0.8125rem",
-    textAlign:"center"
+    textAlign: "center"
   },
   tableResponsive: {
     width: "100%",
@@ -73,6 +101,41 @@ const tableStyle = (theme) => ({
     outline: "none",
     verticalAlign: "middle",
   },
+  tableActionButton: {
+    width: "27px",
+    height: "27px",
+    padding: "0",
+  },
+  tableActionButtonIcon: {
+    width: "18px",
+    height: "18px",
+  },
+  edit: {
+    backgroundColor: "transparent",
+    color: primaryColor[0],
+    boxShadow: "none",
+  },
+  Add:{
+    backgroundColor: "transparent",
+    color: successColor[0],
+    boxShadow: "none",
+  },
+  courseShow: {
+    backgroundColor: "transparent",
+    color: roseColor[0],
+    boxShadow: "none",
+  },
+  close: {
+    backgroundColor: "transparent",
+    color: dangerColor[0],
+    boxShadow: "none",
+  },
+  PersonIcon: {
+    backgroundColor: "transparent",
+    color: infoColor[0],
+    boxShadow: "none",
+  }
+
 });
 
 export default tableStyle;

@@ -14,6 +14,7 @@ import CardFooter from "components/Card/CardFooter.js";
 
 import { getItem } from "api/storage/storage";
 import { getEmployeeById } from "api/Core/Employe_Manage";
+import { updateEmployeeById } from "api/Core/Employe_Manage";
 
 const styles = {
   cardCategoryWhite: {
@@ -67,13 +68,27 @@ export default function UserProfile() {
     }
   }
 
+  const updateUser = async () => {
+    const data = {
+      id: userId,
+      fullName: name,
+      email,
+      birthDate: birth,
+      phoneNumber: phone,
+      address,
+      nationalId: dataUser.nationalId,
+      profile: dataUser.profile
+    }
+    await updateEmployeeById(data)
+  }
+
   return (
     <div>
       {dataUser && topics &&
         <GridContainer>
           <GridItem xs={12} sm={12} md={8}>
             <Card>
-              <CardHeader color="primary">
+              <CardHeader color="info">
                 <h4 className={classes.cardTitleWhite}> پروفایل</h4>
               </CardHeader>
               <CardBody>
@@ -162,7 +177,7 @@ export default function UserProfile() {
 
               </CardBody>
               <CardFooter>
-                <Button color="primary">بروزرسانی</Button>
+                <Button color="info" onClick={() => { updateUser() }}>بروزرسانی</Button>
               </CardFooter>
             </Card>
           </GridItem>

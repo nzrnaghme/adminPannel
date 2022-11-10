@@ -1,17 +1,19 @@
 import Dashboard from "@material-ui/icons/Dashboard";
 import Person from "@material-ui/icons/Person";
-import LibraryBooks from "@material-ui/icons/LibraryBooks";
-import BubbleChart from "@material-ui/icons/BubbleChart";
 import LocationOn from "@material-ui/icons/LocationOn";
 import Notifications from "@material-ui/icons/Notifications";
+import LocalLibraryIcon from '@material-ui/icons/LocalLibrary';
+import PeopleIcon from '@material-ui/icons/People';
+import AssignmentIcon from '@material-ui/icons/Assignment';
 // core components/views for Admin layout
 import UserProfile from "views/UserProfile/UserProfile.js";
-import TableList from "views/TableList/TableList.js";
-import Typography from "views/Typography/Typography.js";
+import CourseList from "views/CourseList/CourseList.js";
+import Teachers from "views/Teachers/Teachers.js";
 import Icons from "views/Icons/Icons.js";
 import Maps from "views/Maps/Maps.js";
 import NotificationsPage from "views/Notifications/Notifications.js";
 import DashboardPage from "views/Dashboard/Dashboard";
+import LessonList from "views/Lessons/Lessons";
 
 const dashboardRoutes = [
   {
@@ -32,21 +34,28 @@ const dashboardRoutes = [
     path: "/courses",
     name: "دوره ها",
     icon: "content_paste",
-    component: TableList,
+    component: CourseList,
     layout: "/admin",
   },
   {
-    path: "/typography",
-    name: "گرافیک",
-    icon: LibraryBooks,
-    component: Typography,
+    path: "/Teachers",
+    name: "اساتید",
+    icon: LocalLibraryIcon,
+    component: Teachers,
     layout: "/admin",
   },
   {
-    path: "/icons",
-    name: "آیکن",
-    icon: BubbleChart,
+    path: "/students",
+    name: "دانشجویان",
+    icon: PeopleIcon,
     component: Icons,
+    layout: "/admin",
+  },
+  {
+    path: "/lessons",
+    name: "کلاس ها",
+    icon: AssignmentIcon,
+    component: LessonList,
     layout: "/admin",
   },
   {

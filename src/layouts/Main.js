@@ -14,7 +14,12 @@ import bgImage from "assets/img/sidebar-2.jpg";
 import logo from "assets/img/reactlogo.png";
 import Dashboard from "views/Dashboard/Dashboard";
 import UserProfile from "views/UserProfile/UserProfile";
-import TableList from "views/TableList/TableList";
+import CourseList from "views/CourseList/CourseList";
+import Teachers from "views/Teachers/Teachers";
+import Icons from "views/Icons/Icons";
+import Students from "views/Students/Students"
+import Notifications from "views/Notifications/Notifications";
+import LessonList from "views/Lessons/Lessons";
 let ps;
 
 const useStyles = makeStyles(styles);
@@ -77,26 +82,23 @@ export default function Main({ ...rest }) {
           rtlActive
           {...rest}
         />
-        {/* On the /maps route we want the map to be on full screen - this is not possible if the content and conatiner classes are present because they have some paddings which would make the map smaller */}
 
         <div className={classes.content}>
           <div className={classes.container}>
 
-
-
             <Switch>
               <Route path={"/admin/dashboard"} component={Dashboard} />
               <Route path={"/admin/user"} component={UserProfile} />
-              <Route path={"/admin/courses"} component={TableList} />
-
+              <Route path={"/admin/courses"} component={CourseList} />
+              <Route path={"/admin/Teachers"} component={Teachers} />
+              <Route path={"/admin/icons"} component={Icons} />
+              <Route path={"/admin/students"} component={Students} />
+              <Route path={"/admin/lessons"} component={LessonList} />
+              <Route path={"/admin/notifications"} component={Notifications} />
               <Redirect to="/admin/dashboard" from="/" />
             </Switch>
-
-
           </div>
         </div>
-
-        {/* {getRoute() ? <Footer /> : null} */}
       </div>
     </div>
   );

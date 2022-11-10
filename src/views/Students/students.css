@@ -1,0 +1,24 @@
+.popUpEditStudent .MuiDialog-container .MuiPaper-root .MuiDialogContent-root .MuiGrid-root {
+    margin: 4px -3px !important;
+}
+
+.bodyEditStudent {
+    display: flex;
+    flex-direction: row;
+}
+
+.popUpEditStudent .MuiDialog-container .MuiPaper-root{
+    width: 600px;
+}
+
+@media screen and (max-width:749px) {
+    .bodyEditStudent {
+        display: flex;
+        flex-direction: column-reverse;
+    }
+    .photoEditStudent{
+        align-items: center;
+        justify-content: center;
+        display: flex;
+    }
+}

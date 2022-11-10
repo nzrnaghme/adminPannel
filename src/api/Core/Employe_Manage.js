@@ -7,4 +7,12 @@ export const getLastTeachers = () => api.get(LAST_TEACHERS)
 
 export const getEmployeeById = (payload) => api.get(GET_EMPLOYEE_BY_ID(payload))
 
-export const updateEmployeeById = (payload) => api.put(UPDATE_EMPLOYEE(payload))
+export const updateEmployeeById = (payload) => api.put(UPDATE_EMPLOYEE(payload.id), {
+    fullName: payload.fullName,
+    email: payload.email,
+    birthDate: payload.birthDate,
+    phoneNumber: payload.phoneNumber,
+    address: payload.address,
+    nationalId: payload.nationalId,
+    profile: payload.profile
+})

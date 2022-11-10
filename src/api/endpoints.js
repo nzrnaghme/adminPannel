@@ -15,7 +15,7 @@ export const GETALL_STUDENT = `${API}student/getall`
 export const PAGINATION_GETALL_STUDENT = payload => `${API}student/list?pagenumber=${payload.pageNumber}&pagesize=${payload.pageSize}`
 export const GET_STUDENT_BY_ID = payload => `${API}student/${payload}`
 export const UPDATE_STUDENT = payload => `${API}student/${payload}`
-export const DELETE_STUDENT = `${API}student`
+export const DELETE_STUDENT = payload => `${API}student/${payload}`
 export const ACTIVE_STUDENT = `${API}student/active`
 export const DEACTIVE_STUDENT = `${API}student/deactive`
 
@@ -65,6 +65,6 @@ export const ANSWER_COMMENT = `${API}comments/answer`
 export const ALL_TEACHER = `${API}employee/getallteachers`
 export const LAST_TEACHERS = `${API}employee/getlastteachers`
 export const GET_EMPLOYEE_BY_ID = payload => `${API}employee/${payload}`
-export const UPDATE_EMPLOYEE = payload => `${API}employee${payload}`
+export const UPDATE_EMPLOYEE = payload => `${API}employee/${payload}`
 
 export const GETALL_MAIN_CATEGORY = `${API}category/getall`

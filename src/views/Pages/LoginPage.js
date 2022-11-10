@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { useHistory } from "react-router-dom";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
 import InputAdornment from "@material-ui/core/InputAdornment";
@@ -25,7 +24,6 @@ import { setItem } from "api/storage/storage";
 
 const useStyles = makeStyles(styles);
 export default function LoginPage() {
-    const history = useHistory();
     const classes = useStyles();
     const [check, setCheck] = useState(false)
     const [email, setEmail] = useState()
@@ -46,8 +44,7 @@ export default function LoginPage() {
             console.log(response.data.message[0].message);
             setItem("id", response.data.result.employeeModel._id)
             setItem("token", response.data.result.jwtToken)
-            history.push('/admin/dashboard');
-            
+            window.location = "/admin/dashboard"
         }
 
     }

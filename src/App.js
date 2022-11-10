@@ -10,6 +10,8 @@ import { Route, Switch, Redirect } from "react-router-dom";
 import Main from "layouts/Main.js";
 import Auth from "layouts/Authentication.js"
 import { getItem } from "api/storage/storage";
+import PopUpAction from "components/PopUp/PopUpAction";
+import { GeneralContext } from "providers/GeneralContext";
 
 
 const theme = createTheme({
@@ -23,21 +25,39 @@ const cacheRtl = createCache({
 
 export default function App() {
     const userId = getItem('id')
+    const [confirm, setConfirm] = React.useState({});
+    const [open, setOpen] = React.useState(false);
+
+    const onConfirmSetter = (
+        msg,
+        confirmCallback,
+        rejectCallback,
+    ) => setConfirm({ msg, confirmCallback, rejectCallback });
 
     return (
-        <CacheProvider value={cacheRtl}>
-            <ThemeProvider theme={theme}>
-                <BrowserRouter>
-                    <Switch>
-                        {userId ?
-                            <Route path="/admin" component={Main} /> :
-                            <Route path="/auth" component={Auth} />}
-                        {userId ?
-                            <Redirect from="/" to="/admin/dashboard" /> :
-                            <Redirect from="/" to="/auth/login-page" />}
-                    </Switch>
-                </BrowserRouter>
-            </ThemeProvider>
-        </CacheProvider>
+        <GeneralContext.Provider value={{
+            confirmPopupOpen: open,
+            setConfirmPopupOpen: setOpen,
+            confirmMsg: confirm.msg,
+            confirmCallback: confirm.confirmCallback,
+            rejectCallback: confirm.rejectCallback,
+            onConfirmSetter,
+        }} >
+            <CacheProvider value={cacheRtl}>
+                <ThemeProvider theme={theme}>
+                    <BrowserRouter>
+                        <PopUpAction />
+                        <Switch>
+                            {userId ?
+                                <Route path="/admin" component={Main} /> :
+                                <Route path="/auth" component={Auth} />}
+                            {userId ?
+                                <Redirect from="/" to="/admin/dashboard" /> :
+                                <Redirect from="/" to="/auth/login-page" />}
+                        </Switch>
+                    </BrowserRouter>
+                </ThemeProvider>
+            </CacheProvider>
+        </GeneralContext.Provider>
     )
 }
