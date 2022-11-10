@@ -1,5 +1,5 @@
 import React from "react";
-// import { Switch, Route, Redirect } from "react-router-dom";
+import { Switch, Route, Redirect } from "react-router-dom";
 // creates a beautiful scrollbar
 import PerfectScrollbar from "perfect-scrollbar";
 import "perfect-scrollbar/css/perfect-scrollbar.css";
@@ -7,7 +7,6 @@ import "perfect-scrollbar/css/perfect-scrollbar.css";
 import { makeStyles } from "@material-ui/core/styles";
 // core components
 import Navbar from "components/Navbars/Navbar.js";
-// import Footer from "components/Footer/Footer.js";
 import Sidebar from "components/Sidebar/Sidebar.js";
 import routes from "routes.js";
 import styles from "assets/jss/material-dashboard-react/layouts/rtlStyle.js";
@@ -16,28 +15,7 @@ import logo from "assets/img/reactlogo.png";
 import Dashboard from "views/Dashboard/Dashboard";
 import UserProfile from "views/UserProfile/UserProfile";
 import TableList from "views/TableList/TableList";
-// import { getItem } from "api/storage/storage";
-
 let ps;
-
-// const switchRoutes = (
-//   <Switch>
-//     {routes.map((prop, key) => {
-//       return (
-//         <>
-//           {prop.layout === "/admin" &&
-//             <Route
-//               path={prop.layout + prop.path}
-//               component={prop.component}
-//               key={key}
-//             />}
-//         </>
-//       );
-//     })}
-//     <Redirect to="/" />
-//   </Switch>
-// );
-
 
 const useStyles = makeStyles(styles);
 
@@ -50,11 +28,6 @@ export default function Main({ ...rest }) {
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
-
-  // const getRoute = () => {
-  //   console.log(window.location.pathname !== "/auth/sign-in" && userId, "window.location.pathname !==");
-  //   return (window.location.pathname !== "/auth/sign-in" && userId);
-  // };
 
   const resizeFunction = () => {
     if (window.innerWidth >= 960) {
@@ -109,13 +82,16 @@ export default function Main({ ...rest }) {
         <div className={classes.content}>
           <div className={classes.container}>
 
-            {window.location.pathname === "/admin/dashboard" &&
-              <Dashboard />}
-            {window.location.pathname === "/admin/user" &&
-              <UserProfile />}
-            {window.location.pathname === "/admin/courses" &&
-              <TableList />}
-              
+
+
+            <Switch>
+              <Route path={"/admin/dashboard"} component={Dashboard} />
+              <Route path={"/admin/user"} component={UserProfile} />
+              <Route path={"/admin/courses"} component={TableList} />
+
+              <Redirect to="/admin/dashboard" from="/" />
+            </Switch>
+
 
           </div>
         </div>

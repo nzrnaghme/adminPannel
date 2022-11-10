@@ -1,6 +1,6 @@
 import routes from "routes.js";
 import React from "react";
-// import { Switch, Route, Redirect } from "react-router-dom";
+import { Switch, Route, Redirect } from "react-router-dom";
 import AuthNavbar from "components/Navbars/AuthNavbar.js";
 import styles from "assets/jss/material-dashboard-react/layouts/rtlStyle.js";
 import register from "assets/img/register.jpeg";
@@ -9,24 +9,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import RegisterPage from "views/Pages/RegisterPage";
 import LoginPage from "views/Pages/LoginPage";
 
-// const switchRoutes = (
-//     <Switch>
-//         {routes.map((prop, key) => {
-//             return (
-//                 <>
-//                     {prop.layout === "/auth" &&
-//                         <Route
-//                             path={prop.layout + prop.path}
-//                             component={prop.component}
-//                             key={key}
-//                         />
-//                     }
-//                 </>
-//             );
-//         })}
-//         <Redirect to="/auth/register-page" />
-//     </Switch>
-// );
+
 const useStyles = makeStyles(styles);
 export default function Authentication() {
     const classes = useStyles();
@@ -56,14 +39,14 @@ export default function Authentication() {
             <AuthNavbar brandText={getActiveRoute(routes)} color="info" />
             <div className={classes.wrapper}>
                 <div
-                   
+
                     style={{ backgroundImage: "url(" + getBgImage() + ")" }}
                 >
-                    {window.location.pathname === "/auth/login-page" &&
-                        <LoginPage />}
-                    {window.location.pathname === "/auth/register-page" &&
-                        <RegisterPage />}
-                    {/* {switchRoutes} */}
+                    <Switch>
+                        <Route path={"/auth/login-page"} component={LoginPage} />
+                        <Route path={"/auth/register-page"} component={RegisterPage} />
+                        <Redirect to="/auth/register-page" />
+                    </Switch>
                 </div>
             </div>
         </div>
