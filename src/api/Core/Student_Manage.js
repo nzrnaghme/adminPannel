@@ -1,4 +1,4 @@
-import { DELETE_STUDENT, GETALL_STUDENT, GET_STUDENT_BY_ID, PAGINATION_GETALL_STUDENT, UPDATE_STUDENT } from "../endpoints";
+import { ACTIVE_STUDENT, DEACTIVE_STUDENT, DELETE_STUDENT, GETALL_STUDENT, GET_STUDENT_BY_ID, PAGINATION_GETALL_STUDENT, UPDATE_STUDENT } from "../endpoints";
 import api from "../interceptor";
 
 export const getAllStudet = () => api.get(GETALL_STUDENT)
@@ -19,6 +19,10 @@ export const updateStudetInform = payload =>
     })
 
 export const deleteStudentById = payload => api.delete(DELETE_STUDENT(payload))
+
+export const deActiveStudentManage = payload => api.put(DEACTIVE_STUDENT(payload))
+
+export const activeStudentManage = payload => api.put(ACTIVE_STUDENT(payload))
 
 
 

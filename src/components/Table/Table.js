@@ -152,7 +152,7 @@ export default function CustomTable(props) {
               <TableCell className={classes.tableCell}>{row.phone}</TableCell>
               <TableCell className={classes.tableCell}>{row.courses}</TableCell>
               <TableCell className={classes.tableCell}>
-                <div onClick={() => { changeActivate(row.id) }} className={row.active === true ? classes.ActiveTeacher : classes.deActiveTeacher}>
+                <div onClick={() => { changeActivate(row.id,row.active) }} className={row.active === true ? classes.ActiveTeacher : classes.deActiveTeacher}>
                   <p style={{ color: "white", paddingTop: 3 }}>{row.active === true ? "فعال" : "غیرفعال"}</p>
                 </div>
               </TableCell>
@@ -192,7 +192,7 @@ export default function CustomTable(props) {
               <TableCell className={classes.tableCell}>{row.phone}</TableCell>
               <TableCell className={classes.tableCell}>{row.courses}</TableCell>
               <TableCell className={classes.tableCell}>
-                <div onClick={() => { changeActivate(row.id) }} className={row.active === true ? classes.ActiveTeacher : classes.deActiveTeacher}>
+                <div onClick={() => { changeActivate(row.id,row.active) }} className={row.active === true ? classes.ActiveTeacher : classes.deActiveTeacher}>
                   <p style={{ color: "white", paddingTop: 3 }}>{row.active === true ? "فعال" : "غیرفعال"}</p>
                 </div>
               </TableCell>

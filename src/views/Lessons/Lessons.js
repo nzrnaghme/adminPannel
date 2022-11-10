@@ -8,6 +8,8 @@ import Table from "components/Table/Table.js";
 import Card from "components/Card/Card.js";
 import CardHeader from "components/Card/CardHeader.js";
 import CardBody from "components/Card/CardBody.js";
+import RegularButton from "components/CustomButtons/Button";
+
 import { getAllLesson } from "api/Core/Lesson";
 import { getAllCategory } from "api/Core/Lesson";
 
@@ -94,6 +96,11 @@ export default function LessonList() {
 
     return (
         <GridContainer>
+            <GridItem xs={12} sm={12} md={12} >
+                <div className="btnAdd">
+                    <RegularButton color="success">افزودن درس</RegularButton>
+                </div>
+            </GridItem>
             <GridItem xs={12} sm={12} md={12}>
                 <Card>
                     <CardHeader color="primary">

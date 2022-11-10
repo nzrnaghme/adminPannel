@@ -7,7 +7,7 @@
     flex-direction: row;
 }
 
-.popUpEditStudent .MuiDialog-container .MuiPaper-root{
+.popUpEditStudent .MuiDialog-container .MuiPaper-root {
     width: 600px;
 }
 
@@ -16,9 +16,11 @@
         display: flex;
         flex-direction: column-reverse;
     }
-    .photoEditStudent{
+
+    .photoEditStudent {
         align-items: center;
         justify-content: center;
         display: flex;
     }
 }
+

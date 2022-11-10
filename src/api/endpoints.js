@@ -16,8 +16,8 @@ export const PAGINATION_GETALL_STUDENT = payload => `${API}student/list?pagenumb
 export const GET_STUDENT_BY_ID = payload => `${API}student/${payload}`
 export const UPDATE_STUDENT = payload => `${API}student/${payload}`
 export const DELETE_STUDENT = payload => `${API}student/${payload}`
-export const ACTIVE_STUDENT = `${API}student/active`
-export const DEACTIVE_STUDENT = `${API}student/deactive`
+export const ACTIVE_STUDENT = payload => `${API}student/active/${payload}`
+export const DEACTIVE_STUDENT = payload => `${API}student/deactive/${payload}`
 
 //course
 export const GETALL_COURSES = `${API}course/getall`

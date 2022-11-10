@@ -8,6 +8,7 @@ import Table from "components/Table/Table.js";
 import Card from "components/Card/Card.js";
 import CardHeader from "components/Card/CardHeader.js";
 import CardBody from "components/Card/CardBody.js";
+import RegularButton from "components/CustomButtons/Button";
 import { getAllTeachers } from "api/Core/Employe_Manage";
 
 const styles = {
@@ -81,6 +82,11 @@ export default function Teachers() {
 
   return (
     <GridContainer>
+      <GridItem xs={12} sm={12} md={12} >
+        <div className="btnAdd">
+          <RegularButton color="success">افزودن استاد</RegularButton>
+        </div>
+      </GridItem>
       <GridItem xs={12} sm={12} md={12}>
         <Card>
           <CardHeader color="primary">
