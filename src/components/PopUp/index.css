@@ -41,3 +41,7 @@
         font-size: smaller;
     }
 }
+
+.MuiDialog-paperWidthSm{
+    max-width: 1000px !important;
+}

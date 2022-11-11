@@ -105,7 +105,7 @@ CustomInput.propTypes = {
   success: PropTypes.bool,
   rtlActive: PropTypes.bool,
   value: PropTypes.string,
-  onChange: PropTypes.object,
+  onChange: PropTypes.func,
   maskChar: PropTypes.string,
   mask: PropTypes.string,
 };
