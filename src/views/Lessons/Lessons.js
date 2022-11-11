@@ -12,6 +12,8 @@ import RegularButton from "components/CustomButtons/Button";
 
 import { getAllLesson } from "api/Core/Lesson";
 import { getAllCategory } from "api/Core/Lesson";
+import { removeLesson } from "api/Core/Lesson";
+import { getLessonById } from "api/Core/Lesson";
 
 const styles = {
     cardCategoryWhite: {
@@ -49,6 +51,7 @@ export default function LessonList() {
     const classes = useStyles();
     const [allLessons, setAllLessons] = useState([])
     const allCategories = useRef([])
+    const [dataLesson, setDataLesson] = useState()
 
     const [currentPage_MainbarMyCourses, setCurrentPage_MainbarMyCourses] = useState(1);
     useEffect(() => {
@@ -84,13 +87,22 @@ export default function LessonList() {
         }
     }
 
-    const removeLessons = (id) => {
-        console.log(id, "idR");
+    const removeLessons = async (id) => {
+        let response = await removeLesson(id)
+        if (response.data.result) {
+            let newLessons = allLessons.filter((item) => item.id != id)
+            setAllLessons(newLessons)
+        }
     }
 
-    const editLessons = (id) => {
-        console.log(id, "idE");
+    const editLessons = async (id) => {
+        let response = await getLessonById(id)
+        if (response.data.result) {
+            setDataLesson(response.data.result)
+        }
     }
+
+    console.log(dataLesson,"dataLesson");
 
 
 

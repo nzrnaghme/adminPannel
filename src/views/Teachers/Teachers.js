@@ -10,6 +10,12 @@ import CardHeader from "components/Card/CardHeader.js";
 import CardBody from "components/Card/CardBody.js";
 import RegularButton from "components/CustomButtons/Button";
 import { getAllTeachers } from "api/Core/Employe_Manage";
+import InsertTeacher from "./InsertTeacher";
+import { activeEmployeeManage } from "api/Core/Employe_Manage";
+import { deActiveEmployeetManage } from "api/Core/Employe_Manage";
+import { getEmployeeById } from "api/Core/Employe_Manage";
+import EditTeacher from "./EditTeacher";
+import { removeEmployee } from "api/Core/Employe_Manage";
 
 const styles = {
   cardCategoryWhite: {
@@ -47,6 +53,10 @@ export default function Teachers() {
   const classes = useStyles();
   const [allTeachers, setAllTeachers] = useState([])
   const [currentPage_MainbarMyCourses, setCurrentPage_MainbarMyCourses] = useState(1);
+  const [openInsertTeacher, setOpenInsertTeacher] = useState(false)
+
+  const [openUpdateTeacher, setOpenUpdateTeacher] = useState(false)
+  const [dataTeacher, setDataTeacher] = useState()
 
   useEffect(() => {
     getTeachers();
@@ -71,46 +81,99 @@ export default function Teachers() {
     setAllTeachers(data)
   }
 
-  const editTeacher = (id) => {
-    console.log(id, "idE");
+  const removeTeacher = async (id) => {
+    let response = await removeEmployee(id)
+    if (response.data.result) {
+      let newTeacher = allTeachers.filter((item) => item.id != id)
+      setAllTeachers(newTeacher);
+    }
   }
 
-  const changeActivate = (id) => {
-    console.log(id, "idE");
+  const editTeacher = (id) => {
+    getDataTeacher(id)
+  }
+
+  const getDataTeacher = async (id) => {
+    let response = await getEmployeeById(id)
+    console.log(response, "11");
+    if (response.data.result) {
+      setDataTeacher(response.data.result);
+      setOpenUpdateTeacher(true);
+    }
+  }
+
+  const changeActivate = (id, active) => {
+    if (active) {
+      deActiveEmployee(id)
+    } else activeEmployee(id)
+  }
+
+  const activeEmployee = async (id) => {
+    let response = await activeEmployeeManage(id)
+    if (response.data.result) getTeachers()
+  }
+
+  const deActiveEmployee = async (id) => {
+    let response = await deActiveEmployeetManage(id)
+    if (response.data.result) getTeachers()
   }
 
 
   return (
-    <GridContainer>
-      <GridItem xs={12} sm={12} md={12} >
-        <div className="btnAdd">
-          <RegularButton color="success">افزودن استاد</RegularButton>
-        </div>
-      </GridItem>
-      <GridItem xs={12} sm={12} md={12}>
-        <Card>
-          <CardHeader color="primary">
-            <h4 className={classes.cardTitleWhite}>تمام اساتید</h4>
-
-          </CardHeader>
-          <CardBody>
-            {allTeachers.length > 0 &&
-              <Table
-                tableHeaderColor="primary"
-                tableHead={["", "اسم", "ایمیل", "شماره موبایل", "تعداد دوره ها", "", ""]}
-                tableData={allTeachers}
-                currentPage={currentPage_MainbarMyCourses}
-                rowsCount={5}
-                editTeacher={editTeacher}
-                changeActivate={changeActivate}
-                teacher
-              />}
-          </CardBody>
-          <div>
-
+    <>
+      <GridContainer>
+        <GridItem xs={12} sm={12} md={12} >
+          <div className="btnAdd">
+            <RegularButton color="success"
+              onClick={() => {
+                setOpenInsertTeacher(true)
+              }} >افزودن استاد</RegularButton>
           </div>
-        </Card>
-      </GridItem>
-    </GridContainer>
+        </GridItem>
+        <GridItem xs={12} sm={12} md={12}>
+          <Card>
+            <CardHeader color="primary">
+              <h4 className={classes.cardTitleWhite}>تمام اساتید</h4>
+            </CardHeader>
+            <CardBody>
+              {allTeachers.length > 0 &&
+                <Table
+                  tableHeaderColor="primary"
+                  tableHead={["", "اسم", "ایمیل", "شماره موبایل", "تعداد دوره ها", "", ""]}
+                  tableData={allTeachers}
+                  currentPage={currentPage_MainbarMyCourses}
+                  rowsCount={5}
+                  editTeacher={editTeacher}
+                  changeActivate={changeActivate}
+                  removeTeacher={removeTeacher}
+                  teacher
+                />}
+            </CardBody>
+            <div>
+
+            </div>
+          </Card>
+        </GridItem>
+      </GridContainer>
+      {openInsertTeacher &&
+        <InsertTeacher
+          openPopUpInsertTecher={openInsertTeacher}
+          closePopUp={() => { setOpenInsertTeacher(false) }}
+          InsertSuccess={() => {
+            getTeachers()
+            setOpenInsertTeacher(false)
+          }} />
+      }
+      {openUpdateTeacher && dataTeacher &&
+        <EditTeacher
+          openEditTeacherPopUp={openUpdateTeacher}
+          dataTeacher={dataTeacher}
+          closePopUpEdit={() => { setOpenUpdateTeacher(false) }}
+          EditSuccess={() => {
+            getTeachers()
+            setOpenUpdateTeacher(false)
+          }} />}
+
+    </>
   );
 }

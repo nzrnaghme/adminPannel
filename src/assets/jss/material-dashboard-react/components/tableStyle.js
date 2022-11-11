@@ -134,6 +134,11 @@ const tableStyle = (theme) => ({
     backgroundColor: "transparent",
     color: infoColor[0],
     boxShadow: "none",
+  },
+  Insert:{
+    backgroundColor: "transparent",
+    color: infoColor[1],
+    boxShadow: "none",
   }
 
 });

@@ -1,4 +1,4 @@
-import { ADD_STUDENT_IN_COURSE, COUNT_LIKE_COURSE, DISLIKE_COURSE, GETALL_COURSES, GETALL_COURSES_BY_ID, LIKE_COURSE, PAGINATION_GETALL_COURSES, REMOVE_STUDENT_IN_COURSE, UPDATE_COURSE } from "../endpoints";
+import { ADD_STUDENT_IN_COURSE, COUNT_LIKE_COURSE, CREATE_COURSE, DELETE_COURSE, DISLIKE_COURSE, GETALL_COURSES, GETALL_COURSES_BY_ID, LIKE_COURSE, PAGINATION_GETALL_COURSES, REMOVE_STUDENT_IN_COURSE, UPDATE_COURSE } from "../endpoints";
 import api from "../interceptor";
 
 export const getAllCourse = () => api.get(GETALL_COURSES)
@@ -32,12 +32,16 @@ export const countLikeCourse = payload =>
     api.get(COUNT_LIKE_COURSE(payload))
 
 export const updateCourse = payload =>
-api.put(UPDATE_COURSE(payload.id), {
-    title: payload.title,
-    cost: payload.cost,
-    endDate: payload.startDate,
-    startDate: payload.endDate,
-    capacity: payload.capacity,
-    teacher: payload.teacher,
-    lesson: payload.lesson
-})
+    api.put(UPDATE_COURSE(payload.id), {
+        title: payload.title,
+        cost: payload.cost,
+        endDate: payload.startDate,
+        startDate: payload.endDate,
+        capacity: payload.capacity,
+        teacher: payload.teacher,
+        lesson: payload.lesson
+    })
+
+export const removeCourseById = payload => api.delete(DELETE_COURSE(payload))
+
+export const createCourse = payload => api.post(CREATE_COURSE, payload)

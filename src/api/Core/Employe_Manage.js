@@ -1,4 +1,4 @@
-import { ALL_TEACHER, GET_EMPLOYEE_BY_ID, LAST_TEACHERS, UPDATE_EMPLOYEE } from "../endpoints";
+import { ACTIVE_EMPLOYEE, ALL_TEACHER, DEACTIVE_EMPLOYEE, GET_EMPLOYEE_BY_ID, LAST_TEACHERS, REMOVE_EMPLOYEE, UPDATE_EMPLOYEE } from "../endpoints";
 import api from "../interceptor";
 
 export const getAllTeachers = () => api.get(ALL_TEACHER)
@@ -16,3 +16,10 @@ export const updateEmployeeById = (payload) => api.put(UPDATE_EMPLOYEE(payload.i
     nationalId: payload.nationalId,
     profile: payload.profile
 })
+
+export const deActiveEmployeetManage = payload => api.put(DEACTIVE_EMPLOYEE(payload))
+
+export const activeEmployeeManage = payload => api.put(ACTIVE_EMPLOYEE(payload))
+
+export const removeEmployee = payload => api.delete(REMOVE_EMPLOYEE(payload))
+

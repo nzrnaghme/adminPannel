@@ -25,7 +25,7 @@ export const PAGINATION_GETALL_COURSES = payload => `${API}course/list?pagenumbe
 export const GETALL_COURSES_BY_ID = payload => `${API}course/${payload}`
 export const CREATE_COURSE = `${API}course`
 export const UPDATE_COURSE = payload => `${API}course/${payload}`
-export const DELETE_COURSE = `${API}course`
+export const DELETE_COURSE = payload => `${API}course/${payload}`
 export const ADD_STUDENT_IN_COURSE = payload => `${API}course/addStudentToCourse/${payload}`
 export const REMOVE_STUDENT_IN_COURSE = payload => `${API}course/removeStudentFromCourse/${payload}`
 export const LIKE_COURSE = `${API}course/like`
@@ -39,7 +39,7 @@ export const PAGINATION_GETALL_LESSONS = payload => `${API}lesson/list?pagenumbe
 export const GET_LESSON_FOR_COURSE_BY_ID = payload => `${API}lesson/course/${payload}`
 export const ADD_LESSON = `${API}lesson/add`
 export const UPDATE_LESSON = `${API}lesson`
-export const DELETE_LESSON = `${API}lesson`
+export const DELETE_LESSON = payload => `${API}lesson/${payload}`
 
 //news
 export const GETALL_NEWS = `${API}news`
@@ -66,5 +66,8 @@ export const ALL_TEACHER = `${API}employee/getallteachers`
 export const LAST_TEACHERS = `${API}employee/getlastteachers`
 export const GET_EMPLOYEE_BY_ID = payload => `${API}employee/${payload}`
 export const UPDATE_EMPLOYEE = payload => `${API}employee/${payload}`
+export const ACTIVE_EMPLOYEE = payload => `${API}employee/active/${payload}`
+export const DEACTIVE_EMPLOYEE = payload => `${API}employee/deactive/${payload}`
+export const REMOVE_EMPLOYEE = payload => `${API}employee/${payload}`
 
 export const GETALL_MAIN_CATEGORY = `${API}category/getall`

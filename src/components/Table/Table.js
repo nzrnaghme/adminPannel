@@ -11,14 +11,16 @@ import TableCell from "@material-ui/core/TableCell";
 import Tooltip from "@material-ui/core/Tooltip";
 import IconButton from "@material-ui/core/IconButton";
 import MenuBookIcon from '@material-ui/icons/MenuBook';
+import { formatDate } from "constants/usefulFunc";
 // core components
 import styles from "assets/jss/material-dashboard-react/components/tableStyle.js";
 import Edit from "@material-ui/icons/Edit";
 import Close from "@material-ui/icons/Close";
 import PersonIcon from '@material-ui/icons/Person';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
+import GroupAddIcon from '@material-ui/icons/GroupAdd';
 import "./index.css"
-import { formatDate } from "constants/usefulFunc";
+
 
 
 const useStyles = makeStyles(styles);
@@ -40,6 +42,7 @@ export default function CustomTable(props) {
     teacher,
     editTeacher,
     changeActivate,
+    removeTeacher,
     student,
     removeStudent,
     editStudent,
@@ -48,7 +51,10 @@ export default function CustomTable(props) {
     removeLessons,
     lessons,
     myCourses,
-    removeCourseFromStudent } = props;
+    removeCourseFromStudent,
+    addStudentToCourse,
+    currentStudent,
+    AllStudentInsertCourse } = props;
 
   return (
     <div className={classes.tableResponsive}>
@@ -77,6 +83,7 @@ export default function CustomTable(props) {
               <TableCell className={classes.tableCell}>{(row.date)}</TableCell>
               <TableCell className={classes.tableCell}>{row.cost > 0 ? `${row.cost} ت` : 'رایگان!'}</TableCell>
               <TableCell className={classes.tableCell}>{row.capacity}</TableCell>
+              <TableCell className={classes.tableCell}>{row.countStudent}</TableCell>
               <TableCell
                 className={classes.tableCell}>
                 <Tooltip
@@ -141,6 +148,27 @@ export default function CustomTable(props) {
                   </IconButton>
                 </Tooltip>
 
+                <Tooltip
+                  id="tooltip-top-start"
+                  title="اضافه کردن دانشجو"
+                  placement="top"
+                  classes={{ tooltip: classes.tooltip }}
+                >
+                  <IconButton
+                    aria-label="Close"
+                    className={classes.tableActionButton}
+                    onClick={() => {
+                      addStudentToCourse(row.id)
+                    }}
+                  >
+                    <AddCircleOutlineIcon
+                      className={
+                        classes.tableActionButtonIcon + " " + classes.Add
+                      }
+                    />
+                  </IconButton>
+                </Tooltip>
+
               </TableCell>
             </TableRow>
           )) : ''}
@@ -177,6 +205,26 @@ export default function CustomTable(props) {
                     <Edit
                       className={
                         classes.tableActionButtonIcon + " " + classes.edit
+                      }
+                    />
+                  </IconButton>
+                </Tooltip>
+                <Tooltip
+                  id="tooltip-top"
+                  title="حذف"
+                  placement="top"
+                  classes={{ tooltip: classes.tooltip }}
+                >
+                  <IconButton
+                    aria-label="Edit"
+                    className={classes.tableActionButton}
+                    onClick={() => {
+                      removeTeacher(row.id)
+                    }}
+                  >
+                    <Close
+                      className={
+                        classes.tableActionButtonIcon + " " + classes.close
                       }
                     />
                   </IconButton>
@@ -377,6 +425,82 @@ export default function CustomTable(props) {
               </TableCell>
             </TableRow>
           )) : ''}
+
+          {currentStudent && tableData ? tableData.slice((currentPage * rowsCount) - rowsCount, currentPage * rowsCount).map((row, index) => (
+            <TableRow key={index} className={classes.tableBodyRow}>
+              <TableCell className={classes.tableCell}>
+                <Avatar src={row.profile} className={classes.large} />
+              </TableCell>
+              <TableCell className={classes.tableCell}>{row.fullName}</TableCell>
+              <TableCell className={classes.tableCell}>{row.email}</TableCell>
+            
+              <TableCell
+                className={classes.tableCell}>
+                <Tooltip
+                  id="tooltip-top-start"
+                  title="حذف"
+                  placement="top"
+                  classes={{ tooltip: classes.tooltip }}
+                >
+                  <IconButton
+                    aria-label="Add"
+                    className={classes.tableActionButton}
+                    onClick={() => {
+                      removeStudent(row._id)
+                    }}
+                  >
+                    <Close
+                      className={
+                        classes.tableActionButtonIcon + " " + classes.close
+                      }
+                    />
+                  </IconButton>
+                </Tooltip>
+
+              </TableCell>
+            </TableRow>
+          )) : ''}
+
+          {AllStudentInsertCourse && tableData ? tableData.slice((currentPage * rowsCount) - rowsCount, currentPage * rowsCount).map((row, index) => (
+            <TableRow key={index} className={classes.tableBodyRow}>
+              <TableCell className={classes.tableCell}>
+                <Avatar src={row.profile} className={classes.large} />
+              </TableCell>
+              <TableCell className={classes.tableCell}>{row.fullName}</TableCell>
+              <TableCell className={classes.tableCell}>{row.email}</TableCell>
+              <TableCell className={classes.tableCell}>{row.courses.length}</TableCell>
+
+              <TableCell className={classes.tableCell}>
+                <div className={row.isActive === true ? classes.ActiveTeacher : classes.deActiveTeacher}>
+                  <p style={{ color: "white", paddingTop: 3 }}>{row.isActive === true ? "فعال" : "غیرفعال"}</p>
+                </div>
+              </TableCell>
+              <TableCell
+                className={classes.tableCell}>
+                <Tooltip
+                  id="tooltip-top-start"
+                  title="اضافه کردن دانشجو"
+                  placement="top"
+                  classes={{ tooltip: classes.tooltip }}
+                >
+                  <IconButton
+                    aria-label="Add"
+                    className={classes.tableActionButton}
+                    onClick={() => {
+                      addStudentToCourse(row._id)
+                    }}
+                  >
+                    <GroupAddIcon
+                      className={
+                        classes.tableActionButtonIcon + " " + classes.Insert
+                      }
+                    />
+                  </IconButton>
+                </Tooltip>
+
+              </TableCell>
+            </TableRow>
+          )) : ''}
         </TableBody>
       </Table>
     </div>
@@ -406,10 +530,12 @@ CustomTable.propTypes = {
   removeCourse: PropTypes.func,
   editCourse: PropTypes.func,
   showStudents: PropTypes.func,
+  addStudentToCourse: PropTypes.func,
 
   teacher: PropTypes.bool,
   editTeacher: PropTypes.func,
   changeActivate: PropTypes.func,
+  removeTeacher: PropTypes.func,
 
   student: PropTypes.bool,
   editStudent: PropTypes.func,
@@ -421,5 +547,9 @@ CustomTable.propTypes = {
   removeLessons: PropTypes.func,
 
   myCourses: PropTypes.bool,
-  removeCourseFromStudent: PropTypes.func
+  removeCourseFromStudent: PropTypes.func,
+
+  currentStudent: PropTypes.bool,
+
+  AllStudentInsertCourse:PropTypes.bool
 };
