@@ -14,6 +14,9 @@ import { getAllLesson } from "api/Core/Lesson";
 import { getAllCategory } from "api/Core/Lesson";
 import { removeLesson } from "api/Core/Lesson";
 import { getLessonById } from "api/Core/Lesson";
+import EditLEsson from "./EditLesson";
+import AddLesson from "./AddLesson";
+import CreateCourse from "views/CourseList/CreateCourse";
 
 const styles = {
     cardCategoryWhite: {
@@ -51,9 +54,19 @@ export default function LessonList() {
     const classes = useStyles();
     const [allLessons, setAllLessons] = useState([])
     const allCategories = useRef([])
-    const [dataLesson, setDataLesson] = useState()
 
     const [currentPage_MainbarMyCourses, setCurrentPage_MainbarMyCourses] = useState(1);
+
+    const [dataLesson, setDataLesson] = useState()
+    const [openEditLesson, setOpenEditLesson] = useState(false)
+    const [courseByIdLesson, setCourseByIdLesson] = useState()
+
+    const [openAddLesson, setOpenAddLesson] = useState(false)
+
+    const [openAddCourseInLesson, setOpenAddCourseInLesson] = useState(false)
+    const [idLesson, setIdLesson] = useState()
+    const [imgLesson, setImgLesson] = useState()
+
     useEffect(() => {
         getAllCategories()
         getLessons();
@@ -98,45 +111,104 @@ export default function LessonList() {
     const editLessons = async (id) => {
         let response = await getLessonById(id)
         if (response.data.result) {
-            setDataLesson(response.data.result)
+            setDataLesson(response.data.result);
+            setCourseByIdLesson(response.data.result.courses)
+            setOpenEditLesson(true)
         }
     }
 
-    console.log(dataLesson,"dataLesson");
+    const addCourseToLesson = (id, img) => {
+        setOpenAddCourseInLesson(true);
+        setIdLesson(id);
+        setImgLesson(img)
+    }
+
 
 
 
     return (
-        <GridContainer>
-            <GridItem xs={12} sm={12} md={12} >
-                <div className="btnAdd">
-                    <RegularButton color="success">افزودن درس</RegularButton>
-                </div>
-            </GridItem>
-            <GridItem xs={12} sm={12} md={12}>
-                <Card>
-                    <CardHeader color="primary">
-                        <h4 className={classes.cardTitleWhite}>تمام دروس</h4>
-
-                    </CardHeader>
-                    <CardBody>
-                        {allLessons.length > 0 &&
-                            <Table
-                                tableHeaderColor="primary"
-                                tableHead={["", "اسم", "دسته بندی", "توضیحات", "تعداد دوره", ""]}
-                                tableData={allLessons}
-                                currentPage={currentPage_MainbarMyCourses}
-                                rowsCount={5}
-                                removeLessons={removeLessons}
-                                editLessons={editLessons}
-                                lessons
-                            />}
-                    </CardBody>
-                    <div>
-
+        <>
+            <GridContainer>
+                <GridItem xs={12} sm={12} md={12} >
+                    <div className="btnAdd">
+                        <RegularButton
+                            color="success"
+                            onClick={() => {
+                                setOpenAddLesson(true)
+                            }}
+                        >افزودن درس
+                        </RegularButton>
                     </div>
-                </Card>
-            </GridItem>
-        </GridContainer>
+                </GridItem>
+                <GridItem xs={12} sm={12} md={12}>
+                    <Card>
+                        <CardHeader color="primary">
+                            <h4 className={classes.cardTitleWhite}>تمام دروس</h4>
+                        </CardHeader>
+                        <CardBody>
+                            {allLessons.length > 0 &&
+                                <Table
+                                    tableHeaderColor="primary"
+                                    tableHead={["", "اسم", "دسته بندی", "توضیحات", "تعداد دوره", ""]}
+                                    tableData={allLessons}
+                                    currentPage={currentPage_MainbarMyCourses}
+                                    rowsCount={5}
+                                    removeLessons={removeLessons}
+                                    editLessons={editLessons}
+                                    addCourseToLesson={addCourseToLesson}
+                                    lessons
+                                />}
+                        </CardBody>
+                        <div>
+
+                        </div>
+                    </Card>
+                </GridItem>
+            </GridContainer>
+
+            {openEditLesson && dataLesson && courseByIdLesson &&
+                <EditLEsson
+                    openEditLessonPopUp={openEditLesson}
+                    EditSuccess={() => {
+                        getLessons()
+                        setOpenEditLesson(false)
+                    }}
+                    dataLesson={dataLesson}
+                    closePopUpEdit={() => {
+                        setOpenEditLesson(false)
+                    }}
+                    courseByIdLesson={courseByIdLesson}
+                />
+            }
+
+            {openAddLesson &&
+                <AddLesson
+                    openAddLessonPopUp={openAddLesson}
+                    AddSuccess={() => {
+                        getLessons()
+                        setOpenAddLesson(false)
+                    }}
+                    closePopUpAdd={() => {
+                        setOpenAddLesson(false)
+                    }}
+                />
+            }
+
+            {openAddCourseInLesson && imgLesson && idLesson &&
+                <CreateCourse
+                    openCreateCoursePopUp={openAddCourseInLesson}
+                    CreateSuccess={() => {
+                        getLessons()
+                        setOpenAddCourseInLesson(false)
+                    }}
+                    closePopUpCreate={() => {
+                        setOpenAddCourseInLesson(false)
+                    }}
+                    imgLesson={imgLesson}
+                    idLesson={idLesson}
+                />
+            }
+
+        </>
     );
 }

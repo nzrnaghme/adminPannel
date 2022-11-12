@@ -58,7 +58,9 @@ export default function CreateCourse(props) {
     const {
         openCreateCoursePopUp,
         CreateSuccess,
-        closePopUpCreate } = props
+        closePopUpCreate,
+        imgLesson,
+        idLesson } = props
 
     const [title, setTitle] = useState()
     const [startDate, setStartDate] = useState()
@@ -79,8 +81,14 @@ export default function CreateCourse(props) {
 
     useEffect(() => {
         if (allLessons && allLessons.length > 0) {
-            setLessonName(allLessons[0]._id);
-            setPhotoLesson(allLessons[0].image)
+            if (imgLesson && idLesson) {
+                setLessonName(idLesson);
+                setPhotoLesson(imgLesson)
+            }
+            else {
+                setLessonName(allLessons[0]._id);
+                setPhotoLesson(allLessons[0].image)
+            }
         }
     }, [allLessons])
 
@@ -243,6 +251,7 @@ export default function CreateCourse(props) {
                                                 let lesson = allLessons.find((item) => item._id === e.target.value)
                                                 setPhotoLesson(lesson.image)
                                             }}
+                                            disabled={idLesson ? true : false}
                                         />}
 
                                 </GridItem>
@@ -279,4 +288,6 @@ CreateCourse.propTypes = {
     openCreateCoursePopUp: PropTypes.bool,
     CreateSuccess: PropTypes.func,
     closePopUpCreate: PropTypes.func,
+    imgLesson: PropTypes.string,
+    idLesson: PropTypes.string
 };

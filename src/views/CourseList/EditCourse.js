@@ -61,6 +61,7 @@ export default function EditCourse(props) {
         EditSuccess,
         closePopUpEdit,
         dataCourse } = props
+
     const [title, setTitle] = useState()
     const [startDate, setStartDate] = useState()
     const [teacherName, setTeacherName] = useState()
@@ -112,7 +113,8 @@ export default function EditCourse(props) {
     useEffect(() => {
         if (allLessons && allLessons.length > 0) {
             let lessonCourse = allLessons.find((item) => item._id === dataCourse.lesson._id)
-            setPhotoLesson(lessonCourse.image)
+            if (lessonCourse)
+                setPhotoLesson(lessonCourse.image)
         }
     }, [allLessons])
 
@@ -233,15 +235,19 @@ export default function EditCourse(props) {
                                 <GridContainer>
                                     <GridItem xs={12} sm={12} md={6}>
 
-                                        {allLessons && allLessons.length > 0 && <CustomSelectInput
-                                            labelText="درس"
-                                            value={lessonName}
-                                            options={allLessons}
-                                            handleChange={(e) => {
-                                                setLessonName(e.target.value);
-                                                let lesson = allLessons.find((item) => item._id === e.target.value)
-                                                setPhotoLesson(lesson.image)
-                                            }} />}
+                                        {allLessons && allLessons.length > 0 &&
+                                            <CustomSelectInput
+                                                labelText="درس"
+                                                value={lessonName}
+                                                options={allLessons}
+                                                disabled
+                                                handleChange={(e) => {
+                                                    setLessonName(e.target.value);
+                                                    let lesson = allLessons.find((item) => item._id === e.target.value)
+                                                    setPhotoLesson(lesson.image)
+                                                }} />
+
+                                        }
 
                                     </GridItem>
                                 </GridContainer>

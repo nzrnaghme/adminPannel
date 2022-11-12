@@ -65,11 +65,12 @@ export default function AddStudentToCourse(props) {
 
     useEffect(() => {
         setCurrentPage_MainbarCurrentStudent(1)
-        getAllStudent()
+        getAllStudent();
     }, [userIdCourse])
 
     useEffect(() => {
-        getCurrentStudents(userIdCourse);
+        if (allStudent && allStudent.length > 0)
+            getCurrentStudents(userIdCourse);
     }, [allStudent])
 
 
@@ -83,21 +84,18 @@ export default function AddStudentToCourse(props) {
     const getCurrentStudents = async (id) => {
         let response = await getCourseById(id);
         if (response.data.result) {
+            var studentGetCourse = response.data.result.students.map((item) => item._id);
+        }
+        if (allStudent && response) {
 
-            let studentGetCourse = response.data.result.students.map((item) => ([
-                item._id,
-            ]));
-         
-            console.log(studentGetCourse, "coursesAll.current");
             if (studentGetCourse.length > 0) {
-                let correctStudent = allStudent.filter((item) => {
-                    return !(studentGetCourse.includes(item._id))
+                const otherStudent = allStudent.filter((item) => {
+                    return (!(studentGetCourse.includes(item._id)))
                 })
-                console.log(correctStudent, "correctStudent");
-                setCurrentStudents(correctStudent)
-            } else
+                setCurrentStudents(otherStudent)
+            }
+            else
                 setCurrentStudents(allStudent)
-
         }
     }
 

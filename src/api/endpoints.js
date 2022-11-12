@@ -38,7 +38,7 @@ export const GETALL_LESSON_BY_ID = payload => `${API}lesson/${payload}`
 export const PAGINATION_GETALL_LESSONS = payload => `${API}lesson/list?pagenumber=${payload.pageNumber}&pagesize=${payload.pageSize}`
 export const GET_LESSON_FOR_COURSE_BY_ID = payload => `${API}lesson/course/${payload}`
 export const ADD_LESSON = `${API}lesson/add`
-export const UPDATE_LESSON = `${API}lesson`
+export const UPDATE_LESSON = payload => `${API}lesson/${payload}`
 export const DELETE_LESSON = payload => `${API}lesson/${payload}`
 
 //news

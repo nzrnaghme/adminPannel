@@ -1,0 +1,18 @@
+.MuiChip-sizeSmall {
+    margin-left: 3px;
+}
+
+.MuiChip-root .MuiSvgIcon-root {
+    padding-left: 7px;
+}
+
+.formControlAuto{
+    display: flex !important;
+    flex-direction: row !important;
+    margin-top: 20 !important;
+    padding-top: 20px !important;
+}
+
+.container{
+    margin-top: auto;
+}

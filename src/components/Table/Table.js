@@ -54,7 +54,9 @@ export default function CustomTable(props) {
     removeCourseFromStudent,
     addStudentToCourse,
     currentStudent,
-    AllStudentInsertCourse } = props;
+    AllStudentInsertCourse,
+    coursesFromLesson,
+    addCourseToLesson } = props;
 
   return (
     <div className={classes.tableResponsive}>
@@ -377,7 +379,7 @@ export default function CustomTable(props) {
                     aria-label="Close"
                     className={classes.tableActionButton}
                     onClick={() => {
-                      removeLessons(row.id)
+                      addCourseToLesson(row.id, row.profile)
                     }}
                   >
                     <AddCircleOutlineIcon
@@ -433,7 +435,7 @@ export default function CustomTable(props) {
               </TableCell>
               <TableCell className={classes.tableCell}>{row.fullName}</TableCell>
               <TableCell className={classes.tableCell}>{row.email}</TableCell>
-            
+
               <TableCell
                 className={classes.tableCell}>
                 <Tooltip
@@ -501,6 +503,39 @@ export default function CustomTable(props) {
               </TableCell>
             </TableRow>
           )) : ''}
+
+          {coursesFromLesson && tableData ? tableData.slice((currentPage * rowsCount) - rowsCount, currentPage * rowsCount).map((row, index) => (
+            <TableRow key={index} className={classes.tableBodyRow}>
+              <TableCell className={classes.tableCell}>{row.title}</TableCell>
+              <TableCell className={classes.tableCell}>{formatDate(row.startDate)}</TableCell>
+              <TableCell className={classes.tableCell}>{formatDate(row.endDate)}</TableCell>
+              <TableCell className={classes.tableCell}>{row.cost > 0 ? `${row.cost} ت` : 'رایگان!'}</TableCell>
+              <TableCell
+                className={classes.tableCell}>
+                <Tooltip
+                  id="tooltip-top-start"
+                  title="حذف"
+                  placement="top"
+                  classes={{ tooltip: classes.tooltip }}
+                >
+                  <IconButton
+                    aria-label="Close"
+                    className={classes.tableActionButton}
+                    onClick={() => {
+                      removeCourse(row._id)
+                    }}
+                  >
+                    <Close
+                      className={
+                        classes.tableActionButtonIcon + " " + classes.close
+                      }
+                    />
+                  </IconButton>
+                </Tooltip>
+
+              </TableCell>
+            </TableRow>
+          )) : ''}
         </TableBody>
       </Table>
     </div>
@@ -545,11 +580,14 @@ CustomTable.propTypes = {
   lessons: PropTypes.bool,
   editLessons: PropTypes.func,
   removeLessons: PropTypes.func,
+  addCourseToLesson: PropTypes.func,
 
   myCourses: PropTypes.bool,
   removeCourseFromStudent: PropTypes.func,
 
   currentStudent: PropTypes.bool,
 
-  AllStudentInsertCourse:PropTypes.bool
+  AllStudentInsertCourse: PropTypes.bool,
+
+  coursesFromLesson: PropTypes.bool
 };

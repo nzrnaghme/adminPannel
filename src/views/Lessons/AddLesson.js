@@ -3,7 +3,6 @@ import React, { useEffect, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import PropTypes from "prop-types";
 
-import Table from "components/Table/Table.js";
 import RegularButton from "components/CustomButtons/Button";
 import PopUpCustome from "components/PopUp/PopUp";
 import CustomInput from "components/CustomInput/CustomInput.js";
@@ -12,16 +11,14 @@ import GridContainer from "components/Grid/GridContainer.js";
 import Card from "components/Card/Card.js";
 import CardHeader from "components/Card/CardHeader.js";
 import CardBody from "components/Card/CardBody.js";
+import CustomeAutoComplete from "components/CustomInput/CustomeAutoComplete";
 import CustomSelectInput from "components/CustomInput/CustomeSelectInput";
+import photo from "assets/img/intro.png"
 import { Avatar } from "@mui/material";
 
 import { getAllCategory } from "api/Core/Lesson";
 
 import "./lesson.css"
-import CustomeAutoComplete from "components/CustomInput/CustomeAutoComplete";
-import { removeCourseById } from "api/Core/Course";
-import { updateLesson } from "api/Core/Lesson";
-
 const styles = (theme) => ({
     cardCategoryWhite: {
         "&,& a,& a:hover,& a:focus": {
@@ -57,15 +54,12 @@ const styles = (theme) => ({
 });
 
 const useStyles = makeStyles(styles);
-
-export default function EditLEsson(props) {
+export default function AddLesson(props) {
     const classes = useStyles();
     const {
-        openEditLessonPopUp,
-        EditSuccess,
-        closePopUpEdit,
-        dataLesson,
-        courseByIdLesson } = props
+        openAddLessonPopUp,
+        AddSuccess,
+        closePopUpAdd } = props
 
     const [photoLesson, setPhotoLesson] = useState()
     const [nameLesson, setNameLesson] = useState();
@@ -75,25 +69,10 @@ export default function EditLEsson(props) {
     const [topicValue, setTopicValue] = useState("");
     const [allTopics, setAllTopics] = useState([])
 
-    const [allCoursesLesson, setAllCoursesLessons] = useState([])
-    const [currentPage_MainbarMyCourses, setCurrentPage_MainbarMyCourses] = useState(1);
-
     useEffect(() => {
         getAllCategories()
+        setPhotoLesson(photo)
     }, [])
-
-    useEffect(() => {
-        if (dataLesson && courseByIdLesson) {
-            setNameLesson(dataLesson.lessonName);
-            setCategoryLesson(dataLesson.category);
-            setDescriptionLesson(dataLesson.description);
-            setAllTopics(dataLesson.topics);
-            setPhotoLesson(dataLesson.image);
-            setAllCoursesLessons(courseByIdLesson);
-            setCurrentPage_MainbarMyCourses(1)
-        }
-    }, [dataLesson, courseByIdLesson])
-
 
     const getAllCategories = async () => {
         let response = await getAllCategory();
@@ -104,40 +83,20 @@ export default function EditLEsson(props) {
         setaAllCategories(rightData)
     }
 
-    const updateDataLesson = async () => {
-        const data = {
-            lessonName: nameLesson,
-            topics: allTopics,
-            description: descriptionLesson,
-            image: photoLesson,
-            category: categoryLesson,
-            id: dataLesson._id
-        }
-        let response = await updateLesson(data);
-        if (response.data.result) {
-            EditSuccess()
-        }
-
-    }
-
-    const removeCourse = async (id) => {
-        let response = await removeCourseById(id)
-        if (response.data.result) {
-            let newCourse = allCoursesLesson.filter((item) => item._id != id)
-            setAllCoursesLessons(newCourse)
-        }
+    const addLessonNew = async()=>{
+        AddSuccess()
     }
 
     return (
         <PopUpCustome
-            open={openEditLessonPopUp}
-            handleClose={() => { closePopUpEdit() }}
+            open={openAddLessonPopUp}
+            handleClose={() => { closePopUpAdd() }}
             className="popUpEditCourse">
             <GridContainer>
                 <GridItem xs={12} sm={12} md={12}>
                     <Card className="CardEditCourse">
                         <CardHeader color="primary">
-                            <h4 className={classes.cardTitleWhite}>آپدیت درس</h4>
+                            <h4 className={classes.cardTitleWhite}>ایجاد درس</h4>
                         </CardHeader>
                         <CardBody className="bodyEditCourse">
                             <div className="avatarPhotoLesson">
@@ -218,19 +177,6 @@ export default function EditLEsson(props) {
                                     </GridItem>
                                 </GridContainer>
                             </div>
-                            <CardHeader color="info" className="headerCourse">
-                                <h4 className={classes.cardTitleWhite}>تمام دوره های درس</h4>
-                            </CardHeader>
-                            {allCoursesLesson && allCoursesLesson.length > 0 &&
-                                <Table
-                                    tableHeaderColor="primary"
-                                    tableHead={["عنوان", "شروع دوره", "پابان دوره", "قیمت", ""]}
-                                    tableData={allCoursesLesson}
-                                    currentPage={currentPage_MainbarMyCourses}
-                                    rowsCount={5}
-                                    removeCourse={removeCourse}
-                                    coursesFromLesson
-                                />}
                             <div className="btnEditCourse">
                                 <div style={{
                                     display: "flex",
@@ -243,11 +189,11 @@ export default function EditLEsson(props) {
                                     <RegularButton
                                         color="info"
                                         size="sm"
-                                        onClick={() => { updateDataLesson(dataLesson._id) }}>ثبت تغییرات</RegularButton>
+                                        onClick={() => { addLessonNew() }}>ثبت تغییرات</RegularButton>
                                     <RegularButton
                                         color="danger"
                                         size="sm"
-                                        onClick={() => { closePopUpEdit() }}>انصراف</RegularButton>
+                                        onClick={() => { closePopUpAdd() }}>انصراف</RegularButton>
                                 </div>
 
                             </div>
@@ -259,10 +205,8 @@ export default function EditLEsson(props) {
     )
 }
 
-EditLEsson.propTypes = {
-    openEditLessonPopUp: PropTypes.bool,
-    EditSuccess: PropTypes.func,
-    closePopUpEdit: PropTypes.func,
-    dataLesson: PropTypes.object,
-    courseByIdLesson: PropTypes.array
+AddLesson.propTypes = {
+    openAddLessonPopUp: PropTypes.bool,
+    AddSuccess: PropTypes.func,
+    closePopUpAdd: PropTypes.func,
 };

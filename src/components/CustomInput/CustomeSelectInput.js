@@ -33,7 +33,8 @@ export default function CustomSelectInput(props) {
         labelText,
         handleChange,
         value,
-        options
+        options,
+        disabled
     } = props;
     
 
@@ -45,6 +46,7 @@ export default function CustomSelectInput(props) {
                 id="demo-simple-select"
                 value={value}
                 onChange={handleChange}
+                disabled={disabled}
             >
                 {options.map((option) => (
                     <MenuItem value={option._id} key={option._id}>
@@ -59,6 +61,7 @@ export default function CustomSelectInput(props) {
 CustomSelectInput.propTypes = {
     labelText: PropTypes.node,
     handleChange: PropTypes.func,
-    value: PropTypes.number,
-    options: PropTypes.array
+    value: PropTypes.any,
+    options: PropTypes.array,
+    disabled:PropTypes.bool
 };

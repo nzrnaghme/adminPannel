@@ -53,7 +53,7 @@ const dashboardRoutes = [
   },
   {
     path: "/lessons",
-    name: "کلاس ها",
+    name: "درس ها",
     icon: AssignmentIcon,
     component: LessonList,
     layout: "/admin",
