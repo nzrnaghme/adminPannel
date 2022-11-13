@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 
 import { makeStyles } from "@material-ui/core/styles";
 import PropTypes from "prop-types";
@@ -11,6 +11,7 @@ import Table from "components/Table/Table.js";
 import Card from "components/Card/Card.js";
 import CardHeader from "components/Card/CardHeader.js";
 import CardBody from "components/Card/CardBody.js";
+import { GeneralContext } from "providers/GeneralContext";
 
 import { getCourseById } from "api/Core/Course";
 import { getAllStudet } from "api/Core/Student_Manage";
@@ -62,6 +63,7 @@ export default function AddStudentToCourse(props) {
     const [currentPage_MainbarCurrentStudent, setCurrentPage_MainbarCurrentStudent] = useState(1);
     const [currentStudents, setCurrentStudents] = useState()
     const [allStudent, setAllStudent] = useState()
+    const { setConfirmPopupOpen, onConfirmSetter } = useContext(GeneralContext);
 
     useEffect(() => {
         setCurrentPage_MainbarCurrentStudent(1)
@@ -113,41 +115,49 @@ export default function AddStudentToCourse(props) {
 
 
 
-    return (<PopUpCustome
-        open={openAddStudentPopUp}
-        handleClose={() => { closePopUpAdd() }}
-        className="popUpAllCurrentStudent">
-        <GridContainer>
-            <GridItem xs={12} sm={12} md={12}>
-                <Card>
-                    <CardHeader color="primary">
-                        <h4 className={classes.cardTitleWhite}>اضافه کردن دانشجو</h4>
-                    </CardHeader>
-                    <CardBody>
+    return (
+        <PopUpCustome
+            open={openAddStudentPopUp}
+            handleClose={() => { closePopUpAdd() }}
+            className="popUpAllCurrentStudent">
+            <GridContainer>
+                <GridItem xs={12} sm={12} md={12}>
+                    <Card>
+                        <CardHeader color="primary">
+                            <h4 className={classes.cardTitleWhite}>اضافه کردن دانشجو</h4>
+                        </CardHeader>
+                        <CardBody>
+                            {currentStudents != undefined && currentStudents.length > 0 &&
+                                <Table
+                                    tableHeaderColor="primary"
+                                    tableHead={["", "اسم", "ایمیل", "تعداد کل دروس", "", ""]}
+                                    tableData={currentStudents}
+                                    currentPage={currentPage_MainbarCurrentStudent}
+                                    rowsCount={5}
+                                    addStudentToCourse={(id) => {
+                                        onConfirmSetter('آیا برای اضافه کردن دانشجو اطمینان دارید؟', () => {
+                                            addStudentToCourses(id)
+                                        })
+                                        setConfirmPopupOpen(true)
+                                    }}
+                                    AllStudentInsertCourse
+                                />
+                            }
+                            {currentStudents && currentStudents.length === 0 &&
+                                <div style={{ textAlign: "center" }}>دانشجویی ثبت نام نکرده</div>
+                            }
+                        </CardBody>
                         {currentStudents != undefined && currentStudents.length > 0 &&
-                            <Table
-                                tableHeaderColor="primary"
-                                tableHead={["", "اسم", "ایمیل", "تعداد کل دروس", "", ""]}
-                                tableData={currentStudents}
-                                currentPage={currentPage_MainbarCurrentStudent}
-                                rowsCount={5}
-                                addStudentToCourse={addStudentToCourses}
-                                AllStudentInsertCourse
-                            />}
-                        {currentStudents && currentStudents.length === 0 &&
-                            <div style={{ textAlign: "center" }}>دانشجویی ثبت نام نکرده</div>}
-                    </CardBody>
-                    {currentStudents != undefined && currentStudents.length > 0 &&
-                        <div style={{ display: "flex", justifyContent: "center" }}>
-                            <RegularButton
-                                color="success"
-                                size="sm"
-                                onClick={() => { AddSuccess() }}>ثبت تغییرات</RegularButton>
-                        </div>}
-                </Card>
-            </GridItem>
-        </GridContainer>
-    </PopUpCustome>
+                            <div style={{ display: "flex", justifyContent: "center" }}>
+                                <RegularButton
+                                    color="success"
+                                    size="sm"
+                                    onClick={() => { AddSuccess() }}>ثبت تغییرات</RegularButton>
+                            </div>}
+                    </Card>
+                </GridItem>
+            </GridContainer>
+        </PopUpCustome>
     )
 }
 

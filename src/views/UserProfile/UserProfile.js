@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
 // core components
@@ -11,6 +11,8 @@ import CardHeader from "components/Card/CardHeader.js";
 import CardAvatar from "components/Card/CardAvatar.js";
 import CardBody from "components/Card/CardBody.js";
 import CardFooter from "components/Card/CardFooter.js";
+import { GeneralContext } from "providers/GeneralContext";
+
 
 import { getItem } from "api/storage/storage";
 import { getEmployeeById } from "api/Core/Employe_Manage";
@@ -47,6 +49,8 @@ export default function UserProfile() {
   const [birth, setBirth] = useState()
   const [address, setAddress] = useState()
   const [email, setEmail] = useState()
+  const { setOpenToast, onToast } = useContext(GeneralContext);
+
 
   useEffect(() => {
     getDataUser()
@@ -79,7 +83,11 @@ export default function UserProfile() {
       nationalId: dataUser.nationalId,
       profile: dataUser.profile
     }
-    await updateEmployeeById(data)
+    let response = await updateEmployeeById(data)
+    if (response.data) {
+      setOpenToast(true)
+      onToast(response.data.message[0].message, "success")
+    }
   }
 
   return (
@@ -93,7 +101,7 @@ export default function UserProfile() {
               </CardHeader>
               <CardBody>
                 <GridContainer>
-                  <GridItem xs={12} sm={12} md={5}>
+                  <GridItem xs={12} sm={12} md={6}>
                     <CustomInput
                       rtlActive
                       labelText="نام"
@@ -106,7 +114,7 @@ export default function UserProfile() {
                     />
 
                   </GridItem>
-                  <GridItem xs={12} sm={12} md={3}>
+                  <GridItem xs={12} sm={12} md={6}>
                     <CustomInput
                       rtlActive
                       labelText="کد ملی"
@@ -120,7 +128,7 @@ export default function UserProfile() {
                       value={dataUser.nationalId}
                     />
                   </GridItem>
-                  <GridItem xs={12} sm={12} md={4}>
+                  <GridItem xs={12} sm={12} md={12}>
                     <CustomInput
                       rtlActive
                       labelText="ایمیل"
@@ -135,7 +143,7 @@ export default function UserProfile() {
                 </GridContainer>
 
                 <GridContainer>
-                  <GridItem xs={12} sm={12} md={4}>
+                  <GridItem xs={12} sm={12} md={6}>
                     <CustomInput
                       rtlActive
                       labelText="موبایل"
@@ -147,7 +155,7 @@ export default function UserProfile() {
                       onChange={(e) => { setPhone(e) }}
                     />
                   </GridItem>
-                  <GridItem xs={12} sm={12} md={4}>
+                  <GridItem xs={12} sm={12} md={6}>
                     <CustomInput
                       labelText="آدرس"
                       id="address"
@@ -160,7 +168,7 @@ export default function UserProfile() {
                     />
                   </GridItem>
 
-                  <GridItem xs={12} sm={12} md={4}>
+                  <GridItem xs={12} sm={12} md={12}>
                     <CustomInput
                       labelText="تاریخ تولد"
                       id="birth"

@@ -12,6 +12,7 @@ import Auth from "layouts/Authentication.js"
 import { getItem } from "api/storage/storage";
 import PopUpAction from "components/PopUp/PopUpAction";
 import { GeneralContext } from "providers/GeneralContext";
+import Toast from "components/Toast/Toast";
 
 
 const theme = createTheme({
@@ -27,12 +28,16 @@ export default function App() {
     const userId = getItem('id')
     const [confirm, setConfirm] = React.useState({});
     const [open, setOpen] = React.useState(false);
+    const [openToast, setOpenToast] = React.useState(false);
+    const [toast, setToast] = React.useState({});
 
     const onConfirmSetter = (
         msg,
         confirmCallback,
         rejectCallback,
     ) => setConfirm({ msg, confirmCallback, rejectCallback });
+
+    const onToast = (msgToast, varient) => setToast({ msgToast, varient })
 
     return (
         <GeneralContext.Provider value={{
@@ -42,11 +47,17 @@ export default function App() {
             confirmCallback: confirm.confirmCallback,
             rejectCallback: confirm.rejectCallback,
             onConfirmSetter,
+            msgToast: toast.msgToast,
+            openToast: openToast,
+            setOpenToast: setOpenToast,
+            onToast,
+            varient: toast.varient
         }} >
             <CacheProvider value={cacheRtl}>
                 <ThemeProvider theme={theme}>
                     <BrowserRouter>
                         <PopUpAction />
+                        <Toast />
                         <Switch>
                             {userId ?
                                 <Route path="/admin" component={Main} /> :

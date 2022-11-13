@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useContext } from "react";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
 // core components
@@ -9,14 +9,16 @@ import Card from "components/Card/Card.js";
 import CardHeader from "components/Card/CardHeader.js";
 import CardBody from "components/Card/CardBody.js";
 import RegularButton from "components/CustomButtons/Button";
+import { GeneralContext } from "providers/GeneralContext";
+import EditLEsson from "./EditLesson";
+import AddLesson from "./AddLesson";
+import CreateCourse from "views/CourseList/CreateCourse";
 
 import { getAllLesson } from "api/Core/Lesson";
 import { getAllCategory } from "api/Core/Lesson";
 import { removeLesson } from "api/Core/Lesson";
 import { getLessonById } from "api/Core/Lesson";
-import EditLEsson from "./EditLesson";
-import AddLesson from "./AddLesson";
-import CreateCourse from "views/CourseList/CreateCourse";
+
 
 const styles = {
     cardCategoryWhite: {
@@ -54,6 +56,7 @@ export default function LessonList() {
     const classes = useStyles();
     const [allLessons, setAllLessons] = useState([])
     const allCategories = useRef([])
+    const { setConfirmPopupOpen, onConfirmSetter, setOpenToast, onToast } = useContext(GeneralContext);
 
     const [currentPage_MainbarMyCourses, setCurrentPage_MainbarMyCourses] = useState(1);
 
@@ -103,7 +106,9 @@ export default function LessonList() {
     const removeLessons = async (id) => {
         let response = await removeLesson(id)
         if (response.data.result) {
-            let newLessons = allLessons.filter((item) => item.id != id)
+            let newLessons = allLessons.filter((item) => item.id != id);
+            setOpenToast(true)
+            onToast(response.data.message[0].message, "success")
             setAllLessons(newLessons)
         }
     }
@@ -153,7 +158,12 @@ export default function LessonList() {
                                     tableData={allLessons}
                                     currentPage={currentPage_MainbarMyCourses}
                                     rowsCount={5}
-                                    removeLessons={removeLessons}
+                                    removeLessons={(id) => {
+                                        onConfirmSetter('آیا برای حذف درس اطمینان دارید؟', () => {
+                                            removeLessons(id)
+                                        })
+                                        setConfirmPopupOpen(true)
+                                    }}
                                     editLessons={editLessons}
                                     addCourseToLesson={addCourseToLesson}
                                     lessons
@@ -185,6 +195,8 @@ export default function LessonList() {
                 <AddLesson
                     openAddLessonPopUp={openAddLesson}
                     AddSuccess={() => {
+                        setOpenToast(true)
+                        onToast("درس اضافه شد", "success")
                         getLessons()
                         setOpenAddLesson(false)
                     }}
@@ -198,6 +210,8 @@ export default function LessonList() {
                 <CreateCourse
                     openCreateCoursePopUp={openAddCourseInLesson}
                     CreateSuccess={() => {
+                        setOpenToast(true)
+                        onToast("دوره اضافه شد", "success")
                         getLessons()
                         setOpenAddCourseInLesson(false)
                     }}

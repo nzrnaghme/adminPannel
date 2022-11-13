@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 
 import { makeStyles } from "@material-ui/core/styles";
 import PropTypes from "prop-types";
@@ -14,11 +14,12 @@ import CardHeader from "components/Card/CardHeader.js";
 import CardBody from "components/Card/CardBody.js";
 import CustomSelectInput from "components/CustomInput/CustomeSelectInput";
 import { Avatar } from "@mui/material";
-
-import { getAllCategory } from "api/Core/Lesson";
+import CustomeAutoComplete from "components/CustomInput/CustomeAutoComplete";
+import { GeneralContext } from "providers/GeneralContext";
 
 import "./lesson.css"
-import CustomeAutoComplete from "components/CustomInput/CustomeAutoComplete";
+
+import { getAllCategory } from "api/Core/Lesson";
 import { removeCourseById } from "api/Core/Course";
 import { updateLesson } from "api/Core/Lesson";
 
@@ -66,7 +67,7 @@ export default function EditLEsson(props) {
         closePopUpEdit,
         dataLesson,
         courseByIdLesson } = props
-
+    const { setConfirmPopupOpen, onConfirmSetter } = useContext(GeneralContext);
     const [photoLesson, setPhotoLesson] = useState()
     const [nameLesson, setNameLesson] = useState();
     const [categoryLesson, setCategoryLesson] = useState();
@@ -228,7 +229,12 @@ export default function EditLEsson(props) {
                                     tableData={allCoursesLesson}
                                     currentPage={currentPage_MainbarMyCourses}
                                     rowsCount={5}
-                                    removeCourse={removeCourse}
+                                    removeCourse={(id) => {
+                                        onConfirmSetter("آیا برای حذف دوره اطمینان دارید؟", () => {
+                                            removeCourse(id)
+                                        })
+                                        setConfirmPopupOpen(true)
+                                    }}
                                     coursesFromLesson
                                 />}
                             <div className="btnEditCourse">

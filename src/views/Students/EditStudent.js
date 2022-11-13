@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 
 import { makeStyles } from "@material-ui/core/styles";
 import PropTypes from "prop-types";
@@ -13,6 +13,7 @@ import Card from "components/Card/Card.js";
 import CardHeader from "components/Card/CardHeader.js";
 import CardBody from "components/Card/CardBody.js";
 import { updateStudetInform } from "api/Core/Student_Manage";
+import { GeneralContext } from "providers/GeneralContext";
 import "./students.css"
 
 const styles = (theme) => ({
@@ -58,6 +59,7 @@ export default function EditStudent(props) {
         EditSuccess,
         closePopUpEdit,
         dataStudent } = props
+    const { setOpenToast, onToast } = useContext(GeneralContext);
 
     const [name, setName] = useState()
     const [phone, setPhone] = useState()
@@ -88,6 +90,8 @@ export default function EditStudent(props) {
         }
         let response = await updateStudetInform(data)
         if (response.data.result) {
+            setOpenToast(true)
+            onToast("کاربر آپدیت شد","success")
             EditSuccess();
         }
     }

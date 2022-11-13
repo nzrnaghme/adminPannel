@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
 // core components
@@ -15,6 +15,7 @@ import { activeEmployeeManage } from "api/Core/Employe_Manage";
 import { deActiveEmployeetManage } from "api/Core/Employe_Manage";
 import { getEmployeeById } from "api/Core/Employe_Manage";
 import EditTeacher from "./EditTeacher";
+import { GeneralContext } from "providers/GeneralContext";
 import { removeEmployee } from "api/Core/Employe_Manage";
 
 const styles = {
@@ -54,6 +55,8 @@ export default function Teachers() {
   const [allTeachers, setAllTeachers] = useState([])
   const [currentPage_MainbarMyCourses, setCurrentPage_MainbarMyCourses] = useState(1);
   const [openInsertTeacher, setOpenInsertTeacher] = useState(false)
+  const { setConfirmPopupOpen, onConfirmSetter, setOpenToast, onToast } = useContext(GeneralContext);
+
 
   const [openUpdateTeacher, setOpenUpdateTeacher] = useState(false)
   const [dataTeacher, setDataTeacher] = useState()
@@ -85,6 +88,8 @@ export default function Teachers() {
     let response = await removeEmployee(id)
     if (response.data.result) {
       let newTeacher = allTeachers.filter((item) => item.id != id)
+      setOpenToast(true)
+      onToast(response.data.message[0].message, "success")
       setAllTeachers(newTeacher);
     }
   }
@@ -95,7 +100,6 @@ export default function Teachers() {
 
   const getDataTeacher = async (id) => {
     let response = await getEmployeeById(id)
-    console.log(response, "11");
     if (response.data.result) {
       setDataTeacher(response.data.result);
       setOpenUpdateTeacher(true);
@@ -110,12 +114,21 @@ export default function Teachers() {
 
   const activeEmployee = async (id) => {
     let response = await activeEmployeeManage(id)
-    if (response.data.result) getTeachers()
+    if (response.data.result) {
+      setOpenToast(true)
+      onToast("استاد فعال شد", "success")
+      getTeachers()
+    }
+
   }
 
   const deActiveEmployee = async (id) => {
     let response = await deActiveEmployeetManage(id)
-    if (response.data.result) getTeachers()
+    if (response.data.result) {
+      setOpenToast(true)
+      onToast("استاد غیرفعال شد", "success")
+      getTeachers()
+    }
   }
 
 
@@ -145,7 +158,12 @@ export default function Teachers() {
                   rowsCount={5}
                   editTeacher={editTeacher}
                   changeActivate={changeActivate}
-                  removeTeacher={removeTeacher}
+                  removeTeacher={(id) => {
+                    onConfirmSetter('آیا برای حذف استاد مطمئن هستید؟', () => {
+                      removeTeacher(id)
+                    })
+                    setConfirmPopupOpen(true)
+                  }}
                   teacher
                 />}
             </CardBody>
@@ -160,6 +178,8 @@ export default function Teachers() {
           openPopUpInsertTecher={openInsertTeacher}
           closePopUp={() => { setOpenInsertTeacher(false) }}
           InsertSuccess={() => {
+            setOpenToast(true)
+            onToast("استاد اضافه شد", "success")
             getTeachers()
             setOpenInsertTeacher(false)
           }} />
@@ -170,6 +190,8 @@ export default function Teachers() {
           dataTeacher={dataTeacher}
           closePopUpEdit={() => { setOpenUpdateTeacher(false) }}
           EditSuccess={() => {
+            setOpenToast(true)
+            onToast("استاد بروزرسانی شد", "success")
             getTeachers()
             setOpenUpdateTeacher(false)
           }} />}

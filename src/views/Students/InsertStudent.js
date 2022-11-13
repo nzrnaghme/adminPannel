@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 
 import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/core/styles";
@@ -14,6 +14,8 @@ import CustomInput from "components/CustomInput/CustomInput.js";
 import Avatar from '@material-ui/core/Avatar';
 import PopUpCustome from "components/PopUp/PopUp";
 import RegularButton from "components/CustomButtons/Button";
+import { GeneralContext } from "providers/GeneralContext";
+
 // @material-ui/icons
 import RecentActorsIcon from '@material-ui/icons/RecentActors';
 import CalendarToday from '@material-ui/icons/CalendarToday';
@@ -65,7 +67,8 @@ export default function InsertStudent(props) {
         openPopUpInsertStudent,
         closePopUp
     } = props;
-    // const [openInsertStudent, setOpenInsertStudent] = useState(openPopUpInsertStudent)
+    const { setOpenToast, onToast } = useContext(GeneralContext);
+
     const [nameNew, setNameNew] = useState()
     const [phoneNew, setPhoneNew] = useState()
     const [birthNew, setBirthNew] = useState()
@@ -91,6 +94,8 @@ export default function InsertStudent(props) {
             setPhoneNew('');
             setNationalCodeNew('');
             setBirthNew('')
+            setOpenToast(true)
+            onToast("دانشجو اضافه شد", "success")
             InsertSuccess()
         }
     }

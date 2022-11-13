@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 
 import { makeStyles } from "@material-ui/core/styles";
 import PropTypes from "prop-types";
@@ -13,6 +13,8 @@ import CardHeader from "components/Card/CardHeader.js";
 import CardBody from "components/Card/CardBody.js";
 import { getCourseById } from "api/Core/Course";
 import { removeStudentToCourse } from "api/Core/Course";
+import { GeneralContext } from "providers/GeneralContext";
+
 
 const styles = (theme) => ({
     cardCategoryWhite: {
@@ -53,6 +55,9 @@ export default function ListOfStudents(props) {
     const classes = useStyles();
     const [currentPage_MainbarCurrentStudent, setCurrentPage_MainbarCurrentStudent] = useState(1);
     const [currentStudents, setCurrentStudents] = useState()
+
+    const { setConfirmPopupOpen, onConfirmSetter, setOpenToast, onToast } = useContext(GeneralContext);
+
     const {
         openListStudentPopUp,
         RemoveSuccess,
@@ -72,12 +77,14 @@ export default function ListOfStudents(props) {
     }
 
     const removeStudentInCourse = async (id) => {
-        const data={
-            userId:id,
-            courseId:userIdCourse
+        const data = {
+            userId: id,
+            courseId: userIdCourse
         }
         let response = await removeStudentToCourse(data);
         if (response.data.result) {
+            setOpenToast(true)
+            onToast(response.data.message[0].message, "success")
             getCurrentStudents(userIdCourse)
         }
     }
@@ -101,8 +108,13 @@ export default function ListOfStudents(props) {
                                     tableData={currentStudents}
                                     currentPage={currentPage_MainbarCurrentStudent}
                                     rowsCount={5}
-                                    removeStudent={removeStudentInCourse}
+                                    removeStudent={(id) => {
+                                        onConfirmSetter('آیا برای حذف دانشجو مطمئن هستید؟', () => {
+                                            removeStudentInCourse(id)
+                                        })
+                                        setConfirmPopupOpen(true)
 
+                                    }}
                                     currentStudent
                                 />}
                             {currentStudents && currentStudents.length === 0 &&

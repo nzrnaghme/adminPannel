@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
 // core components
@@ -17,6 +17,8 @@ import EditCourse from "./EditCourse";
 import ListOfStudents from "./ListOfStudent";
 import CreateCourse from "./CreateCourse";
 import AddStudentToCourse from "./AddStudentToCourse";
+import { GeneralContext } from "providers/GeneralContext";
+
 
 const styles = {
   cardCategoryWhite: {
@@ -53,6 +55,8 @@ const useStyles = makeStyles(styles);
 export default function CourseList() {
   const classes = useStyles();
   const [allCourse, setAllCourse] = useState([])
+  const { setConfirmPopupOpen, onConfirmSetter, setOpenToast, onToast } = useContext(GeneralContext);
+
 
   const [currentPage_MainbarMyCourses, setCurrentPage_MainbarMyCourses] = useState(1);
   const [courseDetail, setCourseDetail] = useState()
@@ -94,6 +98,8 @@ export default function CourseList() {
     let response = await removeCourseById(id)
     if (response.data.result) {
       let newCourse = allCourse.filter((item) => item.id != id);
+      setOpenToast(true)
+      onToast(response.data.message[0].message, "success")
       setAllCourse(newCourse)
     }
   }
@@ -142,7 +148,12 @@ export default function CourseList() {
                   tableData={allCourse}
                   currentPage={currentPage_MainbarMyCourses}
                   rowsCount={5}
-                  removeCourse={removeCourse}
+                  removeCourse={(id) => {
+                    onConfirmSetter('آیا برای حذف دوره مطمئن هستید؟', () => {
+                      removeCourse(id)
+                    })
+                    setConfirmPopupOpen(true)
+                  }}
                   editCourse={editCourse}
                   showStudents={showStudents}
                   addStudentToCourse={addStudentToCourse}
@@ -159,6 +170,8 @@ export default function CourseList() {
           openEditCoursePopUp={openPopUpEditCourse}
           closePopUpEdit={() => { setOpenPopUpEditCourse(false) }}
           EditSuccess={() => {
+            setOpenToast(true)
+            onToast("دوره بروزرسانی شد", "success")
             getCourses()
             setOpenPopUpEditCourse(false)
           }} />}
@@ -178,6 +191,8 @@ export default function CourseList() {
         <CreateCourse
           openCreateCoursePopUp={openPopUpCreateCourse}
           CreateSuccess={() => {
+            setOpenToast(true)
+            onToast("دوره اضافه شد", "success")
             getCourses();
             setOpenPopUpCreateCourse(false)
           }}
@@ -193,6 +208,8 @@ export default function CourseList() {
             setOpenPopUpaddStudent(false)
           }}
           AddSuccess={() => {
+            setOpenToast(true)
+            onToast("دانشجو به دوره اضافه شد", "success")
             getCourses();
             setOpenPopUpaddStudent(false)
           }}

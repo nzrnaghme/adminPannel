@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 // import React from "react"
 import { makeStyles } from "@material-ui/core/styles";
 import PropTypes from "prop-types";
@@ -13,6 +13,8 @@ import CardBody from "components/Card/CardBody.js";
 import { getStudentById } from "api/Core/Student_Manage";
 import "./students.css"
 import { removeStudentToCourse } from "api/Core/Course";
+import { GeneralContext } from "providers/GeneralContext";
+
 
 const styles = (theme) => ({
     cardCategoryWhite: {
@@ -51,6 +53,7 @@ const styles = (theme) => ({
 const useStyles = makeStyles(styles);
 
 export default function AllCoursesStudent(props) {
+    const { setConfirmPopupOpen, onConfirmSetter } = useContext(GeneralContext);
     const classes = useStyles();
     const [currentPage_MainbarMyCourses, setCurrentPage_MainbarMyCourses] = useState(1);
     const [coursesStudent, setCoursesStudent] = useState()
@@ -104,7 +107,12 @@ export default function AllCoursesStudent(props) {
                                     tableData={coursesStudent}
                                     currentPage={currentPage_MainbarMyCourses}
                                     rowsCount={5}
-                                    removeCourseFromStudent={removeCourseFromStudent}
+                                    removeCourseFromStudent={(id) => {
+                                        onConfirmSetter('آیا برای حذف دوره مطمئن هستید؟', () => {
+                                            removeCourseFromStudent(id)
+                                        })
+                                        setConfirmPopupOpen(true)
+                                    }}
                                     myCourses
                                 />}
                             {coursesStudent && coursesStudent.length === 0 &&

@@ -62,7 +62,7 @@ export default function Students() {
     const classes = useStyles();
     const [allStudents, setAllStudents] = useState([])
     const [currentPage_MainbarMyCourses, setCurrentPage_MainbarMyCourses] = useState(1);
-    const { setConfirmPopupOpen, onConfirmSetter } = useContext(GeneralContext);
+    const { setConfirmPopupOpen, onConfirmSetter, setOpenToast, onToast } = useContext(GeneralContext);
 
     const [openEditStudent, setOpenEditStudent] = useState(false)
     const [dataStudent, setDataStudent] = useState()
@@ -99,6 +99,8 @@ export default function Students() {
             if (response.data.success) {
                 let newStudent = allStudents.filter((item) => item.id != id);
                 setAllStudents(newStudent)
+                setOpenToast(true)
+                onToast(response.data.message[0].message, "success")
             }
 
         }, () => { })
