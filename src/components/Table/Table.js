@@ -11,11 +11,13 @@ import TableCell from "@material-ui/core/TableCell";
 import Tooltip from "@material-ui/core/Tooltip";
 import IconButton from "@material-ui/core/IconButton";
 import MenuBookIcon from '@material-ui/icons/MenuBook';
+import DoneAllIcon from '@material-ui/icons/DoneAll';
 import { formatDate } from "constants/usefulFunc";
 // core components
 import styles from "assets/jss/material-dashboard-react/components/tableStyle.js";
 import Edit from "@material-ui/icons/Edit";
 import Close from "@material-ui/icons/Close";
+import TextsmsIcon from '@material-ui/icons/Textsms';
 import PersonIcon from '@material-ui/icons/Person';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import GroupAddIcon from '@material-ui/icons/GroupAdd';
@@ -56,7 +58,12 @@ export default function CustomTable(props) {
     currentStudent,
     AllStudentInsertCourse,
     coursesFromLesson,
-    addCourseToLesson } = props;
+    addCourseToLesson,
+    allComment,
+    answerToComment,
+    changeVerified,
+    verified,
+    showAllData } = props;
 
   return (
     <div className={classes.tableResponsive}>
@@ -176,7 +183,6 @@ export default function CustomTable(props) {
           )) : ''}
           {teacher && tableData ? tableData.slice((currentPage * rowsCount) - rowsCount, currentPage * rowsCount).map((row, index) => (
             <TableRow key={index} className={classes.tableBodyRow}>
-              {/* <TableCell align="left">{((currentPage - 1) * 5) + (index + 1) < 10 ? `0${((currentPage - 1) * 5) + (index + 1)}` : ((currentPage - 1) * 5) + (index + 1)}</TableCell> */}
               <TableCell className={classes.tableCell}>
                 <Avatar src={row.profile} className={classes.large} />
               </TableCell>
@@ -236,7 +242,6 @@ export default function CustomTable(props) {
           )) : ''}
           {student && tableData ? tableData.slice((currentPage * rowsCount) - rowsCount, currentPage * rowsCount).map((row, index) => (
             <TableRow key={index} className={classes.tableBodyRow}>
-              {/* <TableCell align="left">{((currentPage - 1) * 5) + (index + 1) < 10 ? `0${((currentPage - 1) * 5) + (index + 1)}` : ((currentPage - 1) * 5) + (index + 1)}</TableCell> */}
               <TableCell className={classes.tableCell}>
                 <Avatar src={row.profile} className={classes.large} />
               </TableCell>
@@ -317,7 +322,6 @@ export default function CustomTable(props) {
           )) : ''}
           {lessons && tableData ? tableData.slice((currentPage * rowsCount) - rowsCount, currentPage * rowsCount).map((row, index) => (
             <TableRow key={index} className={classes.tableBodyRow}>
-              {/* <TableCell align="left">{((currentPage - 1) * 5) + (index + 1) < 10 ? `0${((currentPage - 1) * 5) + (index + 1)}` : ((currentPage - 1) * 5) + (index + 1)}</TableCell> */}
               <TableCell className={classes.tableCell}>
                 <Avatar src={row.profile} className={classes.large} />
               </TableCell>
@@ -536,6 +540,68 @@ export default function CustomTable(props) {
               </TableCell>
             </TableRow>
           )) : ''}
+
+          {allComment && tableData ? tableData.slice((currentPage * rowsCount) - rowsCount, currentPage * rowsCount).map((row, index) => (
+            <TableRow key={index} className={classes.tableBodyRow} style={{ cursor: "pointer" }}>
+              <TableCell className={classes.tableCell} onClick={() => { showAllData(row._id) }}>{row.username}</TableCell>
+              <TableCell className={classes.tableCell} onClick={() => { showAllData(row._id) }}>{row.email}</TableCell>
+              <TableCell className={classes.tableCell} onClick={() => { showAllData(row._id) }}>{formatDate(row.createDate)}</TableCell>
+              <TableCell className={classes.tableCell} onClick={() => { showAllData(row._id) }}>{row.comment.substring(0, 15) + "..."}</TableCell>
+              {row.answer && !verified && <TableCell className={classes.tableCell}>{row.answer.substring(0, 15) + "..."}</TableCell>}
+              <TableCell className={classes.tableCell}>
+                <div onClick={(e) => {
+                  e.preventDefault();
+                  changeVerified(row._id, row.verified)
+                }} className={row.verified === true ? classes.ActiveTeacher : classes.deActiveTeacher}>
+                  <p style={{ color: "white", paddingTop: 3 }}>{row.verified === true ? "تایید شده" : "تایید نشده"}</p>
+                </div>
+              </TableCell>
+              {!row.answer && row.verified && <TableCell
+                className={classes.tableCell}>
+                <Tooltip
+                  id="tooltip-top-start"
+                  title="پاسخ به کامنت"
+                  placement="top"
+                  classes={{ tooltip: classes.tooltip }}
+                >
+                  <IconButton
+                    aria-label="Close"
+                    className={classes.tableActionButton}
+                    onClick={() => {
+                      answerToComment(row._id)
+                    }}
+                  >
+                    <TextsmsIcon
+                      className={
+                        classes.tableActionButtonIcon + " " + classes.Insert
+                      }
+                    />
+                  </IconButton>
+                </Tooltip>
+              </TableCell>}
+              {row.answer && row.verified && <TableCell
+                className={classes.tableCell}>
+                <Tooltip
+                  id="tooltip-top-start"
+                  title="کامنت تایید شده و جواب داده شده"
+                  placement="top"
+                  classes={{ tooltip: classes.tooltip }}
+                >
+                  <IconButton
+                    aria-label="Close"
+                    className={classes.tableActionButton}
+                    onClick={() => { showAllData(row._id) }}
+                  >
+                    <DoneAllIcon
+                      className={
+                        classes.tableActionButtonIcon + " " + classes.Add
+                      }
+                    />
+                  </IconButton>
+                </Tooltip>
+              </TableCell>}
+            </TableRow>
+          )) : ''}
         </TableBody>
       </Table>
     </div>
@@ -557,7 +623,7 @@ CustomTable.propTypes = {
     "gray",
   ]),
   tableHead: PropTypes.arrayOf(PropTypes.string),
-  tableData: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.string)),
+  tableData: PropTypes.any,
   currentPage: PropTypes.number,
   rowsCount: PropTypes.number,
 
@@ -589,5 +655,11 @@ CustomTable.propTypes = {
 
   AllStudentInsertCourse: PropTypes.bool,
 
-  coursesFromLesson: PropTypes.bool
+  coursesFromLesson: PropTypes.bool,
+
+  allComment: PropTypes.bool,
+  answerToComment: PropTypes.func,
+  changeVerified: PropTypes.func,
+  verified: PropTypes.bool,
+  showAllData: PropTypes.func
 };

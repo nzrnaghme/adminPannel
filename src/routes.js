@@ -14,6 +14,7 @@ import Maps from "views/Maps/Maps.js";
 import NotificationsPage from "views/Notifications/Notifications.js";
 import DashboardPage from "views/Dashboard/Dashboard";
 import LessonList from "views/Lessons/Lessons";
+import Comments from "views/Comments/Comments";
 
 const dashboardRoutes = [
   {
@@ -56,6 +57,13 @@ const dashboardRoutes = [
     name: "درس ها",
     icon: AssignmentIcon,
     component: LessonList,
+    layout: "/admin",
+  },
+  {
+    path: "/comments",
+    name: "کامنت ها",
+    icon: Notifications,
+    component: Comments,
     layout: "/admin",
   },
   {

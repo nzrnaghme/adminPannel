@@ -9,14 +9,15 @@ import Card from "components/Card/Card.js";
 import CardHeader from "components/Card/CardHeader.js";
 import CardBody from "components/Card/CardBody.js";
 import RegularButton from "components/CustomButtons/Button";
-import { getAllTeachers } from "api/Core/Employe_Manage";
 import InsertTeacher from "./InsertTeacher";
+import EditTeacher from "./EditTeacher";
+
 import { activeEmployeeManage } from "api/Core/Employe_Manage";
 import { deActiveEmployeetManage } from "api/Core/Employe_Manage";
 import { getEmployeeById } from "api/Core/Employe_Manage";
-import EditTeacher from "./EditTeacher";
 import { GeneralContext } from "providers/GeneralContext";
 import { removeEmployee } from "api/Core/Employe_Manage";
+import { getAllTeachers } from "api/Core/Employe_Manage";
 
 const styles = {
   cardCategoryWhite: {
@@ -56,7 +57,6 @@ export default function Teachers() {
   const [currentPage_MainbarMyCourses, setCurrentPage_MainbarMyCourses] = useState(1);
   const [openInsertTeacher, setOpenInsertTeacher] = useState(false)
   const { setConfirmPopupOpen, onConfirmSetter, setOpenToast, onToast } = useContext(GeneralContext);
-
 
   const [openUpdateTeacher, setOpenUpdateTeacher] = useState(false)
   const [dataTeacher, setDataTeacher] = useState()

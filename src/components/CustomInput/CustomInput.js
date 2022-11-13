@@ -31,7 +31,8 @@ export default function CustomInput(props) {
     mask,
     maskChar,
     multiline,
-    rows
+    rows,
+    disabled
   } = props;
 
   const labelClasses = classNames({
@@ -78,7 +79,7 @@ export default function CustomInput(props) {
           disabled: classes.disabled,
           underline: underlineClasses,
         }}
-
+        disabled={disabled}
         id={id}
         {...inputProps}
         inputProps={newInputProps}
@@ -113,5 +114,6 @@ CustomInput.propTypes = {
   maskChar: PropTypes.string,
   mask: PropTypes.string,
   multiline: PropTypes.bool,
-  rows: PropTypes.number
+  rows: PropTypes.number,
+  disabled:PropTypes.bool
 };

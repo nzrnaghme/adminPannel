@@ -1,0 +1,69 @@
+.bodyShowDataComment div .makeStyles-grid-100 {
+    margin: 1px -15px !important;
+}
+
+.bodyShowDataComment .MuiFormLabel-root {
+    color: black !important;
+}
+
+.bodyShowDataComment div .makeStyles-grid-99 {
+    margin: 3px -15px !important;
+}
+
+.bodyShowDataComment div .MuiGrid-root .MuiGrid-root .MuiFormControl-fullWidth {
+    width: 92%;
+}
+
+.popUpShowDataComment .MuiDialog-container .MuiPaper-root {
+    width: 700px;
+}
+
+
+
+/* Answer Comment */
+
+.popUpSetAnswerComment .MuiDialog-container .MuiPaper-root {
+    width: 700px;
+}
+
+.bodyAnswerComment div .makeStyles-grid-99 {
+    margin: 3px -15px !important;
+}
+
+.bodyAnswerComment {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+.bodyAnswerComment .MuiFormLabel-root {
+    color: black !important;
+}
+
+
+
+@media screen and (max-width:749px) {
+    .bodyShowDataComment div .MuiGrid-root .MuiGrid-root .MuiFormControl-fullWidth {
+        width: 100%;
+    }
+
+    .popUpShowDataComment .MuiDialog-container .MuiPaper-root .MuiDialogContent-root {
+        overflow-y: auto;
+    }
+
+    .bodyShowDataComment {
+        display: flex;
+        flex-direction: column-reverse;
+    }
+
+    .bodyShowDataComment div .makeStyles-grid-99 {
+        margin: 3px -15px !important;
+    }
+
+
+
+    /* answer comment */
+    .popUpSetAnswerComment .MuiDialog-container .MuiPaper-root .MuiDialogContent-root {
+        overflow-y: auto;
+    }
+}

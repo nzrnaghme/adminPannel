@@ -20,6 +20,7 @@ import Icons from "views/Icons/Icons";
 import Students from "views/Students/Students"
 import Notifications from "views/Notifications/Notifications";
 import LessonList from "views/Lessons/Lessons";
+import Comments from "views/Comments/Comments";
 let ps;
 
 const useStyles = makeStyles(styles);
@@ -94,6 +95,7 @@ export default function Main({ ...rest }) {
               <Route path={"/admin/icons"} component={Icons} />
               <Route path={"/admin/students"} component={Students} />
               <Route path={"/admin/lessons"} component={LessonList} />
+              <Route path={"/admin/comments"} component={Comments} />
               <Route path={"/admin/notifications"} component={Notifications} />
               <Redirect to="/admin/dashboard" from="/" />
             </Switch>
