@@ -7,9 +7,9 @@ import Tabs from '@material-ui/core/Tabs';
 // import TabPanel from '@material-ui/lab/TabPanel';
 import Tab from '@material-ui/core/Tab';
 import ForumIcon from '@material-ui/icons/Forum';
-import DoneAllIcon from '@material-ui/icons/DoneAll';
 import MessageIcon from '@material-ui/icons/Message';
 import FeedbackIcon from '@material-ui/icons/Feedback';
+import DoneRoundedIcon from '@material-ui/icons/DoneRounded';
 
 import { GeneralContext } from "providers/GeneralContext";
 import Table from "components/Table/Table.js";
@@ -134,7 +134,7 @@ export default function Comments() {
                                     aria-label="icon label tabs example"
                                 >
                                     <Tab icon={<MessageIcon />} value={1} label="تمام کامنت‌ها" />
-                                    <Tab icon={<DoneAllIcon />} value={2} label="تایید شده" />
+                                    <Tab icon={<DoneRoundedIcon />} value={2} label="تایید شده" />
                                     <Tab icon={<ForumIcon />} value={3} label="پاسخ داده‌شده" />
                                     <Tab icon={<FeedbackIcon />} value={4} label="در انتظار تایید" />
                                 </Tabs>

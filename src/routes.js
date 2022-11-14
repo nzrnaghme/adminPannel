@@ -5,16 +5,17 @@ import Notifications from "@material-ui/icons/Notifications";
 import LocalLibraryIcon from '@material-ui/icons/LocalLibrary';
 import PeopleIcon from '@material-ui/icons/People';
 import AssignmentIcon from '@material-ui/icons/Assignment';
+import PublicRoundedIcon from '@material-ui/icons/PublicRounded';
 // core components/views for Admin layout
 import UserProfile from "views/UserProfile/UserProfile.js";
 import CourseList from "views/CourseList/CourseList.js";
 import Teachers from "views/Teachers/Teachers.js";
 import Icons from "views/Icons/Icons.js";
 import Maps from "views/Maps/Maps.js";
-import NotificationsPage from "views/Notifications/Notifications.js";
 import DashboardPage from "views/Dashboard/Dashboard";
 import LessonList from "views/Lessons/Lessons";
 import Comments from "views/Comments/Comments";
+import News from "views/News/News";
 
 const dashboardRoutes = [
   {
@@ -66,6 +67,14 @@ const dashboardRoutes = [
     component: Comments,
     layout: "/admin",
   },
+
+  {
+    path: "/news",
+    name: "مقاله و خبر",
+    icon: PublicRoundedIcon,
+    component: News,
+    layout: "/admin",
+  },
   {
     path: "/maps",
     name: "نقشه",
@@ -73,13 +82,7 @@ const dashboardRoutes = [
     component: Maps,
     layout: "/admin",
   },
-  {
-    path: "/notifications",
-    name: "پیام ها",
-    icon: Notifications,
-    component: NotificationsPage,
-    layout: "/admin",
-  },
+
   
 ];
 

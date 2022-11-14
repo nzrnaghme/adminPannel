@@ -9,18 +9,19 @@ import Table from "components/Table/Table.js";
 import Card from "components/Card/Card.js";
 import CardHeader from "components/Card/CardHeader.js";
 import CardBody from "components/Card/CardBody.js";
-
-import { getAllStudet } from "api/Core/Student_Manage";
 import { GeneralContext } from "providers/GeneralContext";
-import { deleteStudentById } from "api/Core/Student_Manage";
-import { getStudentById } from "api/Core/Student_Manage";
 import RegularButton from "components/CustomButtons/Button";
-import { deActiveStudentManage } from "api/Core/Student_Manage";
-import { activeStudentManage } from "api/Core/Student_Manage";
+import AllCoursesStudent from "./AllCoursesStudent";
 import InsertStudent from "./InsertStudent"
 import EditStudent from "./EditStudent";
-import "./students.css"
-import AllCoursesStudent from "./AllCoursesStudent";
+
+import "./students.css";
+
+import { getAllStudet } from "api/Core/Student_Manage";
+import { deleteStudentById } from "api/Core/Student_Manage";
+import { getStudentById } from "api/Core/Student_Manage";
+import { deActiveStudentManage } from "api/Core/Student_Manage";
+import { activeStudentManage } from "api/Core/Student_Manage";
 
 const styles = (theme) => ({
     cardCategoryWhite: {
@@ -121,12 +122,20 @@ export default function Students() {
 
     const deActiveStudent = async (id) => {
         let response = await deActiveStudentManage(id)
-        if (response.data.result) getStudents();
+        if (response.data.result) {
+            onToast('وضعیت دانشجو آپدیت شد', "success")
+            setOpenToast(true)
+            getStudents();
+        }
     }
 
     const activeStudent = async (id) => {
         let response = await activeStudentManage(id)
-        if (response.data.result) getStudents()
+        if (response.data.result) {
+            onToast('وضعیت دانشجو آپدیت شد', "success")
+            setOpenToast(true)
+            getStudents()
+        }
     }
 
     const editCourseStudent = (id) => {

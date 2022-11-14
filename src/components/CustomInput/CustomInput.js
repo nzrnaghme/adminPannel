@@ -55,7 +55,7 @@ export default function CustomInput(props) {
     minLength:
       inputProps && inputProps.minLength ? inputProps.minLength : undefined,
     step: inputProps && inputProps.step ? inputProps.step : undefined,
-
+    require: inputProps && inputProps.require ? inputProps.require : false
   };
   return (
     <FormControl
@@ -115,5 +115,5 @@ CustomInput.propTypes = {
   mask: PropTypes.string,
   multiline: PropTypes.bool,
   rows: PropTypes.number,
-  disabled:PropTypes.bool
+  disabled: PropTypes.bool
 };

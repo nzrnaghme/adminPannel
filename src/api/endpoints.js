@@ -49,8 +49,8 @@ export const GET_TOP_ARTICLES = `${API}news/topArticles`
 export const GETALL_NEWS_BY_ID = payload => `${API}news/${payload}`
 export const GET_CATEGORY = `${API}news/category`
 export const ADD_NEWS = `${API}news`
-export const UPDATE_NEWS_BY_ID = `${API}news`
-export const DELETE_NEWS = `${API}news`
+export const UPDATE_NEWS_BY_ID = payload => `${API}news/${payload}`
+export const DELETE_NEWS = payload => `${API}news/${payload}`
 
 //contact us
 export const CONTACT_US = `${API}contactUs`

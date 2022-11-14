@@ -63,7 +63,10 @@ export default function CustomTable(props) {
     answerToComment,
     changeVerified,
     verified,
-    showAllData } = props;
+    showAllData,
+    removeNews,
+    allNewsShow,
+    editNews } = props;
 
   return (
     <div className={classes.tableResponsive}>
@@ -602,6 +605,61 @@ export default function CustomTable(props) {
               </TableCell>}
             </TableRow>
           )) : ''}
+
+          {allNewsShow && tableData ? tableData.slice((currentPage * rowsCount) - rowsCount, currentPage * rowsCount).map((row, index) => (
+            <TableRow key={index} className={classes.tableBodyRow}>
+              <TableCell className={classes.tableCell}>
+                <Avatar src={row.image} className={classes.large} />
+              </TableCell>
+              <TableCell className={classes.tableCell}>{row.title.substring(0, 15) + '...'}</TableCell>
+              <TableCell className={classes.tableCell}>{row.text.substring(0, 15) + '...'}</TableCell>
+              <TableCell className={classes.tableCell}>{row.category === "news" ? "اخبار" : "مقاله"}</TableCell>
+              <TableCell
+                className={classes.tableCell}>
+
+                <Tooltip
+                  id="tooltip-top"
+                  title="ویرایش"
+                  placement="top"
+                  classes={{ tooltip: classes.tooltip }}
+                >
+                  <IconButton
+                    aria-label="Edit"
+                    className={classes.tableActionButton}
+                    onClick={() => {
+                      editNews(row._id)
+                    }}
+                  >
+                    <Edit
+                      className={
+                        classes.tableActionButtonIcon + " " + classes.edit
+                      }
+                    />
+                  </IconButton>
+                </Tooltip>
+                <Tooltip
+                  id="tooltip-top-start"
+                  title="حذف"
+                  placement="top"
+                  classes={{ tooltip: classes.tooltip }}
+                >
+                  <IconButton
+                    aria-label="Close"
+                    className={classes.tableActionButton}
+                    onClick={() => {
+                      removeNews(row._id)
+                    }}
+                  >
+                    <Close
+                      className={
+                        classes.tableActionButtonIcon + " " + classes.close
+                      }
+                    />
+                  </IconButton>
+                </Tooltip>
+              </TableCell>
+            </TableRow>
+          )) : ''}
         </TableBody>
       </Table>
     </div>
@@ -661,5 +719,9 @@ CustomTable.propTypes = {
   answerToComment: PropTypes.func,
   changeVerified: PropTypes.func,
   verified: PropTypes.bool,
-  showAllData: PropTypes.func
+  showAllData: PropTypes.func,
+
+  removeNews:PropTypes.func,
+  editNews:PropTypes.func,
+  allNewsShow:PropTypes.bool
 };
