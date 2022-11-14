@@ -21,6 +21,7 @@ import Students from "views/Students/Students"
 import LessonList from "views/Lessons/Lessons";
 import Comments from "views/Comments/Comments";
 import News from "views/News/News";
+import Planning from "views/Planning/Planning"
 let ps;
 
 const useStyles = makeStyles(styles);
@@ -97,6 +98,7 @@ export default function Main({ ...rest }) {
               <Route path={"/admin/lessons"} component={LessonList} />
               <Route path={"/admin/comments"} component={Comments} />
               <Route path={"/admin/news"} component={News} />
+              <Route path={"/admin/planning"} component={Planning} />
               <Redirect to="/admin/dashboard" from="/" />
             </Switch>
           </div>

@@ -11,7 +11,7 @@ import UserProfile from "views/UserProfile/UserProfile.js";
 import CourseList from "views/CourseList/CourseList.js";
 import Teachers from "views/Teachers/Teachers.js";
 import Icons from "views/Icons/Icons.js";
-import Maps from "views/Maps/Maps.js";
+import Planning from "views/Planning/Planning.js";
 import DashboardPage from "views/Dashboard/Dashboard";
 import LessonList from "views/Lessons/Lessons";
 import Comments from "views/Comments/Comments";
@@ -76,10 +76,10 @@ const dashboardRoutes = [
     layout: "/admin",
   },
   {
-    path: "/maps",
-    name: "نقشه",
+    path: "/planning",
+    name: "برنامه روزانه",
     icon: LocationOn,
-    component: Maps,
+    component: Planning,
     layout: "/admin",
   },
 
