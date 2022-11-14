@@ -1,8 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef, useContext } from "react";
 
 import { makeStyles } from "@material-ui/core/styles";
 import PropTypes from "prop-types";
+import axios from "axios";
 
+import { GeneralContext } from "providers/GeneralContext";
 import RegularButton from "components/CustomButtons/Button";
 import PopUpCustome from "components/PopUp/PopUp";
 import CustomInput from "components/CustomInput/CustomInput.js";
@@ -14,9 +16,11 @@ import CardBody from "components/Card/CardBody.js";
 import CustomeAutoComplete from "components/CustomInput/CustomeAutoComplete";
 import CustomSelectInput from "components/CustomInput/CustomeSelectInput";
 import photo from "assets/img/intro.png"
-import { Avatar } from "@mui/material";
+import imagePicker from "components/UploadPhoto/imagePicker"
+import UploadPhoto from "components/UploadPhoto/UploadPhoto";
 
 import { getAllCategory } from "api/Core/Lesson";
+import { createLesson } from "api/Core/Lesson";
 
 import "./lesson.css"
 const styles = (theme) => ({
@@ -56,6 +60,8 @@ const styles = (theme) => ({
 const useStyles = makeStyles(styles);
 export default function AddLesson(props) {
     const classes = useStyles();
+    const { setOpenToast, onToast } = useContext(GeneralContext);
+
     const {
         openAddLessonPopUp,
         AddSuccess,
@@ -69,10 +75,15 @@ export default function AddLesson(props) {
     const [topicValue, setTopicValue] = useState("");
     const [allTopics, setAllTopics] = useState([])
 
+    const [filesImg, setFileImg] = useState()
+    const fileName = useRef('')
+    const upsertImgRef = useRef(null);
+
     useEffect(() => {
         getAllCategories()
         setPhotoLesson(photo)
     }, [])
+
 
     const getAllCategories = async () => {
         let response = await getAllCategory();
@@ -83,8 +94,81 @@ export default function AddLesson(props) {
         setaAllCategories(rightData)
     }
 
-    const addLessonNew = async()=>{
-        AddSuccess()
+    const addLessonNew = async (img) => {
+        const data = {
+            lessonName: nameLesson,
+            topics: allTopics,
+            description: descriptionLesson,
+            image: img,
+            category: categoryLesson
+        }
+        console.log(data, "data");
+        let response = await createLesson(data)
+        if (response.data)
+            AddSuccess()
+    }
+
+    const onUploadingImg = async (e) => {
+        const files = e.target.files[0];
+        fileName.current = files.name;
+        let blob = await imagePicker(files);
+        const reader = new FileReader();
+        reader.readAsDataURL(blob);
+        reader.onloadend = () => {
+            (imgUpdateHandler(reader.result));
+        };
+    }
+
+    const imgUpdateHandler = (img) => {
+        setPhotoLesson(img);
+        var fileImg = dataURLtoFile(img, fileName.current);
+        setFileImg(fileImg)
+    }
+
+    function dataURLtoFile(dataurl, filename) {
+        var arr = dataurl.split(','),
+            mime = arr[0].match(/:(.*?);/)[1],
+            bstr = atob(arr[1]),
+            n = bstr.length,
+            u8arr = new Uint8Array(n);
+
+        while (n--) {
+            u8arr[n] = bstr.charCodeAt(n);
+        }
+
+        return new File([u8arr], filename, { type: mime });
+    }
+
+    const onUpsertClicked = () => {
+        upsertImgRef.current.click();
+    }
+
+    const uploadImgToDatabase = async () => {
+        if (!filesImg) {
+            onToast('لطفا عکس انتخاب کنید!');
+            setOpenToast(true)
+        }
+        else {
+
+            let formData = new FormData();
+            formData.append('image', filesImg);
+            axios({
+                method: "post",
+                url: "https://api.noorgon.sepehracademy.ir/api/upload/image",
+                data: formData,
+                headers: { "Content-Type": "multipart/form-data" },
+            })
+                .then(function (response) {
+                    if (response.data.result)
+                        addLessonNew(response.data.result)
+
+                })
+                .catch(function (response) {
+                    console.log(response);
+                });
+        }
+
+
     }
 
     return (
@@ -100,7 +184,11 @@ export default function AddLesson(props) {
                         </CardHeader>
                         <CardBody className="bodyEditCourse">
                             <div className="avatarPhotoLesson">
-                                <Avatar src={photoLesson} className={classes.large} />
+                                <UploadPhoto
+                                    src={photoLesson}
+                                    onUploadingImg={onUploadingImg}
+                                    onUpsertClicked={onUpsertClicked}
+                                    upsertRef={upsertImgRef} />
                             </div>
                             <div>
                                 <GridContainer>
@@ -189,7 +277,7 @@ export default function AddLesson(props) {
                                     <RegularButton
                                         color="info"
                                         size="sm"
-                                        onClick={() => { addLessonNew() }}>ثبت تغییرات</RegularButton>
+                                        onClick={() => { uploadImgToDatabase() }}>ثبت تغییرات</RegularButton>
                                     <RegularButton
                                         color="danger"
                                         size="sm"

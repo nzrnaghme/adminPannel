@@ -4,3 +4,8 @@
     width: 129px;
     margin-bottom: -20px;
 }
+
+.avatarPhotoLesson .photo .upload{
+    right: 38% !important;
+    top: 60% !important;
+}

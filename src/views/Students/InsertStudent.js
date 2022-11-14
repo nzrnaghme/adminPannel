@@ -1,7 +1,8 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useRef } from "react";
 
 import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/core/styles";
+import axios from "axios";
 import Icon from "@material-ui/core/Icon";
 import InputAdornment from "@material-ui/core/InputAdornment";
 
@@ -11,11 +12,12 @@ import Card from "components/Card/Card.js";
 import CardHeader from "components/Card/CardHeader.js";
 import CardBody from "components/Card/CardBody.js";
 import CustomInput from "components/CustomInput/CustomInput.js";
-import Avatar from '@material-ui/core/Avatar';
 import PopUpCustome from "components/PopUp/PopUp";
 import RegularButton from "components/CustomButtons/Button";
 import { GeneralContext } from "providers/GeneralContext";
 import CustomeDatePicker from "components/CustomeDatePicker/CustomeDatePicker"
+import imagePicker from "components/UploadPhoto/imagePicker"
+import UploadPhoto from "components/UploadPhoto/UploadPhoto";
 
 // @material-ui/icons
 import RecentActorsIcon from '@material-ui/icons/RecentActors';
@@ -74,17 +76,86 @@ export default function InsertStudent(props) {
     const [birthNew, setBirthNew] = useState()
     const [emailNew, setEmailNew] = useState()
     const [passNew, setPassNew] = useState()
+    const [photo, setPhoto] = useState(photoPic)
     const [nationalIdNew, setNationalCodeNew] = useState()
     const [date, setDate] = useState(null);
 
-    const insertStudent = async () => {
+    const [filesImg, setFileImg] = useState()
+    const fileName = useRef('')
+    const upsertImgRef = useRef(null);
+
+
+    const onUploadingImg = async (e) => {
+        const files = e.target.files[0];
+        fileName.current = files.name;
+        let blob = await imagePicker(files);
+        const reader = new FileReader();
+        reader.readAsDataURL(blob);
+        reader.onloadend = () => {
+            (imgUpdateHandler(reader.result));
+        };
+    }
+
+    const imgUpdateHandler = (img) => {
+        setPhoto(img);
+        var fileImg = dataURLtoFile(img, fileName.current);
+        setFileImg(fileImg)
+    }
+
+    function dataURLtoFile(dataurl, filename) {
+        var arr = dataurl.split(','),
+            mime = arr[0].match(/:(.*?);/)[1],
+            bstr = atob(arr[1]),
+            n = bstr.length,
+            u8arr = new Uint8Array(n);
+
+        while (n--) {
+            u8arr[n] = bstr.charCodeAt(n);
+        }
+
+        return new File([u8arr], filename, { type: mime });
+    }
+
+    const onUpsertClicked = () => {
+        upsertImgRef.current.click();
+    }
+
+    const uploadImgToDatabase = async () => {
+        if (!filesImg) {
+            onToast('لطفا عکس انتخاب کنید!');
+            setOpenToast(true)
+        }
+        else {
+
+            let formData = new FormData();
+            formData.append('image', filesImg);
+            axios({
+                method: "post",
+                url: "https://api.noorgon.sepehracademy.ir/api/upload/image",
+                data: formData,
+                headers: { "Content-Type": "multipart/form-data" },
+            })
+                .then(function (response) {
+                    if (response.data.result)
+                        insertStudent(response.data.result)
+
+                })
+                .catch(function (response) {
+                    console.log(response);
+                });
+        }
+
+
+    }
+
+    const insertStudent = async (img) => {
         const data = {
             fullName: nameNew,
             email: emailNew,
             phoneNumber: phoneNew,
             birthDate: birthNew,
             nationalId: nationalIdNew,
-            profile: photoPic,
+            profile: img,
             password: passNew
         }
         let response = await registerUser(data);
@@ -95,6 +166,7 @@ export default function InsertStudent(props) {
             setPhoneNew('');
             setNationalCodeNew('');
             setBirthNew('')
+            setPhoto(photoPic)
             setOpenToast(true)
             onToast("دانشجو اضافه شد", "success")
             InsertSuccess()
@@ -245,7 +317,12 @@ export default function InsertStudent(props) {
                                 </GridContainer>
                             </div>
                             <div className="photoEditStudent">
-                                <Avatar src={photoPic} className={classes.large} />
+                                <UploadPhoto
+                                    src={photo}
+                                    onUploadingImg={onUploadingImg}
+                                    onUpsertClicked={onUpsertClicked}
+                                    upsertRef={upsertImgRef} />
+
                                 <div style={{
                                     display: "flex",
                                     flexDirection: "row",
@@ -256,7 +333,7 @@ export default function InsertStudent(props) {
                                     <RegularButton
                                         color="info"
                                         size="sm"
-                                        onClick={() => { insertStudent() }}>ثبت تغییرات</RegularButton>
+                                        onClick={() => { uploadImgToDatabase() }}>ثبت تغییرات</RegularButton>
                                     <RegularButton
                                         color="danger"
                                         size="sm"

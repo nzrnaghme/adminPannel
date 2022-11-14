@@ -1,14 +1,15 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef, useContext } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import PropTypes from "prop-types";
+import axios from "axios";
 
 import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
-import { Avatar } from "@mui/material";
 
+import { GeneralContext } from "providers/GeneralContext";
 import RegularButton from "components/CustomButtons/Button";
 import PopUpCustome from "components/PopUp/PopUp";
 import CustomInput from "components/CustomInput/CustomInput.js";
@@ -17,6 +18,8 @@ import GridContainer from "components/Grid/GridContainer.js";
 import Card from "components/Card/Card.js";
 import CardHeader from "components/Card/CardHeader.js";
 import CardBody from "components/Card/CardBody.js";
+import imagePicker from "components/UploadPhoto/imagePicker"
+import UploadPhoto from "components/UploadPhoto/UploadPhoto";
 
 import "./News.css"
 
@@ -59,6 +62,8 @@ const styles = (theme) => ({
 const useStyles = makeStyles(styles);
 export default function EditNews(props) {
     const classes = useStyles();
+    const { setOpenToast, onToast } = useContext(GeneralContext);
+
     const {
         opeEditNewsPopUp,
         closePopUpEditNews,
@@ -69,6 +74,10 @@ export default function EditNews(props) {
     const [nameNews, setNameNews] = useState();
     const [categoryNews, setCategoryNews] = useState();
     const [descriptionNews, setDescriptionNews] = useState();
+
+    const [filesImg, setFileImg] = useState()
+    const fileName = useRef('')
+    const upsertImgRef = useRef(null);
 
     useEffect(() => {
         setPhotoNews(dataNews.image);
@@ -82,11 +91,75 @@ export default function EditNews(props) {
         setCategoryNews(event.target.value);
     };
 
-    const updateNews = async () => {
+    const onUploadingImg = async (e) => {
+        const files = e.target.files[0];
+        fileName.current = files.name;
+        let blob = await imagePicker(files);
+        const reader = new FileReader();
+        reader.readAsDataURL(blob);
+        reader.onloadend = () => {
+            (imgUpdateHandler(reader.result));
+        };
+    }
+
+    const imgUpdateHandler = (img) => {
+        setPhotoNews(img);
+        var fileImg = dataURLtoFile(img, fileName.current);
+        setFileImg(fileImg)
+    }
+
+
+    function dataURLtoFile(dataurl, filename) {
+        var arr = dataurl.split(','),
+            mime = arr[0].match(/:(.*?);/)[1],
+            bstr = atob(arr[1]),
+            n = bstr.length,
+            u8arr = new Uint8Array(n);
+
+        while (n--) {
+            u8arr[n] = bstr.charCodeAt(n);
+        }
+
+        return new File([u8arr], filename, { type: mime });
+    }
+
+    const onUpsertClicked = () => {
+        upsertImgRef.current.click();
+    }
+
+    const uploadImgToDatabase = async () => {
+        if (!filesImg) {
+            onToast('لطفا عکس انتخاب کنید!');
+            setOpenToast(true)
+        }
+        else {
+
+            let formData = new FormData();
+            formData.append('image', filesImg);
+            axios({
+                method: "post",
+                url: "https://api.noorgon.sepehracademy.ir/api/upload/image",
+                data: formData,
+                headers: { "Content-Type": "multipart/form-data" },
+            })
+                .then(function (response) {
+                    if (response.data.result)
+                        updateNews(response.data.result)
+
+                })
+                .catch(function (response) {
+                    console.log(response);
+                });
+        }
+
+
+    }
+
+    const updateNews = async (img) => {
         const data = {
             title: nameNews,
             text: descriptionNews,
-            image: photoNews,
+            image: img,
             category: categoryNews,
             id: dataNews._id
         }
@@ -109,7 +182,11 @@ export default function EditNews(props) {
                         </CardHeader>
                         <CardBody className="bodyShowEditNews">
                             <div className="avatarPhotoNews">
-                                <Avatar src={photoNews} className={classes.large} />
+                                <UploadPhoto
+                                    src={photoNews}
+                                    onUploadingImg={onUploadingImg}
+                                    onUpsertClicked={onUpsertClicked}
+                                    upsertRef={upsertImgRef} />
                             </div>
                             <div>
                                 <GridContainer>
@@ -126,7 +203,7 @@ export default function EditNews(props) {
                                             }}
                                         />
                                     </GridItem>
-                                    
+
                                     <GridItem xs={12} sm={12} md={12}>
                                         <CustomInput
                                             rtlActive
@@ -164,7 +241,7 @@ export default function EditNews(props) {
                                     <RegularButton
                                         color="info"
                                         size="sm"
-                                        onClick={() => { updateNews() }}>ثبت تغییرات</RegularButton>
+                                        onClick={() => { uploadImgToDatabase() }}>ثبت تغییرات</RegularButton>
 
                                     <RegularButton
                                         color="info"

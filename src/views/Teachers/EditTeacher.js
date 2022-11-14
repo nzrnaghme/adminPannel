@@ -1,11 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef, useContext } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import PropTypes from "prop-types";
+import axios from "axios";
 
+import { GeneralContext } from "providers/GeneralContext";
 import RegularButton from "components/CustomButtons/Button";
 import PopUpCustome from "components/PopUp/PopUp";
 import CustomInput from "components/CustomInput/CustomInput.js";
-import Avatar from '@material-ui/core/Avatar';
 import GridItem from "components/Grid/GridItem.js";
 import GridContainer from "components/Grid/GridContainer.js";
 import Card from "components/Card/Card.js";
@@ -13,6 +14,8 @@ import CardHeader from "components/Card/CardHeader.js";
 import CardBody from "components/Card/CardBody.js";
 import { updateEmployeeById } from "api/Core/Employe_Manage";
 import CustomeDatePicker from "components/CustomeDatePicker/CustomeDatePicker"
+import imagePicker from "components/UploadPhoto/imagePicker"
+import UploadPhoto from "components/UploadPhoto/UploadPhoto";
 
 const styles = (theme) => ({
     cardCategoryWhite: {
@@ -53,6 +56,8 @@ const useStyles = makeStyles(styles);
 export default function EditTeacher(props) {
     var jalaali = require('jalaali-js')
     const classes = useStyles();
+    const { setOpenToast, onToast } = useContext(GeneralContext);
+
     const {
         openEditTeacherPopUp,
         EditSuccess,
@@ -68,6 +73,10 @@ export default function EditTeacher(props) {
     const [nationalId, setNationalCode] = useState()
     const [date, setDate] = useState()
 
+    const [filesImg, setFileImg] = useState()
+    const fileName = useRef('')
+    const upsertImgRef = useRef(null);
+
     useEffect(() => {
         setName(dataTeacher.fullName)
         setPhone(dataTeacher.phoneNumber)
@@ -81,16 +90,79 @@ export default function EditTeacher(props) {
         setDate(new Date(`${dateEnglish.gy}/${dateEnglish.gm}/${dateEnglish.gd}`))
     }, [dataTeacher])
 
-    const updateDataTeacher = async (id) => {
+    const onUploadingImg = async (e) => {
+        const files = e.target.files[0];
+        fileName.current = files.name;
+        let blob = await imagePicker(files);
+        const reader = new FileReader();
+        reader.readAsDataURL(blob);
+        reader.onloadend = () => {
+            (imgUpdateHandler(reader.result));
+        };
+    }
+
+    const imgUpdateHandler = (img) => {
+        setPhoto(img);
+        var fileImg = dataURLtoFile(img, fileName.current);
+        setFileImg(fileImg)
+    }
+
+    function dataURLtoFile(dataurl, filename) {
+        var arr = dataurl.split(','),
+            mime = arr[0].match(/:(.*?);/)[1],
+            bstr = atob(arr[1]),
+            n = bstr.length,
+            u8arr = new Uint8Array(n);
+
+        while (n--) {
+            u8arr[n] = bstr.charCodeAt(n);
+        }
+
+        return new File([u8arr], filename, { type: mime });
+    }
+
+    const onUpsertClicked = () => {
+        upsertImgRef.current.click();
+    }
+
+    const uploadImgToDatabase = async () => {
+        if (!filesImg) {
+            onToast('لطفا عکس انتخاب کنید!');
+            setOpenToast(true)
+        }
+        else {
+
+            let formData = new FormData();
+            formData.append('image', filesImg);
+            axios({
+                method: "post",
+                url: "https://api.noorgon.sepehracademy.ir/api/upload/image",
+                data: formData,
+                headers: { "Content-Type": "multipart/form-data" },
+            })
+                .then(function (response) {
+                    if (response.data.result)
+                        updateDataTeacher(response.data.result)
+
+                })
+                .catch(function (response) {
+                    console.log(response);
+                });
+        }
+
+
+    }
+
+    const updateDataTeacher = async (img) => {
         const data = {
-            id,
+            id: dataTeacher._id,
             fullName: name,
             email,
             phoneNumber: phone,
             birthDate: birth,
             nationalId,
             address,
-            profile: photo
+            profile: img
         }
         let response = await updateEmployeeById(data)
         if (response.data.result) {
@@ -192,7 +264,11 @@ export default function EditTeacher(props) {
                                 </GridContainer>
                             </div>
                             <div className="photoEditTeacher">
-                                <Avatar src={photo} className={classes.large} />
+                                <UploadPhoto
+                                    src={photo}
+                                    onUploadingImg={onUploadingImg}
+                                    onUpsertClicked={onUpsertClicked}
+                                    upsertRef={upsertImgRef} />
                                 <div style={{
                                     display: "flex",
                                     flexDirection: "row",
@@ -203,7 +279,7 @@ export default function EditTeacher(props) {
                                     <RegularButton
                                         color="info"
                                         size="sm"
-                                        onClick={() => { updateDataTeacher(dataTeacher._id) }}>ثبت تغییرات</RegularButton>
+                                        onClick={() => { uploadImgToDatabase() }}>ثبت تغییرات</RegularButton>
                                     <RegularButton
                                         color="danger"
                                         size="sm"

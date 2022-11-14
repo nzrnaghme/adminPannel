@@ -231,6 +231,7 @@ export default function News() {
                         setOpenEditNewsPopUp(false)
                     }}
                     successEditNews={() => {
+                        setOpenEditNewsPopUp(false)
                         onToast('خبر بروزرسانی شد', 'success')
                         setOpenToast(true)
                         getAllNews_Articles()
@@ -245,6 +246,7 @@ export default function News() {
                         setOpenCreateNewsPopUp(false)
                     }}
                     successCreateNews={() => {
+                        setOpenCreateNewsPopUp(false)
                         onToast('خبر یا مقاله جدید اضافه شد', "success");
                         setOpenToast(true);
                         getAllNews_Articles()

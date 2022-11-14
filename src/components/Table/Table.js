@@ -671,7 +671,7 @@ export default function CustomTable(props) {
         count={tableData.length}
         rowsPerPage={rowsCount}
         page={currentPage}
-        onPageChange={handleChangePage}
+        onChangePage={handleChangePage}
         labelRowsPerPage=""
         onRowsPerPageChange={handleChangeRowsPerPage}
       />

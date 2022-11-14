@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useContext } from "react";
 
 import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/core/styles";
 import Icon from "@material-ui/core/Icon";
 import InputAdornment from "@material-ui/core/InputAdornment";
+import axios from "axios";
 
 import GridItem from "components/Grid/GridItem.js";
 import GridContainer from "components/Grid/GridContainer.js";
@@ -11,7 +12,6 @@ import Card from "components/Card/Card.js";
 import CardHeader from "components/Card/CardHeader.js";
 import CardBody from "components/Card/CardBody.js";
 import CustomInput from "components/CustomInput/CustomInput.js";
-import Avatar from '@material-ui/core/Avatar';
 import PopUpCustome from "components/PopUp/PopUp";
 import RegularButton from "components/CustomButtons/Button";
 // @material-ui/icons
@@ -23,6 +23,10 @@ import HomeIcon from '@material-ui/icons/Home';
 import MailOutlineIcon from '@material-ui/icons/MailOutline';
 import { registerEmployee } from "api/Core/Login_Register";
 import photoPic from "assets/img/photo.png"
+import imagePicker from "components/UploadPhoto/imagePicker"
+import UploadPhoto from "components/UploadPhoto/UploadPhoto";
+import { GeneralContext } from "providers/GeneralContext";
+
 import "./teacher.css"
 
 const styles = (theme) => ({
@@ -62,6 +66,8 @@ const styles = (theme) => ({
 const useStyles = makeStyles(styles);
 export default function InsertTeacher(props) {
     const classes = useStyles();
+    const { setOpenToast, onToast } = useContext(GeneralContext);
+
     const {
         InsertSuccess,
         openPopUpInsertTecher,
@@ -69,6 +75,7 @@ export default function InsertTeacher(props) {
     } = props;
     const [nameNew, setNameNew] = useState()
     const [phoneNew, setPhoneNew] = useState()
+    const [photo, setPhoto] = useState(photoPic)
     const [birthNew, setBirthNew] = useState()
     const [emailNew, setEmailNew] = useState()
     const [passNew, setPassNew] = useState()
@@ -76,14 +83,82 @@ export default function InsertTeacher(props) {
     const [nationalIdNew, setNationalCodeNew] = useState()
     const [date, setDate] = useState(null);
 
-    const insertStudent = async () => {
+    const [filesImg, setFileImg] = useState()
+    const fileName = useRef('')
+    const upsertImgRef = useRef(null);
+
+    const onUploadingImg = async (e) => {
+        const files = e.target.files[0];
+        fileName.current = files.name;
+        let blob = await imagePicker(files);
+        const reader = new FileReader();
+        reader.readAsDataURL(blob);
+        reader.onloadend = () => {
+            (imgUpdateHandler(reader.result));
+        };
+    }
+
+    const imgUpdateHandler = (img) => {
+        setPhoto(img);
+        var fileImg = dataURLtoFile(img, fileName.current);
+        setFileImg(fileImg)
+    }
+
+    function dataURLtoFile(dataurl, filename) {
+        var arr = dataurl.split(','),
+            mime = arr[0].match(/:(.*?);/)[1],
+            bstr = atob(arr[1]),
+            n = bstr.length,
+            u8arr = new Uint8Array(n);
+
+        while (n--) {
+            u8arr[n] = bstr.charCodeAt(n);
+        }
+
+        return new File([u8arr], filename, { type: mime });
+    }
+
+    const onUpsertClicked = () => {
+        upsertImgRef.current.click();
+    }
+
+    const uploadImgToDatabase = async () => {
+        if (!filesImg) {
+            onToast('لطفا عکس انتخاب کنید!');
+            setOpenToast(true)
+        }
+        else {
+
+            let formData = new FormData();
+            formData.append('image', filesImg);
+            axios({
+                method: "post",
+                url: "https://api.noorgon.sepehracademy.ir/api/upload/image",
+                data: formData,
+                headers: { "Content-Type": "multipart/form-data" },
+            })
+                .then(function (response) {
+                    if (response.data.result)
+                        insertStudent(response.data.result)
+
+                })
+                .catch(function (response) {
+                    console.log(response);
+                });
+        }
+
+
+    }
+
+
+    const insertStudent = async (img) => {
         const data = {
             fullName: nameNew,
             email: emailNew,
             phoneNumber: phoneNew,
             birthDate: birthNew,
             nationalId: nationalIdNew,
-            profile: photoPic,
+            profile: img,
             password: passNew,
             address: addressNew,
             role: "teacher"
@@ -269,7 +344,11 @@ export default function InsertTeacher(props) {
                                 </GridContainer>
                             </div>
                             <div className="photoInsertTeacher">
-                                <Avatar src={photoPic} className={classes.large} />
+                                <UploadPhoto
+                                    src={photo}
+                                    onUploadingImg={onUploadingImg}
+                                    onUpsertClicked={onUpsertClicked}
+                                    upsertRef={upsertImgRef} />
                                 <div style={{
                                     display: "flex",
                                     flexDirection: "row",
@@ -280,7 +359,7 @@ export default function InsertTeacher(props) {
                                     <RegularButton
                                         color="info"
                                         size="sm"
-                                        onClick={() => { insertStudent() }}>ثبت تغییرات</RegularButton>
+                                        onClick={() => { uploadImgToDatabase() }}>ثبت تغییرات</RegularButton>
                                     <RegularButton
                                         color="danger"
                                         size="sm"

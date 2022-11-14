@@ -1,13 +1,13 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState, useRef } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import PropTypes from "prop-types";
+import axios from "axios";
 
 import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
-import { Avatar } from "@mui/material";
 
 import RegularButton from "components/CustomButtons/Button";
 import PopUpCustome from "components/PopUp/PopUp";
@@ -19,6 +19,8 @@ import CardHeader from "components/Card/CardHeader.js";
 import CardBody from "components/Card/CardBody.js";
 import photo from "assets/img/news.png"
 import { GeneralContext } from "providers/GeneralContext";
+import imagePicker from "components/UploadPhoto/imagePicker"
+import UploadPhoto from "components/UploadPhoto/UploadPhoto";
 
 import "./News.css"
 
@@ -72,6 +74,10 @@ export default function CreateNews(props) {
     const [categoryNews, setCategoryNews] = useState('news');
     const [descriptionNews, setDescriptionNews] = useState();
 
+    const [filesImg, setFileImg] = useState()
+    const fileName = useRef('')
+    const upsertImgRef = useRef(null);
+
     useEffect(() => {
         setPhotoNews(photo)
     }, [])
@@ -81,12 +87,72 @@ export default function CreateNews(props) {
         setCategoryNews(event.target.value);
     };
 
-    const createteNews = async () => {
+    const onUploadingImg = async (e) => {
+        const files = e.target.files[0];
+        fileName.current = files.name;
+        let blob = await imagePicker(files);
+        const reader = new FileReader();
+        reader.readAsDataURL(blob);
+        reader.onloadend = () => {
+            (imgUpdateHandler(reader.result));
+        };
+    }
+
+    const imgUpdateHandler = (img) => {
+        setPhotoNews(img);
+        var fileImg = dataURLtoFile(img, fileName.current);
+        setFileImg(fileImg)
+    }
+
+    function dataURLtoFile(dataurl, filename) {
+        var arr = dataurl.split(','),
+            mime = arr[0].match(/:(.*?);/)[1],
+            bstr = atob(arr[1]),
+            n = bstr.length,
+            u8arr = new Uint8Array(n);
+
+        while (n--) {
+            u8arr[n] = bstr.charCodeAt(n);
+        }
+        return new File([u8arr], filename, { type: mime });
+    }
+
+    const onUpsertClicked = () => {
+        upsertImgRef.current.click();
+    }
+
+    const uploadImgToDatabase = async () => {
+        if (!filesImg) {
+            onToast('لطفا عکس انتخاب کنید!');
+            setOpenToast(true)
+        }
+        else {
+            let formData = new FormData();
+            formData.append('image', filesImg);
+            axios({
+                method: "post",
+                url: "https://api.noorgon.sepehracademy.ir/api/upload/image",
+                data: formData,
+                headers: { "Content-Type": "multipart/form-data" },
+            })
+                .then(function (response) {
+                    if (response.data.result)
+                        createteNews(response.data.result)
+
+                })
+                .catch(function (response) {
+                    console.log(response);
+                });
+        }
+
+    }
+
+    const createteNews = async (img) => {
         if (nameNews && categoryNews && photoNews && descriptionNews) {
             const data = {
                 title: nameNews,
                 category: categoryNews,
-                image: photoNews,
+                image: img,
                 text: descriptionNews
             }
             let response = await createNews_Articles(data);
@@ -114,7 +180,11 @@ export default function CreateNews(props) {
                         </CardHeader>
                         <CardBody className="bodyShowEditNews">
                             <div className="avatarPhotoNews">
-                                <Avatar src={photoNews} className={classes.large} />
+                                <UploadPhoto
+                                    src={photoNews}
+                                    onUploadingImg={onUploadingImg}
+                                    onUpsertClicked={onUpsertClicked}
+                                    upsertRef={upsertImgRef} />
                             </div>
                             <div>
                                 <GridContainer>
@@ -175,7 +245,7 @@ export default function CreateNews(props) {
                                     <RegularButton
                                         color="info"
                                         size="sm"
-                                        onClick={() => { createteNews() }}>ثبت تغییرات</RegularButton>
+                                        onClick={() => { uploadImgToDatabase() }}>ثبت تغییرات</RegularButton>
 
                                     <RegularButton
                                         color="info"

@@ -43,6 +43,10 @@
     overflow-y: hidden;
 }
 
+.photoEditStudent .photo .upload {
+    right: 14% !important;
+}
+
 
 @media screen and (max-width:749px) {
     .popUpCreateStudent .MuiDialog-container .MuiPaper-root .MuiDialogContent-root {

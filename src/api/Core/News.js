@@ -21,4 +21,4 @@ export const updateNewsById = payload => api.put(UPDATE_NEWS_BY_ID(payload.id), 
 
 export const deleteNews = payload => api.delete(DELETE_NEWS(payload))
 
-export const createNews_Articles = payload => api.post(ADD_NEWS, { payload })
+export const createNews_Articles = payload => api.post(ADD_NEWS,  payload )

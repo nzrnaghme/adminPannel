@@ -1,7 +1,8 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState, useContext, useRef } from "react";
 
 import { makeStyles } from "@material-ui/core/styles";
 import PropTypes from "prop-types";
+import axios from "axios";
 
 import Table from "components/Table/Table.js";
 import RegularButton from "components/CustomButtons/Button";
@@ -13,9 +14,10 @@ import Card from "components/Card/Card.js";
 import CardHeader from "components/Card/CardHeader.js";
 import CardBody from "components/Card/CardBody.js";
 import CustomSelectInput from "components/CustomInput/CustomeSelectInput";
-import { Avatar } from "@mui/material";
 import CustomeAutoComplete from "components/CustomInput/CustomeAutoComplete";
 import { GeneralContext } from "providers/GeneralContext";
+import imagePicker from "components/UploadPhoto/imagePicker"
+import UploadPhoto from "components/UploadPhoto/UploadPhoto";
 
 import "./lesson.css"
 
@@ -67,7 +69,7 @@ export default function EditLEsson(props) {
         closePopUpEdit,
         dataLesson,
         courseByIdLesson } = props
-    const { setConfirmPopupOpen, onConfirmSetter } = useContext(GeneralContext);
+    const { setOpenToast, onToast, setConfirmPopupOpen, onConfirmSetter } = useContext(GeneralContext);
     const [photoLesson, setPhotoLesson] = useState()
     const [nameLesson, setNameLesson] = useState();
     const [categoryLesson, setCategoryLesson] = useState();
@@ -76,8 +78,12 @@ export default function EditLEsson(props) {
     const [topicValue, setTopicValue] = useState("");
     const [allTopics, setAllTopics] = useState([])
 
+    const [filesImg, setFileImg] = useState()
+    const fileName = useRef('')
+    const upsertImgRef = useRef(null);
+
     const [allCoursesLesson, setAllCoursesLessons] = useState([])
-    const [currentPage_MainbarMyCourses, setCurrentPage_MainbarMyCourses] = useState(1);
+    const [currentPage_MainbarMyCourses, setCurrentPage_MainbarMyCourses] = useState(0);
 
     useEffect(() => {
         getAllCategories()
@@ -105,12 +111,12 @@ export default function EditLEsson(props) {
         setaAllCategories(rightData)
     }
 
-    const updateDataLesson = async () => {
+    const updateDataLesson = async (img) => {
         const data = {
             lessonName: nameLesson,
             topics: allTopics,
             description: descriptionLesson,
-            image: photoLesson,
+            image: img,
             category: categoryLesson,
             id: dataLesson._id
         }
@@ -129,6 +135,69 @@ export default function EditLEsson(props) {
         }
     }
 
+    const onUploadingImg = async (e) => {
+        const files = e.target.files[0];
+        fileName.current = files.name;
+        let blob = await imagePicker(files);
+        const reader = new FileReader();
+        reader.readAsDataURL(blob);
+        reader.onloadend = () => {
+            (imgUpdateHandler(reader.result));
+        };
+    }
+
+    const imgUpdateHandler = (img) => {
+        setPhotoLesson(img);
+        var fileImg = dataURLtoFile(img, fileName.current);
+        setFileImg(fileImg)
+    }
+
+    function dataURLtoFile(dataurl, filename) {
+        var arr = dataurl.split(','),
+            mime = arr[0].match(/:(.*?);/)[1],
+            bstr = atob(arr[1]),
+            n = bstr.length,
+            u8arr = new Uint8Array(n);
+
+        while (n--) {
+            u8arr[n] = bstr.charCodeAt(n);
+        }
+
+        return new File([u8arr], filename, { type: mime });
+    }
+
+    const onUpsertClicked = () => {
+        upsertImgRef.current.click();
+    }
+
+    const uploadImgToDatabase = async () => {
+        if (!filesImg) {
+            onToast('لطفا عکس انتخاب کنید!');
+            setOpenToast(true)
+        }
+        else {
+
+            let formData = new FormData();
+            formData.append('image', filesImg);
+            axios({
+                method: "post",
+                url: "https://api.noorgon.sepehracademy.ir/api/upload/image",
+                data: formData,
+                headers: { "Content-Type": "multipart/form-data" },
+            })
+                .then(function (response) {
+                    if (response.data.result)
+                        updateDataLesson(response.data.result)
+
+                })
+                .catch(function (response) {
+                    console.log(response);
+                });
+        }
+
+
+    }
+
     return (
         <PopUpCustome
             open={openEditLessonPopUp}
@@ -142,7 +211,11 @@ export default function EditLEsson(props) {
                         </CardHeader>
                         <CardBody className="bodyEditCourse">
                             <div className="avatarPhotoLesson">
-                                <Avatar src={photoLesson} className={classes.large} />
+                                <UploadPhoto
+                                    src={photoLesson}
+                                    onUploadingImg={onUploadingImg}
+                                    onUpsertClicked={onUpsertClicked}
+                                    upsertRef={upsertImgRef} />
                             </div>
                             <div>
                                 <GridContainer>
@@ -219,24 +292,26 @@ export default function EditLEsson(props) {
                                     </GridItem>
                                 </GridContainer>
                             </div>
-                            <CardHeader color="info" className="headerCourse">
-                                <h4 className={classes.cardTitleWhite}>تمام دوره های درس</h4>
-                            </CardHeader>
                             {allCoursesLesson && allCoursesLesson.length > 0 &&
-                                <Table
-                                    tableHeaderColor="primary"
-                                    tableHead={["عنوان", "شروع دوره", "پابان دوره", "قیمت", ""]}
-                                    tableData={allCoursesLesson}
-                                    currentPage={currentPage_MainbarMyCourses}
-                                    rowsCount={5}
-                                    removeCourse={(id) => {
-                                        onConfirmSetter("آیا برای حذف دوره اطمینان دارید؟", () => {
-                                            removeCourse(id)
-                                        })
-                                        setConfirmPopupOpen(true)
-                                    }}
-                                    coursesFromLesson
-                                />}
+                                <>
+                                    <CardHeader color="info" className="headerCourse">
+                                        <h4 className={classes.cardTitleWhite}>تمام دوره های درس</h4>
+                                    </CardHeader>
+                                    <Table
+                                        tableHeaderColor="primary"
+                                        tableHead={["عنوان", "شروع دوره", "پابان دوره", "قیمت", ""]}
+                                        tableData={allCoursesLesson}
+                                        currentPage={currentPage_MainbarMyCourses}
+                                        rowsCount={5}
+                                        removeCourse={(id) => {
+                                            onConfirmSetter("آیا برای حذف دوره اطمینان دارید؟", () => {
+                                                removeCourse(id)
+                                            })
+                                            setConfirmPopupOpen(true)
+                                        }}
+                                        coursesFromLesson
+                                    />
+                                </>}
                             <div className="btnEditCourse">
                                 <div style={{
                                     display: "flex",
@@ -249,7 +324,7 @@ export default function EditLEsson(props) {
                                     <RegularButton
                                         color="info"
                                         size="sm"
-                                        onClick={() => { updateDataLesson(dataLesson._id) }}>ثبت تغییرات</RegularButton>
+                                        onClick={() => { uploadImgToDatabase() }}>ثبت تغییرات</RegularButton>
                                     <RegularButton
                                         color="danger"
                                         size="sm"

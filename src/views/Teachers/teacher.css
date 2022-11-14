@@ -50,6 +50,12 @@
     width: 90%;
 }
 
+.photoInsertTeacher .photo .upload,
+.photoEditTeacher .photo .upload {
+    right: 14% !important;
+}
+
+
 @media screen and (max-width:749px) {
     .bodyCreateTeacher div .MuiGrid-root .MuiGrid-root .MuiFormControl-fullWidth {
         width: 100%;

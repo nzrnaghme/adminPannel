@@ -1,6 +1,7 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState, useContext, useRef } from "react";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
+import axios from "axios";
 // core components
 import GridItem from "components/Grid/GridItem.js";
 import GridContainer from "components/Grid/GridContainer.js";
@@ -8,15 +9,17 @@ import CustomInput from "components/CustomInput/CustomInput.js";
 import Button from "components/CustomButtons/Button.js";
 import Card from "components/Card/Card.js";
 import CardHeader from "components/Card/CardHeader.js";
-import CardAvatar from "components/Card/CardAvatar.js";
 import CardBody from "components/Card/CardBody.js";
 import CardFooter from "components/Card/CardFooter.js";
 import { GeneralContext } from "providers/GeneralContext";
 import CustomeDatePicker from "components/CustomeDatePicker/CustomeDatePicker"
+import imagePicker from "components/UploadPhoto/imagePicker"
 
 import { getItem } from "api/storage/storage";
 import { getEmployeeById } from "api/Core/Employe_Manage";
 import { updateEmployeeById } from "api/Core/Employe_Manage";
+import UploadPhoto from "components/UploadPhoto/UploadPhoto";
+import "./profile.css"
 
 const styles = {
   cardCategoryWhite: {
@@ -53,6 +56,11 @@ export default function UserProfile() {
   const { setOpenToast, onToast } = useContext(GeneralContext);
   const [date, setDate] = useState(null);
 
+  const [photoLesson, setPhotoLesson] = useState()
+  const [filesImg, setFileImg] = useState()
+  const fileName = useRef('')
+  const upsertImgRef = useRef(null);
+
   useEffect(() => {
     getDataUser()
   }, [])
@@ -70,6 +78,7 @@ export default function UserProfile() {
       setBirth(response.data.result.birthDate)
       setAddress(response.data.result.address)
       setEmail(response.data.result.email)
+      setPhotoLesson(response.data.result.profile)
 
       var datePirsian = response.data.result.birthDate.split("/")
       var dateEnglish = jalaali.toGregorian(Number(datePirsian[0]), Number(datePirsian[1]), Number(datePirsian[2]))
@@ -77,7 +86,70 @@ export default function UserProfile() {
     }
   }
 
-  const updateUser = async () => {
+  const onUploadingImg = async (e) => {
+    const files = e.target.files[0];
+    fileName.current = files.name;
+    let blob = await imagePicker(files);
+    const reader = new FileReader();
+    reader.readAsDataURL(blob);
+    reader.onloadend = () => {
+      (imgUpdateHandler(reader.result));
+    };
+  }
+
+  const imgUpdateHandler = (img) => {
+    setPhotoLesson(img);
+    var fileImg = dataURLtoFile(img, fileName.current);
+    setFileImg(fileImg)
+  }
+
+  function dataURLtoFile(dataurl, filename) {
+    var arr = dataurl.split(','),
+      mime = arr[0].match(/:(.*?);/)[1],
+      bstr = atob(arr[1]),
+      n = bstr.length,
+      u8arr = new Uint8Array(n);
+
+    while (n--) {
+      u8arr[n] = bstr.charCodeAt(n);
+    }
+
+    return new File([u8arr], filename, { type: mime });
+  }
+
+  const onUpsertClicked = () => {
+    upsertImgRef.current.click();
+  }
+
+  const uploadImgToDatabase = async () => {
+    if (!filesImg) {
+      onToast('لطفا عکس انتخاب کنید!');
+      setOpenToast(true)
+    }
+    else {
+
+      let formData = new FormData();
+      formData.append('image', filesImg);
+      axios({
+        method: "post",
+        url: "https://api.noorgon.sepehracademy.ir/api/upload/image",
+        data: formData,
+        headers: { "Content-Type": "multipart/form-data" },
+      })
+        .then(function (response) {
+          if (response.data.result)
+            updateUser(response.data.result)
+
+        })
+        .catch(function (response) {
+          console.log(response);
+        });
+    }
+
+
+  }
+
+  const updateUser = async (img) => {
     const data = {
       id: userId,
       fullName: name,
@@ -86,7 +158,7 @@ export default function UserProfile() {
       phoneNumber: phone,
       address,
       nationalId: dataUser.nationalId,
-      profile: dataUser.profile
+      profile: img
     }
     let response = await updateEmployeeById(data)
     if (response.data) {
@@ -94,6 +166,7 @@ export default function UserProfile() {
       onToast(response.data.message[0].message, "success")
     }
   }
+
 
   return (
     <div>
@@ -191,18 +264,19 @@ export default function UserProfile() {
 
               </CardBody>
               <CardFooter>
-                <Button color="info" onClick={() => { updateUser() }}>بروزرسانی</Button>
+                <Button color="info" onClick={() => { uploadImgToDatabase() }}>بروزرسانی</Button>
               </CardFooter>
             </Card>
           </GridItem>
           <GridItem xs={12} sm={12} md={4}>
             <Card profile>
-              <CardAvatar profile>
-                <a href="#pablo" onClick={(e) => e.preventDefault()}>
-                  <img src={dataUser.profile} alt="..." />
-                </a>
-
-              </CardAvatar>
+              <div className="photoMyProfile">
+                <UploadPhoto
+                  src={photoLesson}
+                  onUploadingImg={onUploadingImg}
+                  onUpsertClicked={onUpsertClicked}
+                  upsertRef={upsertImgRef} />
+              </div>
               <CardBody profile>
                 <h6 className={classes.cardCategory}>{dataUser.role}</h6>
                 {topics.map((item, key) => (
@@ -211,9 +285,6 @@ export default function UserProfile() {
 
                   </p>
                 ))}
-                {/* <Button color="primary" round>
-                  تغییر عکس
-                </Button> */}
               </CardBody>
             </Card>
           </GridItem>

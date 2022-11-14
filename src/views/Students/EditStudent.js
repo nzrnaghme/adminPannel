@@ -1,12 +1,12 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState, useRef } from "react";
 
 import { makeStyles } from "@material-ui/core/styles";
 import PropTypes from "prop-types";
+import axios from "axios";
 
 import RegularButton from "components/CustomButtons/Button";
 import PopUpCustome from "components/PopUp/PopUp";
 import CustomInput from "components/CustomInput/CustomInput.js";
-import Avatar from '@material-ui/core/Avatar';
 import GridItem from "components/Grid/GridItem.js";
 import GridContainer from "components/Grid/GridContainer.js";
 import Card from "components/Card/Card.js";
@@ -15,6 +15,9 @@ import CardBody from "components/Card/CardBody.js";
 import { updateStudetInform } from "api/Core/Student_Manage";
 import { GeneralContext } from "providers/GeneralContext";
 import CustomeDatePicker from "components/CustomeDatePicker/CustomeDatePicker"
+import UploadPhoto from "components/UploadPhoto/UploadPhoto";
+import imagePicker from "components/UploadPhoto/imagePicker"
+
 import "./students.css"
 
 const styles = (theme) => ({
@@ -72,6 +75,10 @@ export default function EditStudent(props) {
 
     const [birth, setBirth] = useState();
 
+    const [filesImg, setFileImg] = useState()
+    const fileName = useRef('')
+    const upsertImgRef = useRef(null);
+
     useEffect(() => {
         setName(dataStudent.fullName)
         setPhone(dataStudent.phoneNumber)
@@ -85,7 +92,71 @@ export default function EditStudent(props) {
     }, [dataStudent])
 
 
-    const updateDataStudent = async (id) => {
+    const onUploadingImg = async (e) => {
+        const files = e.target.files[0];
+        fileName.current = files.name;
+        let blob = await imagePicker(files);
+        const reader = new FileReader();
+        reader.readAsDataURL(blob);
+        reader.onloadend = () => {
+            (imgUpdateHandler(reader.result));
+        };
+    }
+
+    const imgUpdateHandler = (img) => {
+        setPhoto(img);
+        var fileImg = dataURLtoFile(img, fileName.current);
+        setFileImg(fileImg)
+    }
+
+    function dataURLtoFile(dataurl, filename) {
+        var arr = dataurl.split(','),
+            mime = arr[0].match(/:(.*?);/)[1],
+            bstr = atob(arr[1]),
+            n = bstr.length,
+            u8arr = new Uint8Array(n);
+
+        while (n--) {
+            u8arr[n] = bstr.charCodeAt(n);
+        }
+
+        return new File([u8arr], filename, { type: mime });
+    }
+
+    const onUpsertClicked = () => {
+        upsertImgRef.current.click();
+    }
+
+    const uploadImgToDatabase = async () => {
+        if (!filesImg) {
+            onToast('لطفا عکس انتخاب کنید!');
+            setOpenToast(true)
+        }
+        else {
+
+            let formData = new FormData();
+            formData.append('image', filesImg);
+            axios({
+                method: "post",
+                url: "https://api.noorgon.sepehracademy.ir/api/upload/image",
+                data: formData,
+                headers: { "Content-Type": "multipart/form-data" },
+            })
+                .then(function (response) {
+                    if (response.data.result)
+                        updateDataStudent(dataStudent._id, response.data.result)
+
+                })
+                .catch(function (response) {
+                    console.log(response);
+                });
+        }
+
+
+    }
+
+
+    const updateDataStudent = async (id, img) => {
         const data = {
             id,
             fullName: name,
@@ -93,7 +164,7 @@ export default function EditStudent(props) {
             phoneNumber: phone,
             birthDate: birth,
             nationalId,
-            profile: photo
+            profile: img
         }
         let response = await updateStudetInform(data)
         if (response.data.result) {
@@ -184,7 +255,11 @@ export default function EditStudent(props) {
                                 </GridContainer>
                             </div>
                             <div className="photoEditStudent">
-                                <Avatar src={photo} className={classes.large} />
+                                <UploadPhoto
+                                    src={photo}
+                                    onUploadingImg={onUploadingImg}
+                                    onUpsertClicked={onUpsertClicked}
+                                    upsertRef={upsertImgRef} />
                                 <div style={{
                                     display: "flex",
                                     flexDirection: "row",
@@ -195,7 +270,7 @@ export default function EditStudent(props) {
                                     <RegularButton
                                         color="info"
                                         size="sm"
-                                        onClick={() => { updateDataStudent(dataStudent._id) }}>ثبت تغییرات</RegularButton>
+                                        onClick={() => { uploadImgToDatabase() }}>ثبت تغییرات</RegularButton>
                                     <RegularButton
                                         color="danger"
                                         size="sm"
