@@ -58,7 +58,8 @@ export default function LessonList() {
     const allCategories = useRef([])
     const { setConfirmPopupOpen, onConfirmSetter, setOpenToast, onToast } = useContext(GeneralContext);
 
-    const [currentPage_MainbarMyCourses, setCurrentPage_MainbarMyCourses] = useState(1);
+    const [currentPage_MainbarMyCourses, setCurrentPage_MainbarMyCourses] = useState(0);
+    const [rowsPerPage, setRowsPerPage] = useState(5);
 
     const [dataLesson, setDataLesson] = useState()
     const [openEditLesson, setOpenEditLesson] = useState(false)
@@ -73,7 +74,6 @@ export default function LessonList() {
     useEffect(() => {
         getAllCategories()
         getLessons();
-        setCurrentPage_MainbarMyCourses(1)
     }, [])
 
     const getAllCategories = async () => {
@@ -129,7 +129,14 @@ export default function LessonList() {
     }
 
 
+    const handleChangePage = (event, newPage) => {
+        setCurrentPage_MainbarMyCourses(newPage)
+    }
 
+    const handleChangeRowsPerPage = (event) => {
+        setRowsPerPage(+event.target.value);
+        setCurrentPage_MainbarMyCourses(0);
+    };
 
     return (
         <>
@@ -157,7 +164,7 @@ export default function LessonList() {
                                     tableHead={["", "اسم", "دسته بندی", "توضیحات", "تعداد دوره", ""]}
                                     tableData={allLessons}
                                     currentPage={currentPage_MainbarMyCourses}
-                                    rowsCount={5}
+                                    rowsCount={rowsPerPage}
                                     removeLessons={(id) => {
                                         onConfirmSetter('آیا برای حذف درس اطمینان دارید؟', () => {
                                             removeLessons(id)
@@ -167,6 +174,8 @@ export default function LessonList() {
                                     editLessons={editLessons}
                                     addCourseToLesson={addCourseToLesson}
                                     lessons
+                                    handleChangePage={handleChangePage}
+                                    handleChangeRowsPerPage={handleChangeRowsPerPage}
                                 />}
                         </CardBody>
                         <div>

@@ -60,13 +60,14 @@ export default function AddStudentToCourse(props) {
         AddSuccess,
         closePopUpAdd,
         userIdCourse } = props;
-    const [currentPage_MainbarCurrentStudent, setCurrentPage_MainbarCurrentStudent] = useState(1);
+    const [currentPage_MainbarCurrentStudent, setCurrentPage_MainbarCurrentStudent] = useState(0);
+    const [rowsPerPage, setRowsPerPage] = useState(5);
+
     const [currentStudents, setCurrentStudents] = useState()
     const [allStudent, setAllStudent] = useState()
     const { setConfirmPopupOpen, onConfirmSetter } = useContext(GeneralContext);
 
     useEffect(() => {
-        setCurrentPage_MainbarCurrentStudent(1)
         getAllStudent();
     }, [userIdCourse])
 
@@ -113,6 +114,15 @@ export default function AddStudentToCourse(props) {
         }
     }
 
+    const handleChangePage = (event, newPage) => {
+        setCurrentPage_MainbarCurrentStudent(newPage)
+    }
+
+    const handleChangeRowsPerPage = (event) => {
+        setRowsPerPage(+event.target.value);
+        setCurrentPage_MainbarCurrentStudent(0);
+    };
+
 
 
     return (
@@ -133,7 +143,9 @@ export default function AddStudentToCourse(props) {
                                     tableHead={["", "اسم", "ایمیل", "تعداد کل دروس", "", ""]}
                                     tableData={currentStudents}
                                     currentPage={currentPage_MainbarCurrentStudent}
-                                    rowsCount={5}
+                                    handleChangePage={handleChangePage}
+                                    handleChangeRowsPerPage={handleChangeRowsPerPage}
+                                    rowsCount={rowsPerPage}
                                     addStudentToCourse={(id) => {
                                         onConfirmSetter('آیا برای اضافه کردن دانشجو اطمینان دارید؟', () => {
                                             addStudentToCourses(id)

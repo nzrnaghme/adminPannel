@@ -62,7 +62,9 @@ const useStyles = makeStyles(styles);
 export default function Students() {
     const classes = useStyles();
     const [allStudents, setAllStudents] = useState([])
-    const [currentPage_MainbarMyCourses, setCurrentPage_MainbarMyCourses] = useState(1);
+    const [currentPage_MainbarMyCourses, setCurrentPage_MainbarMyCourses] = useState(0);
+    const [rowsPerPage, setRowsPerPage] = useState(5);
+
     const { setConfirmPopupOpen, onConfirmSetter, setOpenToast, onToast } = useContext(GeneralContext);
 
     const [openEditStudent, setOpenEditStudent] = useState(false)
@@ -75,7 +77,6 @@ export default function Students() {
 
     useEffect(() => {
         getStudents();
-        setCurrentPage_MainbarMyCourses(1)
     }, [])
 
     const getStudents = async () => {
@@ -151,7 +152,14 @@ export default function Students() {
         }
     }
 
+    const handleChangePage = (event, newPage) => {
+        setCurrentPage_MainbarMyCourses(newPage)
+    }
 
+    const handleChangeRowsPerPage = (event) => {
+        setRowsPerPage(+event.target.value);
+        setCurrentPage_MainbarMyCourses(0);
+    };
 
 
     return (
@@ -177,11 +185,13 @@ export default function Students() {
                                     tableHead={["", "اسم", "ایمیل", "شماره موبایل", "تعداد دوره ها", "", ""]}
                                     tableData={allStudents}
                                     currentPage={currentPage_MainbarMyCourses}
-                                    rowsCount={5}
+                                    rowsCount={rowsPerPage}
                                     removeStudent={removeStudent}
                                     editStudent={editStudent}
                                     changeActivate={changeActivate}
                                     editCourseStudent={editCourseStudent}
+                                    handleChangePage={handleChangePage}
+                                    handleChangeRowsPerPage={handleChangeRowsPerPage}
                                     student
                                 />}
                         </CardBody>

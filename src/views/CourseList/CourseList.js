@@ -58,7 +58,9 @@ export default function CourseList() {
   const { setConfirmPopupOpen, onConfirmSetter, setOpenToast, onToast } = useContext(GeneralContext);
 
 
-  const [currentPage_MainbarMyCourses, setCurrentPage_MainbarMyCourses] = useState(1);
+  const [currentPage_MainbarMyCourses, setCurrentPage_MainbarMyCourses] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
+
   const [courseDetail, setCourseDetail] = useState()
   const [openPopUpEditCourse, setOpenPopUpEditCourse] = useState(false)
 
@@ -73,7 +75,6 @@ export default function CourseList() {
 
   useEffect(() => {
     getCourses();
-    setCurrentPage_MainbarMyCourses(1)
   }, [])
 
   const getCourses = async () => {
@@ -126,6 +127,15 @@ export default function CourseList() {
     setIdForStudents(idCourse)
   }
 
+  const handleChangePage = (event, newPage) => {
+    setCurrentPage_MainbarMyCourses(newPage)
+}
+
+const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(+event.target.value);
+    setCurrentPage_MainbarMyCourses(0);
+};
+
 
   return (
     <>
@@ -147,7 +157,7 @@ export default function CourseList() {
                   tableHead={["عنوان", "استاد", "شروع دوره", "قیمت", "گنجایش", "تعداد دانشجویان دوره", ""]}
                   tableData={allCourse}
                   currentPage={currentPage_MainbarMyCourses}
-                  rowsCount={5}
+                  rowsCount={rowsPerPage}
                   removeCourse={(id) => {
                     onConfirmSetter('آیا برای حذف دوره مطمئن هستید؟', () => {
                       removeCourse(id)
@@ -158,6 +168,8 @@ export default function CourseList() {
                   showStudents={showStudents}
                   addStudentToCourse={addStudentToCourse}
                   courses
+                  handleChangePage={handleChangePage}
+                  handleChangeRowsPerPage={handleChangeRowsPerPage}
                 />}
             </CardBody>
           </Card>

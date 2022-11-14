@@ -67,7 +67,19 @@ export default function Comments() {
 
     const classes = useStyles();
     const [value, setValue] = useState(1);
-    const [currentPage_MainbarMyCourses, setCurrentPage_MainbarMyCourses] = useState(0);
+
+    const [currentPage_MainbarAll, setCurrentPage_MainbarAll] = useState(0);
+    const [rowsPerPageAll, setRowsPerPageAll] = useState(5);
+
+    const [currentPage_MainbarAccept, setCurrentPage_MainbarAccept] = useState(0);
+    const [rowsPerPageAccept, setRowsPerPageAccept] = useState(5);
+
+    const [currentPage_MainbarAnswer, setCurrentPage_MainbarAnswer] = useState(0);
+    const [rowsPerPageAnswer, setRowsPerPageAnswer] = useState(5);
+
+    const [currentPage_MainbarWaiting, setCurrentPage_MainbarWaiting] = useState(0);
+    const [rowsPerPageWaiting, setRowsPerPageWaiting] = useState(5);
+
 
     const [allComments, setAllComments] = useState();
     const [notVerifiedComment, setNotVerifiedComment] = useState();
@@ -81,7 +93,6 @@ export default function Comments() {
 
     useEffect(() => {
         getAllComments()
-        setCurrentPage_MainbarMyCourses(1)
     }, [])
 
     const getAllComments = async () => {
@@ -112,6 +123,50 @@ export default function Comments() {
             }
         }
     }
+
+    const handleChangePageAll = (event, newPage) => {
+        setCurrentPage_MainbarAll(newPage)
+    }
+
+    const handleChangeRowsPerPageAll = (event) => {
+        setRowsPerPageAll(+event.target.value);
+        setCurrentPage_MainbarAll(0);
+    };
+
+
+
+    const handleChangePageAccept = (event, newPage) => {
+        setCurrentPage_MainbarAccept(newPage)
+    }
+
+    const handleChangeRowsPerPageAccept = (event) => {
+        setRowsPerPageAccept(+event.target.value);
+        setCurrentPage_MainbarAccept(0);
+    };
+
+
+
+
+    const handleChangePageAnswer = (event, newPage) => {
+        setCurrentPage_MainbarAnswer(newPage)
+    }
+
+    const handleChangeRowsPerPageAnswer = (event) => {
+        setRowsPerPageAnswer(+event.target.value);
+        setCurrentPage_MainbarAnswer(0);
+    };
+
+
+
+
+    const handleChangePageWaiting = (event, newPage) => {
+        setCurrentPage_MainbarWaiting(newPage)
+    }
+
+    const handleChangeRowsPerPageWaiting = (event) => {
+        setRowsPerPageWaiting(+event.target.value);
+        setCurrentPage_MainbarWaiting(0);
+    };
 
 
     return (
@@ -146,8 +201,8 @@ export default function Comments() {
                                                 tableHeaderColor="primary"
                                                 tableHead={["اسم کاربر", "ایمیل کاربر", "تاریخ کامنت", "متن کامنت", "", ""]}
                                                 tableData={allComments}
-                                                currentPage={currentPage_MainbarMyCourses}
-                                                rowsCount={5}
+                                                currentPage={currentPage_MainbarAll}
+                                                rowsCount={rowsPerPageAll}
                                                 answerToComment={(id) => {
                                                     let correntComment = allComments.filter((item) => item._id === id)
                                                     setDataComment(correntComment)
@@ -161,6 +216,8 @@ export default function Comments() {
                                                 }}
                                                 allComment
                                                 verified
+                                                handleChangePage={handleChangePageAll}
+                                                handleChangeRowsPerPage={handleChangeRowsPerPageAll}
                                             />}
                                     </>
                                 }
@@ -172,8 +229,7 @@ export default function Comments() {
                                                 tableHeaderColor="primary"
                                                 tableHead={["اسم کاربر", "ایمیل کاربر", "تاریخ کامنت", "متن کامنت", "", ""]}
                                                 tableData={VerifiedComment}
-                                                currentPage={currentPage_MainbarMyCourses}
-                                                rowsCount={5}
+                                                currentPage={currentPage_MainbarAccept}
                                                 answerToComment={(id) => {
                                                     let correntComment = allComments.filter((item) => item._id === id)
                                                     setDataComment(correntComment)
@@ -187,6 +243,9 @@ export default function Comments() {
                                                 changeVerified={changeVerified}
                                                 allComment
                                                 verified
+                                                handleChangePage={handleChangePageAccept}
+                                                handleChangeRowsPerPage={handleChangeRowsPerPageAccept}
+                                                rowsCount={rowsPerPageAccept}
                                             />}
                                     </>
                                 }
@@ -198,8 +257,10 @@ export default function Comments() {
                                                 tableHeaderColor="primary"
                                                 tableHead={["اسم کاربر", "ایمیل کاربر", "تاریخ کامنت", "متن کامنت", ""]}
                                                 tableData={notVerifiedComment}
-                                                currentPage={currentPage_MainbarMyCourses}
-                                                rowsCount={5}
+                                                currentPage={currentPage_MainbarWaiting}
+                                                handleChangePage={handleChangePageWaiting}
+                                                handleChangeRowsPerPage={handleChangeRowsPerPageWaiting}
+                                                rowsCount={rowsPerPageWaiting}
                                                 changeVerified={changeVerified}
                                                 showAllData={(id) => {
                                                     let correntComment = allComments.filter((item) => item._id === id)
@@ -219,8 +280,10 @@ export default function Comments() {
                                                 tableHeaderColor="primary"
                                                 tableHead={["اسم کاربر", "ایمیل کاربر", "تاریخ کامنت", "متن کامنت", "پاسخ کامنت", "", ""]}
                                                 tableData={answerComment}
-                                                currentPage={currentPage_MainbarMyCourses}
-                                                rowsCount={5}
+                                                currentPage={currentPage_MainbarAnswer}
+                                                handleChangePage={handleChangePageAnswer}
+                                                handleChangeRowsPerPage={handleChangeRowsPerPageAnswer}
+                                                rowsCount={rowsPerPageAnswer}
                                                 changeVerified={changeVerified}
                                                 showAllData={(id) => {
                                                     let correntComment = allComments.filter((item) => item._id === id)

@@ -53,7 +53,9 @@ const useStyles = makeStyles(styles);
 
 export default function ListOfStudents(props) {
     const classes = useStyles();
-    const [currentPage_MainbarCurrentStudent, setCurrentPage_MainbarCurrentStudent] = useState(1);
+    const [currentPage_MainbarCurrentStudent, setCurrentPage_MainbarCurrentStudent] = useState(0);
+    const [rowsPerPage, setRowsPerPage] = useState(5);
+
     const [currentStudents, setCurrentStudents] = useState()
 
     const { setConfirmPopupOpen, onConfirmSetter, setOpenToast, onToast } = useContext(GeneralContext);
@@ -65,7 +67,6 @@ export default function ListOfStudents(props) {
         userIdCourse } = props
 
     useEffect(() => {
-        setCurrentPage_MainbarCurrentStudent(1)
         getCurrentStudents(userIdCourse)
     }, [userIdCourse])
 
@@ -89,6 +90,15 @@ export default function ListOfStudents(props) {
         }
     }
 
+    const handleChangePage = (event, newPage) => {
+        setCurrentPage_MainbarCurrentStudent(newPage)
+    }
+
+    const handleChangeRowsPerPage = (event) => {
+        setRowsPerPage(+event.target.value);
+        setCurrentPage_MainbarCurrentStudent(0);
+    };
+
     return (
         <PopUpCustome
             open={openListStudentPopUp}
@@ -107,7 +117,9 @@ export default function ListOfStudents(props) {
                                     tableHead={["", "اسم", "ایمیل", ""]}
                                     tableData={currentStudents}
                                     currentPage={currentPage_MainbarCurrentStudent}
-                                    rowsCount={5}
+                                    handleChangePage={handleChangePage}
+                                    handleChangeRowsPerPage={handleChangeRowsPerPage}
+                                    rowsCount={rowsPerPage}
                                     removeStudent={(id) => {
                                         onConfirmSetter('آیا برای حذف دانشجو مطمئن هستید؟', () => {
                                             removeStudentInCourse(id)

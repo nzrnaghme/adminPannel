@@ -54,7 +54,9 @@ const useStyles = makeStyles(styles);
 export default function Teachers() {
   const classes = useStyles();
   const [allTeachers, setAllTeachers] = useState([])
-  const [currentPage_MainbarMyCourses, setCurrentPage_MainbarMyCourses] = useState(1);
+  const [currentPage_MainbarMyCourses, setCurrentPage_MainbarMyCourses] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
+
   const [openInsertTeacher, setOpenInsertTeacher] = useState(false)
   const { setConfirmPopupOpen, onConfirmSetter, setOpenToast, onToast } = useContext(GeneralContext);
 
@@ -63,7 +65,6 @@ export default function Teachers() {
 
   useEffect(() => {
     getTeachers();
-    setCurrentPage_MainbarMyCourses(1)
   }, [])
 
 
@@ -131,6 +132,15 @@ export default function Teachers() {
     }
   }
 
+  const handleChangePage = (event, newPage) => {
+    setCurrentPage_MainbarMyCourses(newPage)
+  }
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(+event.target.value);
+    setCurrentPage_MainbarMyCourses(0);
+  };
+
 
   return (
     <>
@@ -155,7 +165,9 @@ export default function Teachers() {
                   tableHead={["", "اسم", "ایمیل", "شماره موبایل", "تعداد دوره ها", "", ""]}
                   tableData={allTeachers}
                   currentPage={currentPage_MainbarMyCourses}
-                  rowsCount={5}
+                  handleChangePage={handleChangePage}
+                  handleChangeRowsPerPage={handleChangeRowsPerPage}
+                  rowsCount={rowsPerPage}
                   editTeacher={editTeacher}
                   changeActivate={changeActivate}
                   removeTeacher={(id) => {

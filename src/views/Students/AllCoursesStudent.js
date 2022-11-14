@@ -55,7 +55,9 @@ const useStyles = makeStyles(styles);
 export default function AllCoursesStudent(props) {
     const { setConfirmPopupOpen, onConfirmSetter } = useContext(GeneralContext);
     const classes = useStyles();
-    const [currentPage_MainbarMyCourses, setCurrentPage_MainbarMyCourses] = useState(1);
+    const [currentPage_MainbarMyCourses, setCurrentPage_MainbarMyCourses] = useState(0);
+    const [rowsPerPage, setRowsPerPage] = useState(5);
+
     const [coursesStudent, setCoursesStudent] = useState()
 
     const {
@@ -65,7 +67,6 @@ export default function AllCoursesStudent(props) {
         successRemoveData } = props
 
     useEffect(() => {
-        setCurrentPage_MainbarMyCourses(1)
         getCoursesForStudent(userId)
     }, [userId])
 
@@ -88,6 +89,15 @@ export default function AllCoursesStudent(props) {
         }
     }
 
+    const handleChangePage = (event, newPage) => {
+        setCurrentPage_MainbarMyCourses(newPage)
+    }
+
+    const handleChangeRowsPerPage = (event) => {
+        setRowsPerPage(+event.target.value);
+        setCurrentPage_MainbarMyCourses(0);
+    };
+
     return (
         <PopUpCustome
             open={openAllCoursesStudentPopUp}
@@ -106,7 +116,9 @@ export default function AllCoursesStudent(props) {
                                     tableHead={["عنوان", "استاد", "شروع دوره", "قیمت", "پایان دوره", ""]}
                                     tableData={coursesStudent}
                                     currentPage={currentPage_MainbarMyCourses}
-                                    rowsCount={5}
+                                    handleChangePage={handleChangePage}
+                                    handleChangeRowsPerPage={handleChangeRowsPerPage}
+                                    rowsCount={rowsPerPage}
                                     removeCourseFromStudent={(id) => {
                                         onConfirmSetter('آیا برای حذف دوره مطمئن هستید؟', () => {
                                             removeCourseFromStudent(id)

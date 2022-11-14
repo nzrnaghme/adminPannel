@@ -66,7 +66,11 @@ export default function News() {
     const classes = useStyles();
 
     const [value, setValue] = useState(1);
-    const [currentPage_MainbarMyCourses, setCurrentPage_MainbarMyCourses] = useState(0);
+    const [currentPage_MainbarArticles, setCurrentPage_MainbarArticles] = useState(0);
+    const [rowsPerPageArticles, setRowsPerPageArticles] = useState(5);
+
+    const [currentPage_MainbarNews, setCurrentPage_MainbarNews] = useState(0);
+    const [rowsPerPageNews, setRowsPerPageNews] = useState(5);
 
     const [allNews, setAllNews] = useState();
     const [allArticles, setAllArticles] = useState();
@@ -78,7 +82,7 @@ export default function News() {
 
     useEffect(() => {
         getAllNews_Articles()
-        setCurrentPage_MainbarMyCourses(1)
+
     }, [])
 
     const getAllNews_Articles = async () => {
@@ -127,6 +131,24 @@ export default function News() {
         setConfirmPopupOpen(true)
     }
 
+    const handleChangePageNews = (event, newPage) => {
+        setCurrentPage_MainbarNews(newPage)
+    }
+
+    const handleChangeRowsPerPageNews = (event) => {
+        setRowsPerPageNews(+event.target.value);
+        setCurrentPage_MainbarNews(0);
+    };
+
+    const handleChangePageArticles = (event, newPage) => {
+        setCurrentPage_MainbarArticles(newPage)
+    }
+
+    const handleChangeRowsPerPageArticles = (event) => {
+        setRowsPerPageArticles(+event.target.value);
+        setCurrentPage_MainbarArticles(0);
+    };
+
     return (
         <>
             <GridContainer>
@@ -166,11 +188,13 @@ export default function News() {
                                                 tableHeaderColor="primary"
                                                 tableHead={["", "تیتر", "توضیحات", "دسته بندی", ""]}
                                                 tableData={allNews}
-                                                currentPage={currentPage_MainbarMyCourses}
-                                                rowsCount={5}
+                                                currentPage={currentPage_MainbarNews}
+                                                rowsCount={rowsPerPageNews}
                                                 allNewsShow
                                                 editNews={editNews}
                                                 removeNews={removeNews}
+                                                handleChangePage={handleChangePageNews}
+                                                handleChangeRowsPerPage={handleChangeRowsPerPageNews}
                                             />}
                                     </>
                                 }
@@ -182,11 +206,13 @@ export default function News() {
                                                 tableHeaderColor="primary"
                                                 tableHead={["", "تیتر", "توضیحات", "دسته بندی", ""]}
                                                 tableData={allArticles}
-                                                currentPage={currentPage_MainbarMyCourses}
-                                                rowsCount={5}
+                                                currentPage={currentPage_MainbarArticles}
+                                                rowsCount={rowsPerPageArticles}
                                                 allNewsShow
                                                 editNews={editNews}
                                                 removeNews={removeArticles}
+                                                handleChangePage={handleChangePageArticles}
+                                                handleChangeRowsPerPage={handleChangeRowsPerPageArticles}
                                             />
                                         }
                                     </>

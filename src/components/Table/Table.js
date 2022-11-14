@@ -6,6 +6,7 @@ import Avatar from '@material-ui/core/Avatar';
 import Table from "@material-ui/core/Table";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
+import TablePagination from '@material-ui/core/TablePagination';
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import Tooltip from "@material-ui/core/Tooltip";
@@ -37,6 +38,8 @@ export default function CustomTable(props) {
     tableData,
     tableHeaderColor,
     currentPage,
+    handleChangePage,
+    handleChangeRowsPerPage,
     showStudents,
     removeCourse,
     editCourse,
@@ -88,7 +91,7 @@ export default function CustomTable(props) {
           </TableHead>
         ) : null}
         <TableBody>
-          {courses && tableData ? tableData.slice((currentPage * rowsCount) - rowsCount, currentPage * rowsCount).map((row, index) => (
+          {courses && tableData ? tableData.slice(currentPage * rowsCount, currentPage * rowsCount + rowsCount).map((row, index) => (
             <TableRow key={index} className={classes.tableBodyRow}>
               <TableCell className={classes.tableCell}>{row.title}</TableCell>
               <TableCell className={classes.tableCell}>{row.teacher}</TableCell>
@@ -184,7 +187,7 @@ export default function CustomTable(props) {
               </TableCell>
             </TableRow>
           )) : ''}
-          {teacher && tableData ? tableData.slice((currentPage * rowsCount) - rowsCount, currentPage * rowsCount).map((row, index) => (
+          {teacher && tableData ? tableData.slice(currentPage * rowsCount, currentPage * rowsCount + rowsCount).map((row, index) => (
             <TableRow key={index} className={classes.tableBodyRow}>
               <TableCell className={classes.tableCell}>
                 <Avatar src={row.profile} className={classes.large} />
@@ -243,7 +246,7 @@ export default function CustomTable(props) {
               </TableCell>
             </TableRow>
           )) : ''}
-          {student && tableData ? tableData.slice((currentPage * rowsCount) - rowsCount, currentPage * rowsCount).map((row, index) => (
+          {student && tableData ? tableData.slice(currentPage * rowsCount, currentPage * rowsCount + rowsCount).map((row, index) => (
             <TableRow key={index} className={classes.tableBodyRow}>
               <TableCell className={classes.tableCell}>
                 <Avatar src={row.profile} className={classes.large} />
@@ -323,7 +326,7 @@ export default function CustomTable(props) {
               </TableCell>
             </TableRow>
           )) : ''}
-          {lessons && tableData ? tableData.slice((currentPage * rowsCount) - rowsCount, currentPage * rowsCount).map((row, index) => (
+          {lessons && tableData ? tableData.slice(currentPage * rowsCount, currentPage * rowsCount + rowsCount).map((row, index) => (
             <TableRow key={index} className={classes.tableBodyRow}>
               <TableCell className={classes.tableCell}>
                 <Avatar src={row.profile} className={classes.large} />
@@ -401,7 +404,7 @@ export default function CustomTable(props) {
             </TableRow>
           )) : ''}
 
-          {myCourses && tableData ? tableData.slice((currentPage * rowsCount) - rowsCount, currentPage * rowsCount).map((row, index) => (
+          {myCourses && tableData ? tableData.slice(currentPage * rowsCount, currentPage * rowsCount + rowsCount).map((row, index) => (
             <TableRow key={index} className={classes.tableBodyRow}>
               <TableCell className={classes.tableCell}>{row.title}</TableCell>
               <TableCell className={classes.tableCell}>{row.teacher.fullName}</TableCell>
@@ -435,7 +438,7 @@ export default function CustomTable(props) {
             </TableRow>
           )) : ''}
 
-          {currentStudent && tableData ? tableData.slice((currentPage * rowsCount) - rowsCount, currentPage * rowsCount).map((row, index) => (
+          {currentStudent && tableData ? tableData.slice(currentPage * rowsCount, currentPage * rowsCount + rowsCount).map((row, index) => (
             <TableRow key={index} className={classes.tableBodyRow}>
               <TableCell className={classes.tableCell}>
                 <Avatar src={row.profile} className={classes.large} />
@@ -470,7 +473,7 @@ export default function CustomTable(props) {
             </TableRow>
           )) : ''}
 
-          {AllStudentInsertCourse && tableData ? tableData.slice((currentPage * rowsCount) - rowsCount, currentPage * rowsCount).map((row, index) => (
+          {AllStudentInsertCourse && tableData ? tableData.slice(currentPage * rowsCount, currentPage * rowsCount + rowsCount).map((row, index) => (
             <TableRow key={index} className={classes.tableBodyRow}>
               <TableCell className={classes.tableCell}>
                 <Avatar src={row.profile} className={classes.large} />
@@ -511,7 +514,7 @@ export default function CustomTable(props) {
             </TableRow>
           )) : ''}
 
-          {coursesFromLesson && tableData ? tableData.slice((currentPage * rowsCount) - rowsCount, currentPage * rowsCount).map((row, index) => (
+          {coursesFromLesson && tableData ? tableData.slice(currentPage * rowsCount, currentPage * rowsCount + rowsCount).map((row, index) => (
             <TableRow key={index} className={classes.tableBodyRow}>
               <TableCell className={classes.tableCell}>{row.title}</TableCell>
               <TableCell className={classes.tableCell}>{formatDate(row.startDate)}</TableCell>
@@ -544,7 +547,7 @@ export default function CustomTable(props) {
             </TableRow>
           )) : ''}
 
-          {allComment && tableData ? tableData.slice((currentPage * rowsCount) - rowsCount, currentPage * rowsCount).map((row, index) => (
+          {allComment && tableData ? tableData.slice(currentPage * rowsCount, currentPage * rowsCount + rowsCount).map((row, index) => (
             <TableRow key={index} className={classes.tableBodyRow} style={{ cursor: "pointer" }}>
               <TableCell className={classes.tableCell} onClick={() => { showAllData(row._id) }}>{row.username}</TableCell>
               <TableCell className={classes.tableCell} onClick={() => { showAllData(row._id) }}>{row.email}</TableCell>
@@ -606,7 +609,7 @@ export default function CustomTable(props) {
             </TableRow>
           )) : ''}
 
-          {allNewsShow && tableData ? tableData.slice((currentPage * rowsCount) - rowsCount, currentPage * rowsCount).map((row, index) => (
+          {allNewsShow && tableData ? tableData.slice(currentPage * rowsCount, currentPage * rowsCount + rowsCount).map((row, index) => (
             <TableRow key={index} className={classes.tableBodyRow}>
               <TableCell className={classes.tableCell}>
                 <Avatar src={row.image} className={classes.large} />
@@ -662,8 +665,19 @@ export default function CustomTable(props) {
           )) : ''}
         </TableBody>
       </Table>
+      <TablePagination
+        rowsPerPageOptions={[5, 10]}
+        component="div"
+        count={tableData.length}
+        rowsPerPage={rowsCount}
+        page={currentPage}
+        onPageChange={handleChangePage}
+        labelRowsPerPage=""
+        onRowsPerPageChange={handleChangeRowsPerPage}
+      />
     </div>
   );
+
 }
 
 CustomTable.defaultProps = {
@@ -684,6 +698,8 @@ CustomTable.propTypes = {
   tableData: PropTypes.any,
   currentPage: PropTypes.number,
   rowsCount: PropTypes.number,
+  handleChangePage: PropTypes.func,
+  handleChangeRowsPerPage: PropTypes.func,
 
   courses: PropTypes.bool,
   removeCourse: PropTypes.func,
@@ -721,7 +737,7 @@ CustomTable.propTypes = {
   verified: PropTypes.bool,
   showAllData: PropTypes.func,
 
-  removeNews:PropTypes.func,
-  editNews:PropTypes.func,
-  allNewsShow:PropTypes.bool
+  removeNews: PropTypes.func,
+  editNews: PropTypes.func,
+  allNewsShow: PropTypes.bool
 };
