@@ -11,12 +11,13 @@ import GridContainer from "components/Grid/GridContainer.js";
 import Card from "components/Card/Card.js";
 import CardHeader from "components/Card/CardHeader.js";
 import CardBody from "components/Card/CardBody.js";
-import { formatDate } from "constants/usefulFunc";
 import CustomSelectInput from "components/CustomInput/CustomeSelectInput";
 import { getAllTeachers } from "api/Core/Employe_Manage";
 import { updateCourse } from "api/Core/Course";
-import { getAllLesson } from "api/Core/Lesson";
+import { getAllLesson } from "api/Core/Lesson"
 import { Avatar } from "@mui/material";
+import CustomeDatePicker from "components/CustomeDatePicker/CustomeDatePicker"
+
 import "./Course.css"
 
 const styles = (theme) => ({
@@ -55,6 +56,7 @@ const styles = (theme) => ({
 
 const useStyles = makeStyles(styles);
 export default function EditCourse(props) {
+    var jalaali = require('jalaali-js')
     const classes = useStyles();
     const {
         openEditCoursePopUp,
@@ -73,6 +75,9 @@ export default function EditCourse(props) {
     const [allTeacher, setAllTeacher] = useState()
     const [allLessons, setAllLessons] = useState()
     const [photoLesson, setPhotoLesson] = useState()
+
+    const [dateStart, setDateStart] = useState()
+    const [dateEnd, setDateEnd] = useState()
 
     useEffect(() => {
         getAllTeacher()
@@ -97,17 +102,24 @@ export default function EditCourse(props) {
             setAllLessons(rightData)
         }
     }
-
+console.log(dataCourse.startDate.split("T"),"dataCourse.endDate");
 
     useEffect(() => {
         setTitle(dataCourse.title)
-        setStartDate(formatDate(dataCourse.endDate))
+        setStartDate(dataCourse.endDate)
         setTeacherName(dataCourse.teacher._id)
-        setEndDate(formatDate(dataCourse.startDate))
+        setEndDate(dataCourse.startDate)
         setCost(dataCourse.cost)
         setCapacity(dataCourse.capacity)
         setLessonName(dataCourse.lesson._id)
 
+        var datePirsianStart = dataCourse.startDate.split("T")[0].split("-")
+        var dateEnglishStart = jalaali.toGregorian(Number(datePirsianStart[0]), Number(datePirsianStart[1]), Number(datePirsianStart[2]))
+        setDateStart(new Date(`${dateEnglishStart.gy}/${dateEnglishStart.gm}/${dateEnglishStart.gd}`))
+
+        var datePirsianEnd = dataCourse.endDate.split("T")[0].split("-")
+        var dateEnglishEnd = jalaali.toGregorian(Number(datePirsianEnd[0]), Number(datePirsianEnd[1]), Number(datePirsianEnd[2]))
+        setDateEnd(new Date(`${dateEnglishEnd.gy}/${dateEnglishEnd.gm}/${dateEnglishEnd.gd}`))
     }, [dataCourse])
 
     useEffect(() => {
@@ -182,28 +194,26 @@ export default function EditCourse(props) {
 
                                 <GridContainer>
                                     <GridItem xs={12} sm={12} md={6}>
-                                        <CustomInput
-                                            rtlActive
-                                            labelText="شروع دوره"
-
-                                            formControlProps={{
-                                                fullWidth: true,
+                                        <CustomeDatePicker
+                                            className="enterInputPanel"
+                                            label="شروع دوره"
+                                            onChange={(e) => {
+                                                setDateStart(e);
+                                                setStartDate(`${e.year}/${e.month.number}/${e.day}`)
                                             }}
-                                            value={startDate}
-                                            onChange={(e) => { setStartDate(e) }}
-                                        />
+                                            value={dateStart} />
+
                                     </GridItem>
                                     <GridItem xs={12} sm={12} md={6}>
-                                        <CustomInput
-                                            labelText="پایان دوره"
-
-                                            formControlProps={{
-                                                fullWidth: true,
+                                        <CustomeDatePicker
+                                            className="enterInputPanel"
+                                            label="پایان دوره"
+                                            onChange={(e) => {
+                                                setDateEnd(e);
+                                                setEndDate(`${e.year}/${e.month.number}/${e.day}`)
                                             }}
-                                            value={endDate}
-                                            onChange={(e) => { setEndDate(e) }}
-                                            rtlActive
-                                        />
+                                            value={dateEnd} />
+
                                     </GridItem>
                                 </GridContainer>
                                 <GridContainer>

@@ -46,6 +46,9 @@
     margin: 3px -15px !important;
 }
 
+.bodyCreateTeacher .MuiGrid-root .datePicker_form .rmdp-container {
+    width: 90%;
+}
 
 @media screen and (max-width:749px) {
     .bodyCreateTeacher div .MuiGrid-root .MuiGrid-root .MuiFormControl-fullWidth {
@@ -80,5 +83,9 @@
         align-items: center;
         justify-content: center;
         display: flex;
+    }
+
+    .MuiGrid-root .datePicker_form .rmdp-container {
+        width: 100%;
     }
 }

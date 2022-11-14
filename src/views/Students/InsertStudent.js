@@ -15,10 +15,10 @@ import Avatar from '@material-ui/core/Avatar';
 import PopUpCustome from "components/PopUp/PopUp";
 import RegularButton from "components/CustomButtons/Button";
 import { GeneralContext } from "providers/GeneralContext";
+import CustomeDatePicker from "components/CustomeDatePicker/CustomeDatePicker"
 
 // @material-ui/icons
 import RecentActorsIcon from '@material-ui/icons/RecentActors';
-import CalendarToday from '@material-ui/icons/CalendarToday';
 import Call from '@material-ui/icons/Call';
 import PersonIcon from '@material-ui/icons/Person';
 import MailOutlineIcon from '@material-ui/icons/MailOutline';
@@ -75,6 +75,7 @@ export default function InsertStudent(props) {
     const [emailNew, setEmailNew] = useState()
     const [passNew, setPassNew] = useState()
     const [nationalIdNew, setNationalCodeNew] = useState()
+    const [date, setDate] = useState(null);
 
     const insertStudent = async () => {
         const data = {
@@ -230,25 +231,15 @@ export default function InsertStudent(props) {
                                         />
                                     </GridItem>
                                     <GridItem xs={12} sm={12} md={6}>
-                                        <CustomInput
-                                            labelText="تاریخ تولد"
-                                            formControlProps={{
-                                                fullWidth: true,
+                                        <CustomeDatePicker
+                                            label="تاریخ تولد"
+                                            maxDate={new Date()}
+                                            onChange={(e) => {
+                                                setDate(e);
+                                                setBirthNew(`${e.year}/${e.month.number}/${e.day}`)
                                             }}
-                                            mask={"$$$$/$$/$$"}
-                                            maskChar={"$"}
-                                            value={birthNew}
-                                            onChange={(e) => { setBirthNew(e) }}
-                                            rtlActive
-                                            inputProps={{
-                                                required: true,
-                                                name: "birthDate",
-                                                endAdornment: (
-                                                    <InputAdornment position="end">
-                                                        <CalendarToday className={classes.inputAdornmentIcon} />
-                                                    </InputAdornment>
-                                                )
-                                            }}
+                                            value={date}
+                                            className="Birth"
                                         />
                                     </GridItem>
                                 </GridContainer>

@@ -14,6 +14,7 @@ import CardHeader from "components/Card/CardHeader.js";
 import CardBody from "components/Card/CardBody.js";
 import { updateStudetInform } from "api/Core/Student_Manage";
 import { GeneralContext } from "providers/GeneralContext";
+import CustomeDatePicker from "components/CustomeDatePicker/CustomeDatePicker"
 import "./students.css"
 
 const styles = (theme) => ({
@@ -53,6 +54,7 @@ const styles = (theme) => ({
 const useStyles = makeStyles(styles);
 
 export default function EditStudent(props) {
+    var jalaali = require('jalaali-js')
     const classes = useStyles();
     const {
         openEditStudentPopUp,
@@ -63,10 +65,12 @@ export default function EditStudent(props) {
 
     const [name, setName] = useState()
     const [phone, setPhone] = useState()
-    const [birth, setBirth] = useState()
+    const [date, setDate] = useState()
     const [email, setEmail] = useState()
     const [photo, setPhoto] = useState()
     const [nationalId, setNationalCode] = useState()
+
+    const [birth, setBirth] = useState();
 
     useEffect(() => {
         setName(dataStudent.fullName)
@@ -74,7 +78,10 @@ export default function EditStudent(props) {
         setBirth(dataStudent.birthDate)
         setEmail(dataStudent.email)
         setPhoto(dataStudent.profile)
-        setNationalCode(dataStudent.nationalId)
+        setNationalCode(dataStudent.nationalId);
+        var datePirsian = dataStudent.birthDate.split("/")
+        var dateEnglish = jalaali.toGregorian(Number(datePirsian[0]), Number(datePirsian[1]), Number(datePirsian[2]))
+        setDate(new Date(`${dateEnglish.gy}/${dateEnglish.gm}/${dateEnglish.gd}`))
     }, [dataStudent])
 
 
@@ -91,7 +98,7 @@ export default function EditStudent(props) {
         let response = await updateStudetInform(data)
         if (response.data.result) {
             setOpenToast(true)
-            onToast("کاربر آپدیت شد","success")
+            onToast("کاربر آپدیت شد", "success")
             EditSuccess();
         }
     }
@@ -164,16 +171,15 @@ export default function EditStudent(props) {
                                         />
                                     </GridItem>
                                     <GridItem xs={12} sm={12} md={6}>
-                                        <CustomInput
-                                            labelText="تاریخ تولد"
-
-                                            formControlProps={{
-                                                fullWidth: true,
+                                        <CustomeDatePicker
+                                            className="enterInputPanel"
+                                            label="تاریخ تولد"
+                                            maxDate={new Date()}
+                                            onChange={(e) => {
+                                                setDate(e);
+                                                setBirth(`${e.year}/${e.month.number}/${e.day}`)
                                             }}
-                                            value={birth}
-                                            onChange={(e) => { setBirth(e) }}
-                                            rtlActive
-                                        />
+                                            value={date} />
                                     </GridItem>
                                 </GridContainer>
                             </div>

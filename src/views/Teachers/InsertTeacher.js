@@ -16,7 +16,7 @@ import PopUpCustome from "components/PopUp/PopUp";
 import RegularButton from "components/CustomButtons/Button";
 // @material-ui/icons
 import RecentActorsIcon from '@material-ui/icons/RecentActors';
-import CalendarToday from '@material-ui/icons/CalendarToday';
+import CustomeDatePicker from "components/CustomeDatePicker/CustomeDatePicker"
 import Call from '@material-ui/icons/Call';
 import PersonIcon from '@material-ui/icons/Person';
 import HomeIcon from '@material-ui/icons/Home';
@@ -74,6 +74,7 @@ export default function InsertTeacher(props) {
     const [passNew, setPassNew] = useState()
     const [addressNew, setAddressNew] = useState()
     const [nationalIdNew, setNationalCodeNew] = useState()
+    const [date, setDate] = useState(null);
 
     const insertStudent = async () => {
         const data = {
@@ -230,25 +231,15 @@ export default function InsertTeacher(props) {
                                         />
                                     </GridItem>
                                     <GridItem xs={12} sm={12} md={6}>
-                                        <CustomInput
-                                            labelText="تاریخ تولد"
-                                            formControlProps={{
-                                                fullWidth: true,
+                                        <CustomeDatePicker
+                                            label="تاریخ تولد"
+                                            maxDate={new Date()}
+                                            onChange={(e) => {
+                                                setDate(e);
+                                                setBirthNew(`${e.year}/${e.month.number}/${e.day}`)
                                             }}
-                                            mask={"$$$$/$$/$$"}
-                                            maskChar={"$"}
-                                            value={birthNew}
-                                            onChange={(e) => { setBirthNew(e) }}
-                                            rtlActive
-                                            inputProps={{
-                                                required: true,
-                                                name: "birthDate",
-                                                endAdornment: (
-                                                    <InputAdornment position="end">
-                                                        <CalendarToday className={classes.inputAdornmentIcon} />
-                                                    </InputAdornment>
-                                                )
-                                            }}
+                                            value={date}
+                                            className="BirthTeacher"
                                         />
                                     </GridItem>
                                 </GridContainer>
@@ -264,7 +255,7 @@ export default function InsertTeacher(props) {
                                                 fullWidth: true,
                                                 className: classes.formControlClassName
                                             }}
-                                         className="address"
+                                            className="address"
                                             inputProps={{
                                                 required: true,
                                                 endAdornment: (

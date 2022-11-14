@@ -12,7 +12,7 @@ import Card from "components/Card/Card.js";
 import CardHeader from "components/Card/CardHeader.js";
 import CardBody from "components/Card/CardBody.js";
 import { updateEmployeeById } from "api/Core/Employe_Manage";
-
+import CustomeDatePicker from "components/CustomeDatePicker/CustomeDatePicker"
 
 const styles = (theme) => ({
     cardCategoryWhite: {
@@ -51,6 +51,7 @@ const styles = (theme) => ({
 const useStyles = makeStyles(styles);
 
 export default function EditTeacher(props) {
+    var jalaali = require('jalaali-js')
     const classes = useStyles();
     const {
         openEditTeacherPopUp,
@@ -65,7 +66,7 @@ export default function EditTeacher(props) {
     const [photo, setPhoto] = useState()
     const [address, setAddress] = useState()
     const [nationalId, setNationalCode] = useState()
-
+    const [date, setDate] = useState()
 
     useEffect(() => {
         setName(dataTeacher.fullName)
@@ -75,6 +76,9 @@ export default function EditTeacher(props) {
         setPhoto(dataTeacher.profile)
         setNationalCode(dataTeacher.nationalId)
         setAddress(dataTeacher.address)
+        var datePirsian = dataTeacher.birthDate.split("/")
+        var dateEnglish = jalaali.toGregorian(Number(datePirsian[0]), Number(datePirsian[1]), Number(datePirsian[2]))
+        setDate(new Date(`${dateEnglish.gy}/${dateEnglish.gm}/${dateEnglish.gd}`))
     }, [dataTeacher])
 
     const updateDataTeacher = async (id) => {
@@ -162,16 +166,15 @@ export default function EditTeacher(props) {
                                         />
                                     </GridItem>
                                     <GridItem xs={12} sm={12} md={6}>
-                                        <CustomInput
-                                            labelText="تاریخ تولد"
-
-                                            formControlProps={{
-                                                fullWidth: true,
+                                        <CustomeDatePicker
+                                            className="enterInputPanel"
+                                            label="تاریخ تولد"
+                                            maxDate={new Date()}
+                                            onChange={(e) => {
+                                                setDate(e);
+                                                setBirth(`${e.year}/${e.month.number}/${e.day}`)
                                             }}
-                                            value={birth}
-                                            onChange={(e) => { setBirth(e) }}
-                                            rtlActive
-                                        />
+                                            value={date} />
                                     </GridItem>
                                 </GridContainer>
                                 <GridContainer>

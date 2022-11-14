@@ -12,7 +12,7 @@ import CardAvatar from "components/Card/CardAvatar.js";
 import CardBody from "components/Card/CardBody.js";
 import CardFooter from "components/Card/CardFooter.js";
 import { GeneralContext } from "providers/GeneralContext";
-
+import CustomeDatePicker from "components/CustomeDatePicker/CustomeDatePicker"
 
 import { getItem } from "api/storage/storage";
 import { getEmployeeById } from "api/Core/Employe_Manage";
@@ -40,6 +40,7 @@ const styles = {
 const useStyles = makeStyles(styles);
 
 export default function UserProfile() {
+  var jalaali = require('jalaali-js')
   const classes = useStyles();
   const userId = getItem('id')
   const [dataUser, setDataUser] = useState()
@@ -50,7 +51,7 @@ export default function UserProfile() {
   const [address, setAddress] = useState()
   const [email, setEmail] = useState()
   const { setOpenToast, onToast } = useContext(GeneralContext);
-
+  const [date, setDate] = useState(null);
 
   useEffect(() => {
     getDataUser()
@@ -69,6 +70,10 @@ export default function UserProfile() {
       setBirth(response.data.result.birthDate)
       setAddress(response.data.result.address)
       setEmail(response.data.result.email)
+
+      var datePirsian = response.data.result.birthDate.split("/")
+      var dateEnglish = jalaali.toGregorian(Number(datePirsian[0]), Number(datePirsian[1]), Number(datePirsian[2]))
+      setDate(new Date(`${dateEnglish.gy}/${dateEnglish.gm}/${dateEnglish.gd}`))
     }
   }
 
@@ -169,15 +174,16 @@ export default function UserProfile() {
                   </GridItem>
 
                   <GridItem xs={12} sm={12} md={12}>
-                    <CustomInput
-                      labelText="تاریخ تولد"
-                      id="birth"
-                      formControlProps={{
-                        fullWidth: true,
+
+                    <CustomeDatePicker
+                      label="تاریخ تولد"
+                      maxDate={new Date()}
+                      onChange={(e) => {
+                        setDate(e);
+                        setBirth(`${e.year}/${e.month.number}/${e.day}`)
                       }}
-                      value={birth}
-                      onChange={(e) => { setBirth(e) }}
-                      rtlActive
+                      value={date}
+                      className="Birth"
                     />
                   </GridItem>
 

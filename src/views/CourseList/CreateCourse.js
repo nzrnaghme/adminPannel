@@ -15,6 +15,7 @@ import CustomSelectInput from "components/CustomInput/CustomeSelectInput";
 import { getAllTeachers } from "api/Core/Employe_Manage";
 import { getAllLesson } from "api/Core/Lesson";
 import { createCourse } from "api/Core/Course";
+import CustomeDatePicker from "components/CustomeDatePicker/CustomeDatePicker"
 import "./Course.css"
 import { Avatar } from "@mui/material";
 
@@ -73,6 +74,9 @@ export default function CreateCourse(props) {
     const [allTeacher, setAllTeacher] = useState()
     const [allLessons, setAllLessons] = useState()
     const [photoLesson, setPhotoLesson] = useState()
+
+    const [dateStart, setDateStart] = useState(null)
+    const [dateEnd, setDateEnd] = useState(null)
 
     useEffect(() => {
         getAllTeacher()
@@ -181,27 +185,26 @@ export default function CreateCourse(props) {
 
                             <GridContainer>
                                 <GridItem xs={12} sm={12} md={6}>
-                                    <CustomInput
-                                        rtlActive
-                                        labelText="شروع دوره"
-
-                                        formControlProps={{
-                                            fullWidth: true,
+                                    <CustomeDatePicker
+                                        label="شروع دوره"
+                                        minDate={new Date()}
+                                        onChange={(e) => {
+                                            setDateStart(e);
+                                            setStartDate(`${e.year}/${e.month.number}/${e.day}`)
                                         }}
-                                        value={startDate}
-                                        onChange={(e) => { setStartDate(e) }}
+                                        value={dateStart}
                                     />
+
                                 </GridItem>
                                 <GridItem xs={12} sm={12} md={6}>
-                                    <CustomInput
-                                        labelText="پایان دوره"
 
-                                        formControlProps={{
-                                            fullWidth: true,
+                                    <CustomeDatePicker
+                                        label="پایان دوره"
+                                        onChange={(e) => {
+                                            setDateEnd(e);
+                                            setEndDate(`${e.year}/${e.month.number}/${e.day}`)
                                         }}
-                                        value={endDate}
-                                        onChange={(e) => { setEndDate(e) }}
-                                        rtlActive
+                                        value={dateEnd}
                                     />
                                 </GridItem>
                             </GridContainer>
