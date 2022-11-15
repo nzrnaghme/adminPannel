@@ -23,6 +23,18 @@
     align-items: center;
 }
 
+.MuiTab-wrapper{
+    font-family: bakh !important;
+}
+
+.MuiFormLabel-root{
+    font-family: bakh !important;
+}
+
+.MuiTypography-root{
+    font-family: bakh !important;
+}
+
 
 @media screen and (max-width:749px) {
 

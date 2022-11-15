@@ -18,7 +18,9 @@
     width: 700px;
 }
 
-
+.MuiTab-wrapper{
+    font-family: bakh !important;
+}
 
 /* Answer Comment */
 
