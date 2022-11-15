@@ -80,6 +80,7 @@ const rtlStyle = {
       lineHeight: "1",
     },
   },
+  
 };
 
 export default rtlStyle;

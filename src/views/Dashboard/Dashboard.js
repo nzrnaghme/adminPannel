@@ -1,136 +1,124 @@
 /*eslint-disable*/
-import React from "react";
+import React, { useEffect, useState } from "react";
 // react plugin for creating charts
-import ChartistGraph from "react-chartist";
+// import ChartistGraph from "react-chartist";
 // @material-ui/core
 import { makeStyles } from "@material-ui/core/styles";
-import Icon from "@material-ui/core/Icon";
 // @material-ui/icons
-import Store from "@material-ui/icons/Store";
-import Warning from "@material-ui/icons/Warning";
+import AssignmentRoundedIcon from '@material-ui/icons/AssignmentRounded';
+import PeopleOutlineRoundedIcon from '@material-ui/icons/PeopleOutlineRounded';
+import LocalLibraryRoundedIcon from '@material-ui/icons/LocalLibraryRounded';
 import DateRange from "@material-ui/icons/DateRange";
 import LocalOffer from "@material-ui/icons/LocalOffer";
 import Update from "@material-ui/icons/Update";
-import ArrowUpward from "@material-ui/icons/ArrowUpward";
-import AccessTime from "@material-ui/icons/AccessTime";
-import Accessibility from "@material-ui/icons/Accessibility";
-import BugReport from "@material-ui/icons/BugReport";
-import Code from "@material-ui/icons/Code";
-import Cloud from "@material-ui/icons/Cloud";
+// import ArrowUpward from "@material-ui/icons/ArrowUpward";
+// import AccessTime from "@material-ui/icons/AccessTime";
 // core components
 import Button from "components/CustomButtons/Button.js";
 import GridItem from "components/Grid/GridItem.js";
 import GridContainer from "components/Grid/GridContainer.js";
 import Table from "components/Table/Table.js";
-import Tasks from "components/Tasks/Tasks.js";
-import CustomTabs from "components/CustomTabs/CustomTabs.js";
-import Danger from "components/Typography/Danger.js";
 import Card from "components/Card/Card.js";
 import CardHeader from "components/Card/CardHeader.js";
 import CardAvatar from "components/Card/CardAvatar.js";
 import CardIcon from "components/Card/CardIcon.js";
 import CardBody from "components/Card/CardBody.js";
 import CardFooter from "components/Card/CardFooter.js";
-import SnackbarContent from "components/Snackbar/SnackbarContent.js";
 
-import {
-  dailySalesChart,
-  emailsSubscriptionChart,
-  completedTasksChart,
-} from "variables/charts.js";
+// import {
+//   dailySalesChart,
+//   emailsSubscriptionChart,
+//   completedTasksChart,
+// } from "variables/charts.js";
 
 import styles from "assets/jss/material-dashboard-react/views/rtlStyle.js";
 
-import avatar from "assets/img/faces/marc.jpg";
+import avatar from "assets/img/faces/admin.jpg";
+import { getAllStudet } from "api/Core/Student_Manage";
+import { getAllTeachers } from "api/Core/Employe_Manage";
+import { getAllCourse } from "api/Core/Course";
 
-let bugs = [
-  "طراح گرافیک از این متن به عنوان عنصری از ترکیب بندی برای پر کردن؟",
-  "	نخست از متن‌های آزمایشی و بی‌معنی استفاده می‌کنند تا صرفا به مشتری یا صاحب کار خود نشان دهند؟",
-  "همان حال کار آنها به نوعی وابسته به متن می‌باشد",
-  "	آنها با استفاده از محتویات ساختگی، صفحه گرافیکی خود را صفحه‌آرایی می‌کنند",
-];
-let website = [
-  "بعد از اینکه متن در آن قرار گیرد چگونه به نظر می‌رسد و قلم‌ها و اندازه‌بندی‌ها چگونه در نظر گرفته",
-  "اولیه شکل ظاهری و کلی طرح سفارش گرفته شده استفاده می نماید؟",
-];
-let server = [
-  "گرافیکی نشانگر چگونگی نوع و اندازه فونت و ظاهر متن باشد. معمولا طراحان گرافیک برای صفحه‌آرایی، نخست از متن‌های آزمایشی؟",
-  "از این متن به عنوان عنصری از ترکیب بندی برای پر کردن صفحه و ارایه اولیه شکل ظاهری و کلی طرح سفارش گرفته شده استفاده می نماید، تا از نظر گرافیکی نشانگر چگونگی نوع و اندازه فونت و ظاهر متن باشد. معمولا طراحان گرافیک برای صفحه‌آرایی، نخست از متن‌های آزمایشی ؟",
-  "از متن‌های آزمایشی و بی‌معنی استفاده می‌کنند تا صرفا به مشتری یا صاحب کار خود نشان دهند؟",
-];
 
 const useStyles = makeStyles(styles);
 
 export default function RTLPage() {
   const classes = useStyles();
+
+  const [countStudents, setCountStudents] = useState(0);
+  const [countTeachers, setCountTeachers] = useState(0);
+  const [countCourses, setCountCourses] = useState(0);
+
+  const [allStudent, setAllStudent] = useState();
+  const [currentPage_MainbarStudents, setCurrentPage_MainbarStudents] = useState(0);
+  const [rowsPerPageStudents, setRowsPerPagStudents] = useState(3);
+
+  const [allTeacher, setAllTeacher] = useState();
+  const [currentPage_MainbarTeacher, setCurrentPage_MainbarTeacher] = useState(0);
+  const [rowsPerPageTeacher, setRowsPerPagTeacher] = useState(3);
+
+  useEffect(() => {
+    getAllUser();
+    getTeacher();
+    getAllCourses();
+  }, [])
+
+  const getAllUser = async () => {
+    let response = await getAllStudet();
+    if (response.data.result) {
+      setCountStudents(response.data.result.length);
+      // const sortedActivities = (response.data.result.sort((a, b) => b.registerDate - a.registerDate));
+      // console.log(sortedActivities,"sortedActivities");
+      setAllStudent(response.data.result)
+    }
+  }
+
+  const getTeacher = async () => {
+    let response = await getAllTeachers();
+    if (response.data.result) {
+      setCountTeachers(response.data.result.length);
+      setAllTeacher(response.data.result)
+    }
+  }
+
+  const getAllCourses = async () => {
+    let response = await getAllCourse();
+    if (response.data.result) {
+      setCountCourses(response.data.result.length);
+
+    }
+  }
+
+  const handleChangePageStudents = (event, newPage) => {
+    setCurrentPage_MainbarStudents(newPage)
+  }
+
+  const handleChangeRowsPerPageStudents = (event) => {
+    setRowsPerPagStudents(+event.target.value);
+    setCurrentPage_MainbarStudents(0);
+  };
+
+  const handleChangePageTeacher = (event, newPage) => {
+    setCurrentPage_MainbarTeacher(newPage)
+  }
+
+  const handleChangeRowsPerPageTeacher = (event) => {
+    setRowsPerPagTeacher(+event.target.value);
+    setCurrentPage_MainbarTeacher(0);
+  };
+
   return (
     <div>
       <GridContainer>
-        <GridItem xs={12} sm={6} md={3}>
+        <GridItem xs={12} sm={6} md={4}>
           <Card>
             <CardHeader color="warning" stats icon>
               <CardIcon color="warning">
-                <Icon>content_copy</Icon>
+                <PeopleOutlineRoundedIcon />
               </CardIcon>
-              <p className={classes.cardCategory}>فضا مصرف شده</p>
+              <p className={classes.cardCategory}>تعداد دانشجویان</p>
               <h3 className={classes.cardTitle}>
-                49/50 <small>GB</small>
+                {countStudents} <small>نفر</small>
               </h3>
-            </CardHeader>
-            <CardFooter stats>
-              <div className={classes.stats}>
-                <Danger>
-                  <Warning />
-                </Danger>
-                <a href="#pablo" onClick={(e) => e.preventDefault()}>
-                  فضای بیشتری داشته باشید...
-                </a>
-              </div>
-            </CardFooter>
-          </Card>
-        </GridItem>
-        <GridItem xs={12} sm={6} md={3}>
-          <Card>
-            <CardHeader color="success" stats icon>
-              <CardIcon color="success">
-                <Store />
-              </CardIcon>
-              <p className={classes.cardCategory}>سود</p>
-              <h3 className={classes.cardTitle}>$34,245</h3>
-            </CardHeader>
-            <CardFooter stats>
-              <div className={classes.stats}>
-                <DateRange />
-                ۲۴ ساعت اخیر
-              </div>
-            </CardFooter>
-          </Card>
-        </GridItem>
-        <GridItem xs={12} sm={6} md={3}>
-          <Card>
-            <CardHeader color="danger" stats icon>
-              <CardIcon color="danger">
-                <Icon>info_outline</Icon>
-              </CardIcon>
-              <p className={classes.cardCategory}>مشکلات حل شده</p>
-              <h3 className={classes.cardTitle}>75</h3>
-            </CardHeader>
-            <CardFooter stats>
-              <div className={classes.stats}>
-                <LocalOffer />
-                توسط گیت‌هاب
-              </div>
-            </CardFooter>
-          </Card>
-        </GridItem>
-        <GridItem xs={12} sm={6} md={3}>
-          <Card>
-            <CardHeader color="info" stats icon>
-              <CardIcon color="info">
-                <Accessibility />
-              </CardIcon>
-              <p className={classes.cardCategory}>دنبال‌کننده</p>
-              <h3 className={classes.cardTitle}>+245</h3>
             </CardHeader>
             <CardFooter stats>
               <div className={classes.stats}>
@@ -140,8 +128,47 @@ export default function RTLPage() {
             </CardFooter>
           </Card>
         </GridItem>
+        <GridItem xs={12} sm={6} md={4}>
+          <Card>
+            <CardHeader color="success" stats icon>
+              <CardIcon color="success">
+                <LocalLibraryRoundedIcon />
+              </CardIcon>
+              <p className={classes.cardCategory}>تعداد اساتید</p>
+              <h3 className={classes.cardTitle}>
+                {countTeachers} <small>نفر</small>
+              </h3>
+            </CardHeader>
+            <CardFooter stats>
+              <div className={classes.stats}>
+                <DateRange />
+                ۲۴ ساعت اخیر
+              </div>
+            </CardFooter>
+          </Card>
+        </GridItem>
+        <GridItem xs={12} sm={6} md={4}>
+          <Card>
+            <CardHeader color="info" stats icon>
+              <CardIcon color="info">
+                <AssignmentRoundedIcon />
+              </CardIcon>
+              <p className={classes.cardCategory}>تعداد دوره ها</p>
+              <h3 className={classes.cardTitle}>
+                {countCourses} <small></small>
+              </h3>
+            </CardHeader>
+            <CardFooter stats>
+              <div className={classes.stats}>
+                <LocalOffer />
+                توسط گیت‌هاب
+              </div>
+            </CardFooter>
+          </Card>
+        </GridItem>
+
       </GridContainer>
-      <GridContainer>
+      {/* <GridContainer>
         <GridItem xs={12} sm={12} md={4}>
           <Card chart>
             <CardHeader color="success">
@@ -214,129 +241,56 @@ export default function RTLPage() {
             </CardFooter>
           </Card>
         </GridItem>
-      </GridContainer>
+      </GridContainer> */}
       <GridContainer>
         <GridItem xs={12} sm={12} md={6}>
-          <CustomTabs
-            title="وظایف:"
-            headerColor="primary"
-            rtlActive
-            tabs={[
-              {
-                tabName: "باگ‌ها",
-                tabIcon: BugReport,
-                tabContent: (
-                  <Tasks
-                    checkedIndexes={[0, 3]}
-                    tasksIndexes={[0, 1, 2, 3]}
-                    tasks={bugs}
-                    rtlActive
-                  />
-                ),
-              },
-              {
-                tabName: "وبسایت",
-                tabIcon: Code,
-                tabContent: (
-                  <Tasks
-                    checkedIndexes={[0]}
-                    tasksIndexes={[0, 1]}
-                    tasks={website}
-                    rtlActive
-                  />
-                ),
-              },
-              {
-                tabName: "سرور",
-                tabIcon: Cloud,
-                tabContent: (
-                  <Tasks
-                    checkedIndexes={[1]}
-                    tasksIndexes={[0, 1, 2]}
-                    tasks={server}
-                    rtlActive
-                  />
-                ),
-              },
-            ]}
-          />
+          {allStudent && allStudent.length > 0 &&
+            <Card>
+              <CardHeader color="warning">
+                <h4 className={classes.cardTitleWhite}>آمار دانشجویان</h4>
+                <p className={classes.cardCategoryWhite}>
+                  دانشجویان جدید از ۱۵ آبان ۱۳۹۶
+                </p>
+              </CardHeader>
+              <CardBody>
+                <Table
+                  tableHeaderColor="warning"
+                  tableHead={["", "نام", "تعداد دروس", ""]}
+                  tableData={allStudent}
+                  currentPage={currentPage_MainbarStudents}
+                  rowsCount={rowsPerPageStudents}
+                  handleChangePage={handleChangePageStudents}
+                  handleChangeRowsPerPage={handleChangeRowsPerPageStudents}
+                  studentPannel
+                />
+              </CardBody>
+            </Card>}
         </GridItem>
         <GridItem xs={12} sm={12} md={6}>
-          <Card>
-            <CardHeader color="warning">
-              <h4 className={classes.cardTitleWhite}>آمار کارکنان</h4>
-              <p className={classes.cardCategoryWhite}>
-                کارکنان جدید از ۱۵ آبان ۱۳۹۶
-              </p>
-            </CardHeader>
-            <CardBody>
-              <Table
-                tableHeaderColor="warning"
-                tableHead={["کد", "نام", "حقوق", "استان"]}
-                tableData={[
-                  ["1", "احمد حسینی	", "$36,738", "مازندران"],
-                  ["2", "مینا رضایی	", "$23,789", "گلستان"],
-                  ["3", "مبینا احمدپور	", "$56,142", "تهران"],
-                  ["4", "جلال آقایی	", "$38,735", "شهرکرد"],
-                ]}
-              />
-            </CardBody>
-          </Card>
+          {allTeacher && allTeacher.length > 0 &&
+            <Card>
+              <CardHeader color="success">
+                <h4 className={classes.cardTitleWhite}>آمار اساتید</h4>
+                <p className={classes.cardCategoryWhite}>
+                  کارکنان جدید از ۱۵ آبان ۱۳۹۶
+                </p>
+              </CardHeader>
+              <CardBody>
+                <Table
+                  tableHeaderColor="warning"
+                  tableHead={["", "نام", "تعداد دروس", ""]}
+                  tableData={allTeacher}
+                  currentPage={currentPage_MainbarTeacher}
+                  rowsCount={rowsPerPageTeacher}
+                  handleChangePage={handleChangePageTeacher}
+                  handleChangeRowsPerPage={handleChangeRowsPerPageTeacher}
+                  studentPannel
+                />
+              </CardBody>
+            </Card>}
         </GridItem>
       </GridContainer>
       <GridContainer>
-        <GridItem xs={12} sm={12} md={6}>
-          <Card>
-            <CardHeader color="primary">
-              <h4 className={classes.cardTitleWhite}>اعلان ها</h4>
-              <p className={classes.cardCategoryWhite}>
-                يدويا من قبل أصدقائنا من{" "}
-                <a
-                  target="_blank"
-                  href="https://material-ui-next.com/?ref=creativetime"
-                >
-                  واجهة المستخدم المادية
-                </a>{" "}
-                ونصب من قبل{" "}
-                <a
-                  target="_blank"
-                  href="https://www.creative-tim.com/?ref=mdr-rtl-page"
-                >
-                  الإبداعية تيم
-                </a>
-                . يرجى التحقق من{" "}
-                <a href="#pablo" target="_blank">
-                  وثائق كاملة
-                </a>
-                .
-              </p>
-            </CardHeader>
-            <CardBody>
-              <SnackbarContent
-                message={
-                  'این یک اعلان است که با کلاس color="warning" ایجاد شده است.'
-                }
-                close
-                rtlActive
-                color="warning"
-              />
-              <SnackbarContent
-                message={
-                  'این یک اعلان است که با کلاس color="primary" ایجاد شده است.'
-                }
-                close
-                rtlActive
-                color="primary"
-              />
-              <SnackbarContent
-                message={"این یک اعلان با دکمه بستن و آیکن است"}
-                close
-                rtlActive
-                color="info"
-              />
-            </CardBody>
-          </Card>
-        </GridItem>
         <GridItem xs={12} sm={12} md={6}>
           <Card profile>
             <CardAvatar profile>
@@ -346,13 +300,13 @@ export default function RTLPage() {
             </CardAvatar>
             <CardBody profile>
               <h6 className={classes.cardCategory}>مدیرعامل / مدیرفنی</h6>
-              <h4 className={classes.cardTitle}>خداداد عزیزی</h4>
+              <h4 className={classes.cardTitle}>امیرحسین بهبودی جویباری</h4>
               <p className={classes.description}>
-                طراح گرافیک از این متن به عنوان عنصری از ترکیب بندی برای پر کردن
-                صفحه و ارایه اولیه شکل ظاهری و کلی طرح سفارش گرفته شده استفاده
-                می نماید، تا از نظر گرافیکی نشانگر چگونگی نوع و اندازه فونت و
-                ظاهر متن باشد. معمولا طراحان گرافیک برای صفحه‌آرایی، نخست از
-                متن‌های آزمایشی و بی‌معنی استفاده می‌کنند ...
+                دانش‌آموخته‌ی مهندسی کامپیوتر از دانشگاه علم و فناوری مازندران هستم.
+                شوق و علاقه‌ی بسیار زیاد به برنامه نویسی از میل بسیار زیادم به حل مسئله نشئت میگیرد.
+                در کنار برنامه نویسی در بخش طراحی نیز علاقه به یادگیری و انجام فعالیت دارم.
+                زمینه‌های فعالیتم به طراحی ui/ux و توسعه بخش front سایت معطوف می‌شود.
+                علاوه بر این‌ها علاقه‌ی زیادی به کار در زمینه‌ی هوش مصنوعی دارم.
               </p>
               <Button color="primary" round>
                 دنبال‌کردن

@@ -69,7 +69,8 @@ export default function CustomTable(props) {
     showAllData,
     removeNews,
     allNewsShow,
-    editNews } = props;
+    editNews,
+    studentPannel} = props;
 
   return (
     <div className={classes.tableResponsive}>
@@ -663,6 +664,24 @@ export default function CustomTable(props) {
               </TableCell>
             </TableRow>
           )) : ''}
+
+          {studentPannel && tableData ? tableData.slice(currentPage * rowsCount, currentPage * rowsCount + rowsCount).map((row, index) => (
+            <TableRow key={index} className={classes.tableBodyRow}>
+              <TableCell className={classes.tableCell}>
+                <Avatar src={row.profile} className={classes.large} />
+              </TableCell>
+              <TableCell className={classes.tableCell}>{row.fullName}</TableCell>
+              <TableCell className={classes.tableCell}>{row.courses && row.courses.length}</TableCell>
+              <TableCell className={classes.tableCell}>
+                <div className={row.isActive === true ? classes.ActiveTeacher : classes.deActiveTeacher}>
+                  <p style={{ color: "white", paddingTop: 3 }}>{row.isActive === true ? "فعال" : "غیرفعال"}</p>
+                </div>
+              </TableCell>
+
+            </TableRow>
+          )) : ''}
+
+        
         </TableBody>
       </Table>
       <TablePagination
@@ -739,5 +758,7 @@ CustomTable.propTypes = {
 
   removeNews: PropTypes.func,
   editNews: PropTypes.func,
-  allNewsShow: PropTypes.bool
+  allNewsShow: PropTypes.bool,
+
+  studentPannel: PropTypes.bool
 };
