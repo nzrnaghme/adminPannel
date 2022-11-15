@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
 import InputAdornment from "@material-ui/core/InputAdornment";
@@ -21,15 +21,19 @@ import CustomInput from "components/CustomInput/CustomInput.js";
 import CardFooter from "components/Card/CardFooter";
 // @material-ui/icons
 import RecentActorsIcon from '@material-ui/icons/RecentActors';
-import CalendarToday from '@material-ui/icons/CalendarToday';
 import Call from '@material-ui/icons/Call';
 import PersonIcon from '@material-ui/icons/Person';
 import HomeIcon from '@material-ui/icons/Home';
 import MailOutlineIcon from '@material-ui/icons/MailOutline';
+import CustomeDatePicker from "components/CustomeDatePicker/CustomeDatePicker"
+import { GeneralContext } from "providers/GeneralContext";
+
 import { registerEmployee } from "api/Core/Login_Register";
 
 const useStyles = makeStyles(styles);
 export default function RegisterPage() {
+    const { setOpenToast, onToast } = useContext(GeneralContext);
+
     const classes = useStyles();
     const [name, setName] = useState()
     const [phone, setPhone] = useState()
@@ -39,6 +43,7 @@ export default function RegisterPage() {
     const [email, setEmail] = useState()
     const [pass, setPass] = useState()
     const [value, setValue] = useState('teacher');
+    const [date, setDate] = useState(null);
 
     const handleChange = (event) => {
         setValue(event.target.value);
@@ -58,7 +63,10 @@ export default function RegisterPage() {
             address: address
         }
         let response = await registerEmployee(dataUser);
-        if (response.data.result) console.log(true)
+        if (response.data.result) {
+            onToast('کاربر اضافه شد', 'success')
+            setOpenToast(true)
+        }
     }
 
     return (
@@ -66,7 +74,7 @@ export default function RegisterPage() {
             <GridContainer justify="center">
                 <GridItem xs={12} sm={6} md={4}>
                     <form onSubmit={register}>
-                        <Card>
+                        <Card className={classes.login}>
                             <CardHeader
                                 className={`${classes.cardHeader} ${classes.textCenter}`} color="info">
                                 <h4 className={classes.cardTitle}> ثبت نام کارمندان</h4>
@@ -139,27 +147,15 @@ export default function RegisterPage() {
                                         )
                                     }}
                                 />
-                                <CustomInput
-                                    rtlActive
-                                    labelText="تاریخ تولد"
-                                    id="birthDate"
-                                    value={birth}
-                                    onChange={(e) => { setBirth(e) }}
-                                    mask={"$$$$/$$/$$"}
-                                    maskChar={"$"}
-                                    formControlProps={{
-                                        fullWidth: true,
-                                        className: classes.formControlClassName
+                                <CustomeDatePicker
+                                    label="تاریخ تولد"
+                                    maxDate={new Date()}
+                                    onChange={(e) => {
+                                        setDate(e);
+                                        setBirth(`${e.year}/${e.month.number}/${e.day}`)
                                     }}
-                                    inputProps={{
-                                        required: true,
-                                        name: "birthDate",
-                                        endAdornment: (
-                                            <InputAdornment position="end">
-                                                <CalendarToday className={classes.inputAdornmentIcon} />
-                                            </InputAdornment>
-                                        )
-                                    }}
+                                    value={date}
+                                    className="Birth"
                                 />
                                 <CustomInput
                                     rtlActive

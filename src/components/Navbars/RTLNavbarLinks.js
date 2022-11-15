@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 // import classNames from "classnames";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
@@ -12,18 +12,24 @@ import { makeStyles } from "@material-ui/core/styles";
 // // @material-ui/icons
 // import Person from "@material-ui/icons/Person";
 // import Notifications from "@material-ui/icons/Notifications";
-// import Dashboard from "@material-ui/icons/Dashboard";
 import Search from "@material-ui/icons/Search";
+import ExitToAppRoundedIcon from '@material-ui/icons/ExitToAppRounded';
 // core components
 import CustomInput from "components/CustomInput/CustomInput.js";
 import Button from "components/CustomButtons/Button.js";
 
 import styles from "assets/jss/material-dashboard-react/components/rtlHeaderLinksStyle.js";
+import { Tooltip } from "@material-ui/core";
+import { removeItem } from "api/storage/storage";
+import { GeneralContext } from "providers/GeneralContext";
+
 
 const useStyles = makeStyles(styles);
 
 export default function RTLNavbarLinks() {
   const classes = useStyles();
+  const { setConfirmPopupOpen, onConfirmSetter } = useContext(GeneralContext);
+
   // const [open, setOpen] = React.useState(null);
   // const handleToggle = (event) => {
   //   if (open && open.contains(event.target)) {
@@ -55,18 +61,25 @@ export default function RTLNavbarLinks() {
           <Search />
         </Button>
       </div>
-      {/* <Button
+      <Button
         color={window.innerWidth > 959 ? "transparent" : "white"}
         justIcon={window.innerWidth > 959}
         simple={!(window.innerWidth > 959)}
         aria-label="Dashboard"
         className={classes.buttonLink}
+        onClick={() => {
+          onConfirmSetter('از حساب خود خارج میشوید؟', () => {
+            removeItem('id')
+            removeItem('role')
+            removeItem('token')
+          })
+          setConfirmPopupOpen(true)
+        }}
       >
-        <Dashboard className={classes.icons} />
-        <Hidden mdUp implementation="css">
-          <p className={classes.linkText}>آمارها</p>
-        </Hidden>
-      </Button> */}
+        <Tooltip title="خروج از حساب کاربری" placement="top">
+          <ExitToAppRoundedIcon className={classes.icons} />
+        </Tooltip>
+      </Button>
       <div className={classes.manager}>
         {/* <Button
           color={window.innerWidth > 959 ? "transparent" : "white"}
@@ -157,6 +170,6 @@ export default function RTLNavbarLinks() {
           <p className={classes.linkText}>حساب کاربری</p>
         </Hidden>
       </Button> */}
-    </div>
+    </div >
   );
 }

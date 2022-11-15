@@ -16,7 +16,8 @@ const useStyles = makeStyles((theme) => ({
         margin: theme.spacing(1),
         minWidth: 120,
         width: "100%",
-        marginTop: 27
+        marginTop: 27,
+        fontFamily: "bakh",
     },
     labelRTL: {
         right: 0,
@@ -24,6 +25,7 @@ const useStyles = makeStyles((theme) => ({
         "&.MuiInputLabel-shrink": {
             transform: "translate(0, 1.5px)",
         },
+        fontFamily: "bakh",
     },
 }));
 

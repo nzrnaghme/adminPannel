@@ -16,6 +16,8 @@ import { getAllTeachers } from "api/Core/Employe_Manage";
 import { getAllLesson } from "api/Core/Lesson";
 import { createCourse } from "api/Core/Course";
 import CustomeDatePicker from "components/CustomeDatePicker/CustomeDatePicker"
+import { getItem } from "api/storage/storage";
+
 import "./Course.css"
 import { Avatar } from "@mui/material";
 
@@ -37,7 +39,7 @@ const styles = (theme) => ({
         marginTop: "0px",
         minHeight: "auto",
         fontWeight: "300",
-        fontFamily: "'Roboto', 'Helvetica', 'Arial', sans-serif",
+          fontFamily: "bakh",
         marginBottom: "3px",
         textDecoration: "none",
         "& small": {
@@ -55,6 +57,9 @@ const styles = (theme) => ({
 
 const useStyles = makeStyles(styles);
 export default function CreateCourse(props) {
+    const roleUser = getItem('role')
+    const userId = getItem('id')
+
     const classes = useStyles();
     const {
         openCreateCoursePopUp,
@@ -81,6 +86,7 @@ export default function CreateCourse(props) {
     useEffect(() => {
         getAllTeacher()
         getAllLessons()
+        if (userId) setTeacherName(userId)
     }, [])
 
     useEffect(() => {
@@ -177,7 +183,8 @@ export default function CreateCourse(props) {
                                         options={allTeacher}
                                         handleChange={(e) => {
                                             setTeacherName(e.target.value)
-                                        }} />}
+                                        }}
+                                        disabled={roleUser === 'teacher'} />}
 
                                 </GridItem>
 

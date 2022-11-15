@@ -8,25 +8,20 @@ import { makeStyles } from "@material-ui/core/styles";
 // core components
 import Navbar from "components/Navbars/Navbar.js";
 import Sidebar from "components/Sidebar/Sidebar.js";
-import routes from "routes.js";
+import routes from "routesTeacher.js";
 import styles from "assets/jss/material-dashboard-react/layouts/rtlStyle.js";
 import bgImage from "assets/img/sidebar-2.jpg";
 import logo from "assets/img/reactlogo.png";
-import Dashboard from "views/Dashboard/Dashboard";
+import Dashboard from "views/Dashboard/DashboardTeacher";
 import UserProfile from "views/UserProfile/UserProfile";
 import CourseList from "views/CourseList/CourseList";
-import Teachers from "views/Teachers/Teachers";
-import Icons from "views/Icons/Icons";
-import Students from "views/Students/Students"
-import LessonList from "views/Lessons/Lessons";
-import Comments from "views/Comments/Comments";
-import News from "views/News/News";
+import StudentTeacher from "views/Students/StudentTeacher"
 import Planning from "views/Planning/Planning"
 let ps;
 
 const useStyles = makeStyles(styles);
 
-export default function Main({ ...rest }) {
+export default function TeacherMain({ ...rest }) {
   // const userId = getItem('id')
   const classes = useStyles();
   const mainPanel = React.createRef();
@@ -87,20 +82,13 @@ export default function Main({ ...rest }) {
 
         <div className={classes.content}>
           <div className={classes.container}>
-
             <Switch>
-              <Route path={"/admin/dashboard"} component={Dashboard} />
-              <Route path={"/admin/user"} component={UserProfile} />
-              <Route path={"/admin/courses"} component={CourseList} />
-              <Route path={"/admin/Teachers"} component={Teachers} />
-              <Route path={"/admin/icons"} component={Icons} />
-              <Route path={"/admin/students"} component={Students} />
-              <Route path={"/admin/lessons"} component={LessonList} />
-              <Route path={"/admin/comments"} component={Comments} />
-              <Route path={"/admin/news"} component={News} />
-              <Route path={"/admin/planning"} component={Planning} />
-              <Redirect to="/admin/dashboard" from="/" />
-              
+              <Route path={"/teacher/dashboard"} component={Dashboard} />
+              <Route path={"/teacher/user"} component={UserProfile} />
+              <Route path={"/teacher/courses"} component={CourseList} />
+              <Route path={"/teacher/students"} component={StudentTeacher} />
+              <Route path={"/teacher/planning"} component={Planning} />
+              <Redirect to="/teacher/dashboard" from="/" />
             </Switch>
           </div>
         </div>

@@ -1,9 +1,11 @@
 .MuiChip-sizeSmall {
     margin-left: 3px;
+    font-family: bakh;
 }
 
 .MuiChip-root .MuiSvgIcon-root {
     padding-left: 7px;
+    font-family: bakh;
 }
 
 .formControlAuto{
@@ -15,4 +17,21 @@
 
 .container{
     margin-top: auto;
+    font-family: bakh;
+}
+
+.MuiInput-input{
+    font-family: bakh !important;
+}
+
+.MuiChip-label{
+    font-family: bakh !important;
+}
+
+.MuiInputBase-input{
+    font-family: bakh !important;
+}
+
+.MuiInputLabel-root{
+    font-family: bakh !important;
 }

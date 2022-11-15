@@ -43,7 +43,7 @@ const styles = (theme) => ({
         marginTop: "0px",
         minHeight: "auto",
         fontWeight: "300",
-        fontFamily: "'Roboto', 'Helvetica', 'Arial', sans-serif",
+        fontFamily: "bakh",
         marginBottom: "3px",
         textDecoration: "none",
         "& small": {
@@ -84,6 +84,7 @@ export default function EditLEsson(props) {
 
     const [allCoursesLesson, setAllCoursesLessons] = useState([])
     const [currentPage_MainbarMyCourses, setCurrentPage_MainbarMyCourses] = useState(0);
+    const [rowsPerPage, setRowsPerPage] = useState(5);
 
     useEffect(() => {
         getAllCategories()
@@ -97,7 +98,6 @@ export default function EditLEsson(props) {
             setAllTopics(dataLesson.topics);
             setPhotoLesson(dataLesson.image);
             setAllCoursesLessons(courseByIdLesson);
-            setCurrentPage_MainbarMyCourses(1)
         }
     }, [dataLesson, courseByIdLesson])
 
@@ -197,6 +197,15 @@ export default function EditLEsson(props) {
 
 
     }
+
+    const handleChangePage = (event, newPage) => {
+        setCurrentPage_MainbarMyCourses(newPage)
+    }
+
+    const handleChangeRowsPerPage = (event) => {
+        setRowsPerPage(+event.target.value);
+        setCurrentPage_MainbarMyCourses(0);
+    };
 
     return (
         <PopUpCustome
@@ -302,7 +311,7 @@ export default function EditLEsson(props) {
                                         tableHead={["عنوان", "شروع دوره", "پابان دوره", "قیمت", ""]}
                                         tableData={allCoursesLesson}
                                         currentPage={currentPage_MainbarMyCourses}
-                                        rowsCount={5}
+                                        rowsCount={rowsPerPage}
                                         removeCourse={(id) => {
                                             onConfirmSetter("آیا برای حذف دوره اطمینان دارید؟", () => {
                                                 removeCourse(id)
@@ -310,6 +319,8 @@ export default function EditLEsson(props) {
                                             setConfirmPopupOpen(true)
                                         }}
                                         coursesFromLesson
+                                        handleChangePage={handleChangePage}
+                                        handleChangeRowsPerPage={handleChangeRowsPerPage}
                                     />
                                 </>}
                             <div className="btnEditCourse">

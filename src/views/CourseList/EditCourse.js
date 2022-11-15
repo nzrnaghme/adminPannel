@@ -38,7 +38,7 @@ const styles = (theme) => ({
         marginTop: "0px",
         minHeight: "auto",
         fontWeight: "300",
-        fontFamily: "'Roboto', 'Helvetica', 'Arial', sans-serif",
+          fontFamily: "bakh",
         marginBottom: "3px",
         textDecoration: "none",
         "& small": {
@@ -102,16 +102,15 @@ export default function EditCourse(props) {
             setAllLessons(rightData)
         }
     }
-console.log(dataCourse.startDate.split("T"),"dataCourse.endDate");
+
 
     useEffect(() => {
         setTitle(dataCourse.title)
-        setStartDate(dataCourse.endDate)
         setTeacherName(dataCourse.teacher._id)
-        setEndDate(dataCourse.startDate)
         setCost(dataCourse.cost)
         setCapacity(dataCourse.capacity)
         setLessonName(dataCourse.lesson._id)
+
 
         var datePirsianStart = dataCourse.startDate.split("T")[0].split("-")
         var dateEnglishStart = jalaali.toGregorian(Number(datePirsianStart[0]), Number(datePirsianStart[1]), Number(datePirsianStart[2]))
@@ -121,6 +120,7 @@ console.log(dataCourse.startDate.split("T"),"dataCourse.endDate");
         var dateEnglishEnd = jalaali.toGregorian(Number(datePirsianEnd[0]), Number(datePirsianEnd[1]), Number(datePirsianEnd[2]))
         setDateEnd(new Date(`${dateEnglishEnd.gy}/${dateEnglishEnd.gm}/${dateEnglishEnd.gd}`))
     }, [dataCourse])
+
 
     useEffect(() => {
         if (allLessons && allLessons.length > 0) {
@@ -132,6 +132,7 @@ console.log(dataCourse.startDate.split("T"),"dataCourse.endDate");
 
 
     const updateDataCourse = async () => {
+
         const data = {
             id: dataCourse._id,
             title,
@@ -142,6 +143,9 @@ console.log(dataCourse.startDate.split("T"),"dataCourse.endDate");
             teacher: teacherName,
             lesson: lessonName
         }
+
+        console.log(data);
+        // EditSuccess()
         let response = await updateCourse(data);
         if (response.data.result) {
             EditSuccess()

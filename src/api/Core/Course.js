@@ -35,8 +35,8 @@ export const updateCourse = payload =>
     api.put(UPDATE_COURSE(payload.id), {
         title: payload.title,
         cost: payload.cost,
-        endDate: payload.startDate,
-        startDate: payload.endDate,
+        endDate: payload.endDate,
+        startDate: payload.startDate,
         capacity: payload.capacity,
         teacher: payload.teacher,
         lesson: payload.lesson

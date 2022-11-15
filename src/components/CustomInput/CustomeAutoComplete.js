@@ -21,6 +21,7 @@ const useStyles = makeStyles((theme) => ({
         minWidth: 120,
         width: "100%",
         marginTop: 27,
+        fontFamily: "bakh",
     },
     labelRTL: {
         right: 0,
@@ -32,6 +33,7 @@ const useStyles = makeStyles((theme) => ({
     chips: {
         display: 'flex',
         flexWrap: 'wrap',
+        fontFamily: "bakh",
     },
     chip: {
         margin: 2,

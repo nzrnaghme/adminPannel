@@ -6,8 +6,11 @@ import { prefixer } from 'stylis';
 import { CacheProvider } from '@emotion/react';
 import createCache from '@emotion/cache';
 import "assets/css/material-dashboard-react.css?v=1.10.0";
+import "assets/fonts/fonts.css";
 import { Route, Switch, Redirect } from "react-router-dom";
 import Main from "layouts/Main.js";
+import TeacherMain from "layouts/TeacherMain.js";
+
 import Auth from "layouts/Authentication.js"
 import { getItem } from "api/storage/storage";
 import PopUpAction from "components/PopUp/PopUpAction";
@@ -26,6 +29,7 @@ const cacheRtl = createCache({
 
 export default function App() {
     const userId = getItem('id')
+    const roleUser = getItem('role')
     const [confirm, setConfirm] = React.useState({});
     const [open, setOpen] = React.useState(false);
     const [openToast, setOpenToast] = React.useState(false);
@@ -59,10 +63,16 @@ export default function App() {
                         <PopUpAction />
                         <Toast />
                         <Switch>
-                            {userId ?
+                            {userId && roleUser === 'admin' ?
                                 <Route path="/admin" component={Main} /> :
-                                <Route path="/auth" component={Auth} />}
-                            {userId ?
+                                userId && roleUser === 'teacher' ?
+                                    <Route path="/teacher" component={TeacherMain} /> :
+                                    <Route path="/auth" component={Auth} />
+                            }
+
+
+
+                            {userId && roleUser ?
                                 <Redirect from="/" to="/admin/dashboard" /> :
                                 <Redirect from="/" to="/auth/login-page" />}
                         </Switch>

@@ -30,7 +30,6 @@ const useStyles = makeStyles(styles);
 
 export default function CustomTable(props) {
 
-
   const classes = useStyles();
   const {
     rowsCount,
@@ -70,7 +69,9 @@ export default function CustomTable(props) {
     removeNews,
     allNewsShow,
     editNews,
-    studentPannel} = props;
+    studentPannel,
+    teacherPannelLesson,
+    teacherPannelCourses } = props;
 
   return (
     <div className={classes.tableResponsive}>
@@ -681,7 +682,27 @@ export default function CustomTable(props) {
             </TableRow>
           )) : ''}
 
-        
+          {teacherPannelLesson && tableData ? tableData.slice(currentPage * rowsCount, currentPage * rowsCount + rowsCount).map((row, index) => (
+            <TableRow key={index} className={classes.tableBodyRow}>
+              <TableCell className={classes.tableCell}>
+                <Avatar src={row.image} className={classes.large} />
+              </TableCell>
+              <TableCell className={classes.tableCell}>{row.lessonName}</TableCell>
+              <TableCell className={classes.tableCell}>{row.description.substring(0, 15) + "..."}</TableCell>
+            </TableRow>
+          )) : ''}
+
+          {teacherPannelCourses && tableData ? tableData.slice(currentPage * rowsCount, currentPage * rowsCount + rowsCount).map((row, index) => (
+            <TableRow key={index} className={classes.tableBodyRow}>
+              <TableCell className={classes.tableCell}>
+                <Avatar src={row.lesson.image} className={classes.large} />
+              </TableCell>
+              <TableCell className={classes.tableCell}>{row.title}</TableCell>
+              <TableCell className={classes.tableCell}>{row.capacity}</TableCell>
+            </TableRow>
+          )) : ''}
+
+
         </TableBody>
       </Table>
       <TablePagination
@@ -760,5 +781,8 @@ CustomTable.propTypes = {
   editNews: PropTypes.func,
   allNewsShow: PropTypes.bool,
 
-  studentPannel: PropTypes.bool
+  studentPannel: PropTypes.bool,
+
+  teacherPannelLesson: PropTypes.bool,
+  teacherPannelCourses: PropTypes.bool
 };

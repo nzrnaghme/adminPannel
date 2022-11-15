@@ -13,6 +13,7 @@ import {
 
 const buttonStyle = {
   button: {
+    fontFamily: "bakh",
     minHeight: "auto",
     minWidth: "auto",
     backgroundColor: grayColor[0],

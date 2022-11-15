@@ -81,6 +81,9 @@ const loginPageStyle = theme => ({
   },
   checkboxLabel: {
     color: "rgba(" + hexToRgb(blackColor) + ", 0.26)"
+  },
+  login: {
+    marginTop: 100
   }
 });
 

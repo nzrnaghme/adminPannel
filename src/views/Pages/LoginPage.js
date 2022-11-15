@@ -41,10 +41,14 @@ export default function LoginPage() {
         }
         let response = await loginEmployee(data);
         if (response.data.message[0].eventId === 200) {
-            console.log(response.data.message[0].message);
+
             setItem("id", response.data.result.employeeModel._id)
+            setItem("role", response.data.result.employeeModel.role)
             setItem("token", response.data.result.jwtToken)
-            window.location = "/admin/dashboard"
+            if (response.data.result.employeeModel.role === "admin")
+                window.location = "/admin/dashboard"
+            else
+                window.location = "/teacher/dashboard"
         }
 
     }
@@ -54,7 +58,7 @@ export default function LoginPage() {
             <GridContainer justify="center">
                 <GridItem xs={12} sm={6} md={4}>
                     <form onSubmit={login}>
-                        <Card>
+                        <Card className={classes.login}>
                             <CardHeader
                                 className={`${classes.cardHeader} ${classes.textCenter}`} color="info">
                                 <h4 className={classes.cardTitle}>ورود کارمندان</h4>

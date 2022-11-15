@@ -18,6 +18,7 @@ import ListOfStudents from "./ListOfStudent";
 import CreateCourse from "./CreateCourse";
 import AddStudentToCourse from "./AddStudentToCourse";
 import { GeneralContext } from "providers/GeneralContext";
+import { getItem } from "api/storage/storage";
 
 
 const styles = {
@@ -38,7 +39,7 @@ const styles = {
     marginTop: "0px",
     minHeight: "auto",
     fontWeight: "300",
-    fontFamily: "'Roboto', 'Helvetica', 'Arial', sans-serif",
+    fontFamily: "bakh",
     marginBottom: "3px",
     textDecoration: "none",
     "& small": {
@@ -53,6 +54,9 @@ const styles = {
 const useStyles = makeStyles(styles);
 
 export default function CourseList() {
+  const roleUser = getItem('role')
+  const userId = getItem('id')
+
   const classes = useStyles();
   const [allCourse, setAllCourse] = useState([])
   const { setConfirmPopupOpen, onConfirmSetter, setOpenToast, onToast } = useContext(GeneralContext);
@@ -72,7 +76,6 @@ export default function CourseList() {
   const [openPopUpaddStudent, setOpenPopUpaddStudent] = useState(false)
 
 
-
   useEffect(() => {
     getCourses();
   }, [])
@@ -88,10 +91,15 @@ export default function CourseList() {
           cost: item.cost,
           capacity: item.students.length + item.capacity,
           countStudent: item.students.length,
-          id: item._id
+          id: item._id,
+          teacherId: item.teacher._id
         }
       ));
-      setAllCourse(data)
+      if (roleUser === 'teacher') {
+        var allCourseTeacher = data.filter((item) => item.teacherId === userId)
+        setAllCourse(allCourseTeacher)
+      } else
+        setAllCourse(data)
     }
   }
 
@@ -129,12 +137,12 @@ export default function CourseList() {
 
   const handleChangePage = (event, newPage) => {
     setCurrentPage_MainbarMyCourses(newPage)
-}
+  }
 
-const handleChangeRowsPerPage = (event) => {
+  const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(+event.target.value);
     setCurrentPage_MainbarMyCourses(0);
-};
+  };
 
 
   return (
@@ -151,7 +159,7 @@ const handleChangeRowsPerPage = (event) => {
               <h4 className={classes.cardTitleWhite}>تمام دوره ها</h4>
             </CardHeader>
             <CardBody>
-              {allCourse.length > 0 &&
+              {allCourse && allCourse.length > 0 ?
                 <Table
                   tableHeaderColor="primary"
                   tableHead={["عنوان", "استاد", "شروع دوره", "قیمت", "گنجایش", "تعداد دانشجویان دوره", ""]}
@@ -170,7 +178,8 @@ const handleChangeRowsPerPage = (event) => {
                   courses
                   handleChangePage={handleChangePage}
                   handleChangeRowsPerPage={handleChangeRowsPerPage}
-                />}
+                /> :
+                <div style={{ textAlign: "center" }}>دوره وجود ندارد لطفا دوره اضافه کنید!</div>}
             </CardBody>
           </Card>
         </GridItem>

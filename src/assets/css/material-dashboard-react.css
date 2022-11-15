@@ -67,9 +67,9 @@ body {
   background-color: #eeeeee;
   color: #3c4858;
   margin: 0;
-  font-family: Roboto, Helvetica, Arial, sans-serif;
   font-weight: 300;
   line-height: 1.5em;
+  font-family: bakh;
 }
 
 blockquote footer:before,
@@ -79,47 +79,56 @@ blockquote small:before {
 
 small {
   font-size: 80%;
+  font-family: bakh;
 }
 
 h1 {
   font-size: 3em;
   line-height: 1.15em;
+  font-family: bakh;
 }
 
 h2 {
   font-size: 2.4em;
+  font-family: bakh;
 }
 
 h3 {
   font-size: 1.825em;
   line-height: 1.4em;
   margin: 20px 0 10px;
+  font-family: bakh;
 }
 
 h4 {
   font-size: 1.3em;
   line-height: 1.4em;
+  font-family: bakh;
 }
 
 h5 {
   font-size: 1.25em;
   line-height: 1.4em;
   margin-bottom: 15px;
+  font-family: bakh;
 }
 
 h6 {
   font-size: 1em;
   text-transform: uppercase;
   font-weight: 500;
+  font-family: bakh;
 }
 
 body {
   background-color: #eeeeee;
   color: #3c4858;
+  font-family: bakh;
 }
 
 blockquote p {
   font-style: italic;
+  font-family: bakh;
 }
 
 body,
@@ -129,9 +138,9 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
   font-weight: 300;
   line-height: 1.5em;
+  font-family: bakh;
 }
 
 a {
@@ -175,12 +184,14 @@ input[type="file"]>input[type="button"]::-moz-focus-inner {
 legend {
   margin-bottom: 20px;
   font-size: 21px;
+  font-family: bakh;
 }
 
 output {
   padding-top: 8px;
   font-size: 14px;
   line-height: 1.42857;
+  font-family: bakh;
 }
 
 label {
@@ -188,20 +199,24 @@ label {
   line-height: 1.42857;
   color: #aaaaaa;
   font-weight: 400;
+  font-family: bakh;
 }
 
 footer {
   padding: 15px 0;
+  font-family: bakh;
 }
 
 footer ul {
   margin-bottom: 0;
   padding: 0;
   list-style: none;
+  font-family: bakh;
 }
 
 footer ul li {
   display: inline-block;
+  font-family: bakh;
 }
 
 footer ul li a {
@@ -214,6 +229,7 @@ footer ul li a {
   text-decoration: none;
   position: relative;
   display: block;
+  font-family: bakh;
 }
 
 footer ul li a:hover {
@@ -226,6 +242,7 @@ footer ul li a:hover {
   html {
     position: relative;
     overflow-x: hidden;
+    font-family: bakh;
   }
 
   #bodyClick {
@@ -239,11 +256,11 @@ footer ul li a:hover {
     content: "";
     z-index: 9999;
     overflow-x: hidden;
+    font-family: bakh;
   }
 }
 
 .fixed-plugin {
-  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
   font-weight: 300;
   line-height: 1.5em;
   position: fixed;
@@ -255,6 +272,7 @@ footer ul li a:hover {
   border-radius: 8px 0 0 8px;
   text-align: center;
   top: 120px;
+  font-family: bakh;
 }
 
 .fixed-plugin .SocialMediaShareButton,
@@ -268,6 +286,7 @@ footer ul li a:hover {
   -webkit-transition: all 0.34s;
   -moz-transition: all 0.34s;
   text-decoration: none;
+  font-family: bakh;
 }
 
 .fixed-plugin .fa-cog {
@@ -275,6 +294,7 @@ footer ul li a:hover {
   padding: 10px;
   border-radius: 0 0 6px 6px;
   width: auto;
+  font-family: bakh;
 }
 
 .fixed-plugin .dropdown-menu {
@@ -358,6 +378,7 @@ footer ul li a:hover {
 .fixed-plugin h5 {
   font-size: 14px;
   margin: 10px;
+  font-family: bakh;
 }
 
 .fixed-plugin .dropdown-menu li {
@@ -365,6 +386,7 @@ footer ul li a:hover {
   padding: 4px 0px;
   width: 25%;
   float: left;
+  font-family: bakh;
 }
 
 .fixed-plugin li.adjustments-line,
@@ -375,16 +397,19 @@ footer ul li a:hover {
   min-height: inherit;
   padding: 0px;
   text-align: center;
+  font-family: bakh;
 }
 
 .fixed-plugin li.adjustments-line p {
   margin: 0;
+  font-family: bakh;
 }
 
 .fixed-plugin li.adjustments-line div,
 .fixed-plugin li.header-title div,
 .fixed-plugin li.button-container div {
   margin-bottom: 5px;
+  font-family: bakh;
 }
 
 .fixed-plugin li.header-title {
@@ -394,6 +419,7 @@ footer ul li a:hover {
   font-weight: 600;
   text-align: center;
   text-transform: uppercase;
+  font-family: bakh;
 }
 
 .fixed-plugin .adjustments-line p {
@@ -402,15 +428,18 @@ footer ul li a:hover {
   margin-bottom: 0;
   font-size: 1em;
   color: #3c4858;
+  font-family: bakh;
 }
 
 .fixed-plugin .adjustments-line a {
   color: transparent;
+  font-family: bakh;
 }
 
 .fixed-plugin .adjustments-line a .badge-colors {
   position: relative;
   top: -2px;
+  font-family: bakh;
 }
 
 .fixed-plugin .adjustments-line a a:hover,
@@ -424,6 +453,7 @@ footer ul li a:hover {
   border-bottom: 1px solid #ddd;
   border-radius: 0;
   margin: 0;
+  font-family: bakh;
 }
 
 .fixed-plugin .dropdown-menu>li>a.img-holder {

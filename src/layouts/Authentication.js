@@ -40,7 +40,12 @@ export default function Authentication() {
             <div className={classes.wrapper}>
                 <div
 
-                    style={{ backgroundImage: "url(" + getBgImage() + ")" }}
+                    style={{
+                        backgroundImage: "url(" + getBgImage() + ")",
+                        backgroundSize: "cover",
+                        width:'100%',
+                        height:'100%'
+                    }}
                 >
                     <Switch>
                         <Route path={"/auth/login-page"} component={LoginPage} />
