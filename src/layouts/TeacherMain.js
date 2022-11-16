@@ -15,8 +15,8 @@ import logo from "assets/img/reactlogo.png";
 import Dashboard from "views/Dashboard/DashboardTeacher";
 import UserProfile from "views/UserProfile/UserProfile";
 import CourseList from "views/CourseList/CourseList";
-import StudentTeacher from "views/Students/StudentTeacher"
 import Planning from "views/Planning/Planning"
+import News from "views/News/News";
 let ps;
 
 const useStyles = makeStyles(styles);
@@ -86,7 +86,7 @@ export default function TeacherMain({ ...rest }) {
               <Route path={"/teacher/dashboard"} component={Dashboard} />
               <Route path={"/teacher/user"} component={UserProfile} />
               <Route path={"/teacher/courses"} component={CourseList} />
-              <Route path={"/teacher/students"} component={StudentTeacher} />
+              <Route path={"/teacher/news"} component={News} />
               <Route path={"/teacher/planning"} component={Planning} />
               <Redirect to="/teacher/dashboard" from="/" />
             </Switch>

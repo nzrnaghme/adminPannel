@@ -53,7 +53,7 @@ export default function Planning() {
 
     return (
         <>
-            {coursePlaning && coursePlaning.length > 0 &&
+            {coursePlaning && coursePlaning.length > 0 ?
                 <FullCalendar
                     plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
                     initialView="dayGridMonth"
@@ -70,7 +70,8 @@ export default function Planning() {
                     }}
 
                     events={coursePlaning}
-                />}
+                />
+                : <div style={{ textAlign: 'center' }}>دوره ثبت نشده که در برنامه روزانه نشان داده شود</div>}
         </>
     )
 }

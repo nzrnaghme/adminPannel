@@ -1,13 +1,13 @@
 import Dashboard from "@material-ui/icons/Dashboard";
 import Person from "@material-ui/icons/Person";
 import LocationOn from "@material-ui/icons/LocationOn";
-import PeopleIcon from '@material-ui/icons/People';
+import PublicRoundedIcon from '@material-ui/icons/PublicRounded';
 // core components/views for Admin layout
 import UserProfile from "views/UserProfile/UserProfile.js";
 import CourseList from "views/CourseList/CourseList.js";
-import Icons from "views/Icons/Icons.js";
 import Planning from "views/Planning/Planning.js";
 import DashboardPage from "views/Dashboard/Dashboard";
+import News from "views/News/News";
 
 const dashboardRoutes = [
   {
@@ -32,10 +32,10 @@ const dashboardRoutes = [
     layout: "/teacher",
   },
   {
-    path: "/students",
-    name: "دانشجویان",
-    icon: PeopleIcon,
-    component: Icons,
+    path: "/news",
+    name: "خبر و مقالات",
+    icon: PublicRoundedIcon,
+    component: News,
     layout: "/teacher",
   },
 
