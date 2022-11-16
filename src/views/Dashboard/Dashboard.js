@@ -37,16 +37,22 @@ import avatar from "assets/img/faces/admin.jpg";
 import { getAllStudet } from "api/Core/Student_Manage";
 import { getAllTeachers } from "api/Core/Employe_Manage";
 import { getAllCourse } from "api/Core/Course";
+import { formatDate } from "constants/usefulFunc";
 
 
 const useStyles = makeStyles(styles);
 
 export default function RTLPage() {
   const classes = useStyles();
+  var jalaali = require('jalaali-js')
 
   const [countStudents, setCountStudents] = useState(0);
   const [countTeachers, setCountTeachers] = useState(0);
   const [countCourses, setCountCourses] = useState(0);
+
+  const [nearStudents, setNearStudents] = useState();
+  const [nearTeachers, setNearTeachers] = useState();
+  const [nearCourses, setNearCourses] = useState();
 
   const [allStudent, setAllStudent] = useState();
   const [currentPage_MainbarStudents, setCurrentPage_MainbarStudents] = useState(0);
@@ -62,12 +68,18 @@ export default function RTLPage() {
     getAllCourses();
   }, [])
 
+  const changeDate = (date) => {
+    let Endate = new Date(date)
+    let PrDate = Endate.toLocaleDateString('fa-IR-u-nu-latn');
+    return PrDate
+  }
+
   const getAllUser = async () => {
     let response = await getAllStudet();
     if (response.data.result) {
       setCountStudents(response.data.result.length);
-      // const sortedActivities = (response.data.result.sort((a, b) => b.registerDate - a.registerDate));
-      // console.log(sortedActivities,"sortedActivities");
+      const sortedActivities = (response.data.result.sort((a, b) => b.registerDate - a.registerDate));
+      setNearStudents(changeDate(sortedActivities[0].registerDate))
       setAllStudent(response.data.result)
     }
   }
@@ -76,6 +88,8 @@ export default function RTLPage() {
     let response = await getAllTeachers();
     if (response.data.result) {
       setCountTeachers(response.data.result.length);
+      const sortedActivities = (response.data.result.sort((a, b) => b.registerDate - a.registerDate));
+      setNearTeachers(changeDate(sortedActivities[0].registerDate))
       setAllTeacher(response.data.result)
     }
   }
@@ -84,7 +98,10 @@ export default function RTLPage() {
     let response = await getAllCourse();
     if (response.data.result) {
       setCountCourses(response.data.result.length);
+      const sortedActivities = (response.data.result.sort((a, b) => b.endDate - a.endDate));
+      console.log(sortedActivities[0], "course");
 
+      setNearCourses(sortedActivities[0].endDate.split("T")[0])
     }
   }
 
@@ -123,7 +140,8 @@ export default function RTLPage() {
             <CardFooter stats>
               <div className={classes.stats}>
                 <Update />
-                هم‌اکنون
+                آخرین فرد
+                <small style={{ paddingRight: 5 }}>{nearStudents}</small>
               </div>
             </CardFooter>
           </Card>
@@ -142,7 +160,8 @@ export default function RTLPage() {
             <CardFooter stats>
               <div className={classes.stats}>
                 <DateRange />
-                ۲۴ ساعت اخیر
+                آخرین استاد
+                <small style={{ paddingRight: 5 }}>{nearTeachers}</small>
               </div>
             </CardFooter>
           </Card>
@@ -160,8 +179,9 @@ export default function RTLPage() {
             </CardHeader>
             <CardFooter stats>
               <div className={classes.stats}>
-                <LocalOffer />
-                توسط گیت‌هاب
+                <Update />
+                آخرین دوره
+                <small style={{ paddingRight: 5 }}>{nearCourses}</small>
               </div>
             </CardFooter>
           </Card>
