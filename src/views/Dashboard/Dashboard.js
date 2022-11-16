@@ -9,7 +9,6 @@ import AssignmentRoundedIcon from '@material-ui/icons/AssignmentRounded';
 import PeopleOutlineRoundedIcon from '@material-ui/icons/PeopleOutlineRounded';
 import LocalLibraryRoundedIcon from '@material-ui/icons/LocalLibraryRounded';
 import DateRange from "@material-ui/icons/DateRange";
-import LocalOffer from "@material-ui/icons/LocalOffer";
 import Update from "@material-ui/icons/Update";
 // import ArrowUpward from "@material-ui/icons/ArrowUpward";
 // import AccessTime from "@material-ui/icons/AccessTime";
@@ -37,8 +36,6 @@ import avatar from "assets/img/faces/admin.jpg";
 import { getAllStudet } from "api/Core/Student_Manage";
 import { getAllTeachers } from "api/Core/Employe_Manage";
 import { getAllCourse } from "api/Core/Course";
-import { formatDate } from "constants/usefulFunc";
-
 
 const useStyles = makeStyles(styles);
 
@@ -99,8 +96,6 @@ export default function RTLPage() {
     if (response.data.result) {
       setCountCourses(response.data.result.length);
       const sortedActivities = (response.data.result.sort((a, b) => b.endDate - a.endDate));
-      console.log(sortedActivities[0], "course");
-
       setNearCourses(sortedActivities[0].endDate.split("T")[0])
     }
   }

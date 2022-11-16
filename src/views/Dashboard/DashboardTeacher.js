@@ -7,7 +7,6 @@ import AssignmentRoundedIcon from '@material-ui/icons/AssignmentRounded';
 import PeopleOutlineRoundedIcon from '@material-ui/icons/PeopleOutlineRounded';
 import LocalLibraryRoundedIcon from '@material-ui/icons/LocalLibraryRounded';
 import DateRange from "@material-ui/icons/DateRange";
-import LocalOffer from "@material-ui/icons/LocalOffer";
 import Update from "@material-ui/icons/Update";
 // core components
 import Button from "components/CustomButtons/Button.js";
@@ -38,6 +37,9 @@ export default function DashboardTeacher() {
     const [countStudents, setCountStudents] = useState(0);
     const [countCoursesTeacher, setCountCoursesTeacher] = useState(0);
     const [countAllCourses, setCountAllCourses] = useState(0);
+    const [nearCoursesTeacher, setNearCoursesTeacher] = useState()
+    const [nearLessons, setNearLessons] = useState()
+
 
     const [allLesson, setAllLesson] = useState();
     const [currentPage_MainbarStudents, setCurrentPage_MainbarStudents] = useState(0);
@@ -60,6 +62,10 @@ export default function DashboardTeacher() {
         let response = await getEmployeeById(id);
         if (response.data.result) {
             setCountCoursesTeacher(response.data.result.courses.length);
+            if (response.data.result.length > 0) {
+                const sortedActivities = (response.data.result.sort((a, b) => b.endDate - a.endDate));
+                setNearCoursesTeacher(sortedActivities[0].endDate.split("T")[0])
+            }
             setAllCourseTeacher(response.data.result.courses)
         }
     }
@@ -74,8 +80,16 @@ export default function DashboardTeacher() {
     const getAllLessons = async () => {
         let response = await getAllLesson();
         if (response.data.result) {
-            setAllLesson(response.data.result)
+            setAllLesson(response.data.result);
+            const sortedActivities = (response.data.result.sort((a, b) => b.createDate - a.createDate));
+            setNearLessons(changeDate(sortedActivities[0].createDate))
         }
+    }
+
+    const changeDate = (date) => {
+        let Endate = new Date(date)
+        let PrDate = Endate.toLocaleDateString('fa-IR-u-nu-latn');
+        return PrDate
     }
 
     const handleChangePageStudents = (event, newPage) => {
@@ -132,7 +146,8 @@ export default function DashboardTeacher() {
                         <CardFooter stats>
                             <div className={classes.stats}>
                                 <DateRange />
-                                ۲۴ ساعت اخیر
+                                آخرین دوره
+                                <small style={{ paddingRight: 5 }}>{nearCoursesTeacher ? nearCoursesTeacher : "دوره ندارید"}</small>
                             </div>
                         </CardFooter>
                     </Card>
@@ -150,8 +165,9 @@ export default function DashboardTeacher() {
                         </CardHeader>
                         <CardFooter stats>
                             <div className={classes.stats}>
-                                <LocalOffer />
-                                توسط گیت‌هاب
+                                <Update />
+                                آخرین درس
+                                <small style={{ paddingRight: 5 }}>{nearLessons}</small>
                             </div>
                         </CardFooter>
                     </Card>
