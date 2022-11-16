@@ -16,11 +16,16 @@ import AdminNavbarLinks from "components/Navbars/AdminNavbarLinks.js";
 import RTLNavbarLinks from "components/Navbars/RTLNavbarLinks.js";
 
 import styles from "assets/jss/material-dashboard-react/components/sidebarStyle.js";
+import { getItem } from "api/storage/storage";
 
 const useStyles = makeStyles(styles);
 
 export default function Sidebar(props) {
+  const token = getItem('token')
+  const role = getItem('role')
+  const id = getItem('id')
   const classes = useStyles();
+  
 
   // verifies if routeName is the one active (in browser input)
   function activeRoute(routeName) {
@@ -35,15 +40,15 @@ export default function Sidebar(props) {
         var listItemClasses;
 
         listItemClasses = classNames({
-          [" " + classes[color]]: activeRoute(prop.layout +prop.path),
+          [" " + classes[color]]: activeRoute(prop.layout + prop.path),
         });
 
         const whiteFontClasses = classNames({
-          [" " + classes.whiteFont]: activeRoute(prop.layout +prop.path),
+          [" " + classes.whiteFont]: activeRoute(prop.layout + prop.path),
         });
         return (
           <NavLink
-            to={prop.layout +prop.path}
+            to={prop.layout + prop.path}
             className={activePro + classes.item}
             activeClassName="active"
             key={key}
@@ -77,10 +82,11 @@ export default function Sidebar(props) {
       })}
     </List>
   );
+
   var brand = (
     <div className={classes.logo}>
       <a
-        href="https://www.creative-tim.com?ref=mdr-sidebar"
+        href={`http://localhost:3000/adminSite/${id}/${token}/${role}`}
         className={classNames(classes.logoLink, {
           [classes.logoLinkRTL]: props.rtlActive,
         })}
