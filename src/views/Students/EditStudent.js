@@ -128,9 +128,9 @@ export default function EditStudent(props) {
     }
 
     const uploadImgToDatabase = async () => {
+        console.log(filesImg, "filesImg");
         if (!filesImg) {
-            onToast('لطفا عکس انتخاب کنید!');
-            setOpenToast(true)
+            updateDataStudent(dataStudent._id, photo)
         }
         else {
 

@@ -122,8 +122,7 @@ export default function InsertStudent(props) {
 
     const uploadImgToDatabase = async () => {
         if (!filesImg) {
-            onToast('لطفا عکس انتخاب کنید!');
-            setOpenToast(true)
+            insertStudent(photo)
         }
         else {
 

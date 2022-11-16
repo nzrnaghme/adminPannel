@@ -39,7 +39,7 @@ const styles = (theme) => ({
         marginTop: "0px",
         minHeight: "auto",
         fontWeight: "300",
-          fontFamily: "bakh",
+        fontFamily: "bakh",
         marginBottom: "3px",
         textDecoration: "none",
         "& small": {
@@ -206,6 +206,7 @@ export default function CreateCourse(props) {
                                 <GridItem xs={12} sm={12} md={6}>
 
                                     <CustomeDatePicker
+                                        minDate={new Date()}
                                         label="پایان دوره"
                                         onChange={(e) => {
                                             setDateEnd(e);

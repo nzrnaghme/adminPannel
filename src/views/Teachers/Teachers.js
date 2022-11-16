@@ -90,7 +90,7 @@ export default function Teachers() {
     if (response.data.result) {
       let newTeacher = allTeachers.filter((item) => item.id != id)
       setOpenToast(true)
-      onToast(response.data.message[0].message, "success")
+      onToast("استاد با موفقیت حذف شد", "success")
       setAllTeachers(newTeacher);
     }
   }

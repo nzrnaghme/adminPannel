@@ -56,7 +56,7 @@ export default function UserProfile() {
   const { setOpenToast, onToast } = useContext(GeneralContext);
   const [date, setDate] = useState(null);
 
-  const [photoLesson, setPhotoLesson] = useState()
+  const [photoUser, setPhotoUser] = useState()
   const [filesImg, setFileImg] = useState()
   const fileName = useRef('')
   const upsertImgRef = useRef(null);
@@ -78,7 +78,7 @@ export default function UserProfile() {
       setBirth(response.data.result.birthDate)
       setAddress(response.data.result.address)
       setEmail(response.data.result.email)
-      setPhotoLesson(response.data.result.profile)
+      setPhotoUser(response.data.result.profile)
 
       var datePirsian = response.data.result.birthDate.split("/")
       var dateEnglish = jalaali.toGregorian(Number(datePirsian[0]), Number(datePirsian[1]), Number(datePirsian[2]))
@@ -98,7 +98,7 @@ export default function UserProfile() {
   }
 
   const imgUpdateHandler = (img) => {
-    setPhotoLesson(img);
+    setPhotoUser(img);
     var fileImg = dataURLtoFile(img, fileName.current);
     setFileImg(fileImg)
   }
@@ -123,8 +123,7 @@ export default function UserProfile() {
 
   const uploadImgToDatabase = async () => {
     if (!filesImg) {
-      onToast('لطفا عکس انتخاب کنید!');
-      setOpenToast(true)
+      updateUser(photoUser)
     }
     else {
 
@@ -272,7 +271,7 @@ export default function UserProfile() {
             <Card profile>
               <div className="photoMyProfile">
                 <UploadPhoto
-                  src={photoLesson}
+                  src={photoUser}
                   onUploadingImg={onUploadingImg}
                   onUpsertClicked={onUpsertClicked}
                   upsertRef={upsertImgRef} />

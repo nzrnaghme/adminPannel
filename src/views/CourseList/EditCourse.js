@@ -38,7 +38,7 @@ const styles = (theme) => ({
         marginTop: "0px",
         minHeight: "auto",
         fontWeight: "300",
-          fontFamily: "bakh",
+        fontFamily: "bakh",
         marginBottom: "3px",
         textDecoration: "none",
         "& small": {
@@ -113,13 +113,16 @@ export default function EditCourse(props) {
 
 
         var datePirsianStart = dataCourse.startDate.split("T")[0].split("-")
+        setStartDate(datePirsianStart[0] + "/" + datePirsianStart[1] + "/" + datePirsianStart[2])
         var dateEnglishStart = jalaali.toGregorian(Number(datePirsianStart[0]), Number(datePirsianStart[1]), Number(datePirsianStart[2]))
         setDateStart(new Date(`${dateEnglishStart.gy}/${dateEnglishStart.gm}/${dateEnglishStart.gd}`))
 
         var datePirsianEnd = dataCourse.endDate.split("T")[0].split("-")
+        setEndDate(datePirsianEnd[0] + "/" + datePirsianEnd[1] + "/" + datePirsianEnd[2])
         var dateEnglishEnd = jalaali.toGregorian(Number(datePirsianEnd[0]), Number(datePirsianEnd[1]), Number(datePirsianEnd[2]))
         setDateEnd(new Date(`${dateEnglishEnd.gy}/${dateEnglishEnd.gm}/${dateEnglishEnd.gd}`))
     }, [dataCourse])
+
 
 
     useEffect(() => {

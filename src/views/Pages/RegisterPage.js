@@ -1,6 +1,7 @@
 import React, { useState, useContext } from "react";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
+import { useHistory } from "react-router-dom";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
@@ -33,7 +34,7 @@ import { registerEmployee } from "api/Core/Login_Register";
 const useStyles = makeStyles(styles);
 export default function RegisterPage() {
     const { setOpenToast, onToast } = useContext(GeneralContext);
-
+    const history = useHistory();
     const classes = useStyles();
     const [name, setName] = useState()
     const [phone, setPhone] = useState()
@@ -66,6 +67,7 @@ export default function RegisterPage() {
         if (response.data.result) {
             onToast('کاربر اضافه شد', 'success')
             setOpenToast(true)
+            history.push('/auth/login-page')
         }
     }
 

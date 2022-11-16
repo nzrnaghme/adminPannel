@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef, useContext } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import PropTypes from "prop-types";
 import axios from "axios";
@@ -9,7 +9,6 @@ import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 
-import { GeneralContext } from "providers/GeneralContext";
 import RegularButton from "components/CustomButtons/Button";
 import PopUpCustome from "components/PopUp/PopUp";
 import CustomInput from "components/CustomInput/CustomInput.js";
@@ -62,7 +61,6 @@ const styles = (theme) => ({
 const useStyles = makeStyles(styles);
 export default function EditNews(props) {
     const classes = useStyles();
-    const { setOpenToast, onToast } = useContext(GeneralContext);
 
     const {
         opeEditNewsPopUp,
@@ -129,8 +127,7 @@ export default function EditNews(props) {
 
     const uploadImgToDatabase = async () => {
         if (!filesImg) {
-            onToast('لطفا عکس انتخاب کنید!');
-            setOpenToast(true)
+            updateNews(photoNews)
         }
         else {
 
