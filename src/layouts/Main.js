@@ -22,6 +22,8 @@ import LessonList from "views/Lessons/Lessons";
 import Comments from "views/Comments/Comments";
 import News from "views/News/News";
 import Planning from "views/Planning/Planning"
+import Support from "views/Support/Support";
+import QuestionAnswer from "views/QuestionAnswer/QuestionAnswer";
 let ps;
 
 const useStyles = makeStyles(styles);
@@ -99,6 +101,9 @@ export default function Main({ ...rest }) {
               <Route path={"/admin/comments"} component={Comments} />
               <Route path={"/admin/news"} component={News} />
               <Route path={"/admin/planning"} component={Planning} />
+              <Route path={"/admin/support"} component={Support} />
+              <Route path={"/admin/questionAnswer"} component={QuestionAnswer} />
+
               <Redirect to="/admin/dashboard" from="/" />
               
             </Switch>

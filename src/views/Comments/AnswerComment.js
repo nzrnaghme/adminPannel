@@ -137,7 +137,7 @@ export default function AnswerComment(props) {
                                             value={answer}
                                             rtlActive
                                             multiline
-                                            rows={5}
+                                            rows={4}
                                         />
                                     </GridItem>
                                 </GridContainer>

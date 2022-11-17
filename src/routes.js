@@ -6,6 +6,7 @@ import LocalLibraryIcon from '@material-ui/icons/LocalLibrary';
 import PeopleIcon from '@material-ui/icons/People';
 import AssignmentIcon from '@material-ui/icons/Assignment';
 import PublicRoundedIcon from '@material-ui/icons/PublicRounded';
+import ContactSupportRoundedIcon from '@material-ui/icons/ContactSupportRounded';
 // core components/views for Admin layout
 import UserProfile from "views/UserProfile/UserProfile.js";
 import CourseList from "views/CourseList/CourseList.js";
@@ -16,6 +17,8 @@ import LessonList from "views/Lessons/Lessons";
 import Comments from "views/Comments/Comments";
 import News from "views/News/News";
 import Students from "views/Students/Students";
+import Support from "views/Support/Support";
+import QuestionAnswer from "views/QuestionAnswer/QuestionAnswer";
 
 const dashboardRoutes = [
   {
@@ -65,6 +68,21 @@ const dashboardRoutes = [
     name: "کامنت ها",
     icon: Notifications,
     component: Comments,
+    layout: "/admin",
+  },
+  {
+    path: "/support",
+    name: "پشتیبانی",
+    icon: ContactSupportRoundedIcon,
+    component: Support,
+    layout: "/admin",
+  },
+
+  {
+    path: "/questionAnswer",
+    name: "پرسش و پاسخ",
+    icon: ContactSupportRoundedIcon,
+    component: QuestionAnswer,
     layout: "/admin",
   },
 

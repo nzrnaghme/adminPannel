@@ -71,7 +71,8 @@ export default function CustomTable(props) {
     editNews,
     studentPannel,
     teacherPannelLesson,
-    teacherPannelCourses } = props;
+    teacherPannelCourses,
+    questionAnswer } = props;
 
   return (
     <div className={classes.tableResponsive}>
@@ -702,7 +703,59 @@ export default function CustomTable(props) {
             </TableRow>
           )) : ''}
 
-
+          {questionAnswer && tableData ? tableData.slice(currentPage * rowsCount, currentPage * rowsCount + rowsCount).map((row, index) => (
+            <TableRow key={index} className={classes.tableBodyRow} style={{ cursor: "pointer" }}>
+              <TableCell className={classes.tableCell} onClick={() => { showAllData(row._id) }}>{row.username}</TableCell>
+              <TableCell className={classes.tableCell} onClick={() => { showAllData(row._id) }}>{row.email}</TableCell>
+              <TableCell className={classes.tableCell} onClick={() => { showAllData(row._id) }}>{formatDate(row.createDate)}</TableCell>
+              <TableCell className={classes.tableCell} onClick={() => { showAllData(row._id) }}>{row.comment.substring(0, 15) + "..."}</TableCell>
+              {row.answer && <TableCell className={classes.tableCell}>{row.answer.substring(0, 15) + "..."}</TableCell>}
+              {!row.answer && <TableCell
+                className={classes.tableCell}>
+                <Tooltip
+                  id="tooltip-top-start"
+                  title="پاسخ به کامنت"
+                  placement="top"
+                  classes={{ tooltip: classes.tooltip }}
+                >
+                  <IconButton
+                    aria-label="Close"
+                    className={classes.tableActionButton}
+                    onClick={() => {
+                      answerToComment(row._id)
+                    }}
+                  >
+                    <TextsmsIcon
+                      className={
+                        classes.tableActionButtonIcon + " " + classes.Insert
+                      }
+                    />
+                  </IconButton>
+                </Tooltip>
+              </TableCell>}
+              {row.answer && <TableCell
+                className={classes.tableCell}>
+                <Tooltip
+                  id="tooltip-top-start"
+                  title="کامنت تایید شده و جواب داده شده"
+                  placement="top"
+                  classes={{ tooltip: classes.tooltip }}
+                >
+                  <IconButton
+                    aria-label="Close"
+                    className={classes.tableActionButton}
+                    onClick={() => { showAllData(row._id) }}
+                  >
+                    <DoneAllIcon
+                      className={
+                        classes.tableActionButtonIcon + " " + classes.Add
+                      }
+                    />
+                  </IconButton>
+                </Tooltip>
+              </TableCell>}
+            </TableRow>
+          )) : ''}
         </TableBody>
       </Table>
       <TablePagination
@@ -784,5 +837,7 @@ CustomTable.propTypes = {
   studentPannel: PropTypes.bool,
 
   teacherPannelLesson: PropTypes.bool,
-  teacherPannelCourses: PropTypes.bool
+  teacherPannelCourses: PropTypes.bool,
+
+  questionAnswer: PropTypes.bool
 };

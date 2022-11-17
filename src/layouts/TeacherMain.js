@@ -17,6 +17,7 @@ import UserProfile from "views/UserProfile/UserProfile";
 import CourseList from "views/CourseList/CourseList";
 import Planning from "views/Planning/Planning"
 import News from "views/News/News";
+import QuestionAnswer from "views/QuestionAnswer/QuestionAnswer";
 let ps;
 
 const useStyles = makeStyles(styles);
@@ -88,6 +89,8 @@ export default function TeacherMain({ ...rest }) {
               <Route path={"/teacher/courses"} component={CourseList} />
               <Route path={"/teacher/news"} component={News} />
               <Route path={"/teacher/planning"} component={Planning} />
+              <Route path={"/teacher/questionAnswer"} component={QuestionAnswer} />
+
               <Redirect to="/teacher/dashboard" from="/" />
             </Switch>
           </div>

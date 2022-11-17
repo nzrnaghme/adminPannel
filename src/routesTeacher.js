@@ -2,12 +2,14 @@ import Dashboard from "@material-ui/icons/Dashboard";
 import Person from "@material-ui/icons/Person";
 import LocationOn from "@material-ui/icons/LocationOn";
 import PublicRoundedIcon from '@material-ui/icons/PublicRounded';
+import ContactSupportRoundedIcon from '@material-ui/icons/ContactSupportRounded';
 // core components/views for Admin layout
 import UserProfile from "views/UserProfile/UserProfile.js";
 import CourseList from "views/CourseList/CourseList.js";
 import Planning from "views/Planning/Planning.js";
 import DashboardPage from "views/Dashboard/Dashboard";
 import News from "views/News/News";
+import QuestionAnswer from "views/QuestionAnswer/QuestionAnswer";
 
 const dashboardRoutes = [
   {
@@ -36,6 +38,14 @@ const dashboardRoutes = [
     name: "خبر و مقالات",
     icon: PublicRoundedIcon,
     component: News,
+    layout: "/teacher",
+  },
+
+  {
+    path: "/questionAnswer",
+    name: "پرسش و پاسخ",
+    icon: ContactSupportRoundedIcon,
+    component: QuestionAnswer,
     layout: "/teacher",
   },
 
