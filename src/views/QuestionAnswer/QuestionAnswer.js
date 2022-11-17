@@ -89,6 +89,7 @@ export default function QuestionAnswer() {
 
     const getComments = async () => {
         let response = await getComment();
+        setCourseTeacher(response.data);
         setQuestionWithOutAnswer(response.data.filter((item) => item.postId.split('.')[1] === "question" && !item.answer))
         setQuestionWithAnswer(response.data.filter((item) => item.postId.split('.')[1] === "question" && item.answer))
     }
