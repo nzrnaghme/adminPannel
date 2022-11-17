@@ -19,6 +19,7 @@ import CreateCourse from "./CreateCourse";
 import AddStudentToCourse from "./AddStudentToCourse";
 import { GeneralContext } from "providers/GeneralContext";
 import { getItem } from "api/storage/storage";
+import { trackPromise } from "react-promise-tracker";
 
 
 const styles = {
@@ -77,7 +78,7 @@ export default function CourseList() {
 
 
   useEffect(() => {
-    getCourses();
+    trackPromise(getCourses());
   }, [])
 
   const getCourses = async () => {
@@ -168,7 +169,7 @@ export default function CourseList() {
                   rowsCount={rowsPerPage}
                   removeCourse={(id) => {
                     onConfirmSetter('آیا برای حذف دوره مطمئن هستید؟', () => {
-                      removeCourse(id)
+                      trackPromise(removeCourse(id))
                     })
                     setConfirmPopupOpen(true)
                   }}
@@ -191,10 +192,11 @@ export default function CourseList() {
           openEditCoursePopUp={openPopUpEditCourse}
           closePopUpEdit={() => { setOpenPopUpEditCourse(false) }}
           EditSuccess={() => {
+            setOpenPopUpEditCourse(false)
+
             setOpenToast(true)
             onToast("دوره بروزرسانی شد", "success")
-            getCourses()
-            setOpenPopUpEditCourse(false)
+              (getCourses())
           }} />}
 
       {openPopUpStudentsCourse && idForStudents &&
@@ -203,8 +205,9 @@ export default function CourseList() {
           openListStudentPopUp={openPopUpStudentsCourse}
           closePopUpList={() => { setOpenPopUpStudentsCourse(false) }}
           RemoveSuccess={() => {
-            getCourses()
             setOpenPopUpStudentsCourse(false)
+
+              (getCourses())
           }}
         />}
 
@@ -212,10 +215,11 @@ export default function CourseList() {
         <CreateCourse
           openCreateCoursePopUp={openPopUpCreateCourse}
           CreateSuccess={() => {
+            setOpenPopUpCreateCourse(false)
+
             setOpenToast(true)
             onToast("دوره اضافه شد", "success")
-            getCourses();
-            setOpenPopUpCreateCourse(false)
+              (getCourses());
           }}
           closePopUpCreate={() => {
             setOpenPopUpCreateCourse(false)
@@ -229,10 +233,11 @@ export default function CourseList() {
             setOpenPopUpaddStudent(false)
           }}
           AddSuccess={() => {
+            setOpenPopUpaddStudent(false)
+
             setOpenToast(true)
             onToast("دانشجو به دوره اضافه شد", "success")
-            getCourses();
-            setOpenPopUpaddStudent(false)
+            (getCourses());
           }}
         />
       }

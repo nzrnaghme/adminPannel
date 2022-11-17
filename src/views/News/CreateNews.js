@@ -25,6 +25,7 @@ import UploadPhoto from "components/UploadPhoto/UploadPhoto";
 import "./News.css"
 
 import { createNews_Articles } from "api/Core/News";
+import { trackPromise } from "react-promise-tracker";
 
 
 const styles = (theme) => ({
@@ -137,7 +138,7 @@ export default function CreateNews(props) {
             })
                 .then(function (response) {
                     if (response.data.result)
-                        createteNews(response.data.result)
+                        trackPromise(createteNews(response.data.result))
 
                 })
                 .catch(function (response) {
@@ -245,7 +246,7 @@ export default function CreateNews(props) {
                                     <RegularButton
                                         color="info"
                                         size="sm"
-                                        onClick={() => { uploadImgToDatabase() }}>ثبت تغییرات</RegularButton>
+                                        onClick={() => { trackPromise(uploadImgToDatabase()) }}>ثبت تغییرات</RegularButton>
 
                                     <RegularButton
                                         color="info"

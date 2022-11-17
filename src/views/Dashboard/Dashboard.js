@@ -36,12 +36,12 @@ import avatar from "assets/img/faces/admin.jpg";
 import { getAllStudet } from "api/Core/Student_Manage";
 import { getAllTeachers } from "api/Core/Employe_Manage";
 import { getAllCourse } from "api/Core/Course";
+import { trackPromise } from "react-promise-tracker";
 
 const useStyles = makeStyles(styles);
 
 export default function RTLPage() {
   const classes = useStyles();
-  var jalaali = require('jalaali-js')
 
   const [countStudents, setCountStudents] = useState(0);
   const [countTeachers, setCountTeachers] = useState(0);
@@ -60,9 +60,9 @@ export default function RTLPage() {
   const [rowsPerPageTeacher, setRowsPerPagTeacher] = useState(3);
 
   useEffect(() => {
-    getAllUser();
-    getTeacher();
-    getAllCourses();
+    trackPromise(getAllUser());
+    trackPromise(getTeacher());
+    trackPromise(getAllCourses());
   }, [])
 
   const changeDate = (date) => {

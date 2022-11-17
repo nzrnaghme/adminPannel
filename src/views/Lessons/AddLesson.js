@@ -23,6 +23,7 @@ import { getAllCategory } from "api/Core/Lesson";
 import { createLesson } from "api/Core/Lesson";
 
 import "./lesson.css"
+import { trackPromise } from "react-promise-tracker";
 const styles = (theme) => ({
     cardCategoryWhite: {
         "&,& a,& a:hover,& a:focus": {
@@ -160,8 +161,8 @@ export default function AddLesson(props) {
             })
                 .then(function (response) {
                     if (response.data.result)
-                        addLessonNew(response.data.result)
-
+                        trackPromise(addLessonNew(response.data.result)
+                        )
                 })
                 .catch(function (response) {
                     console.log(response);
@@ -277,7 +278,7 @@ export default function AddLesson(props) {
                                     <RegularButton
                                         color="info"
                                         size="sm"
-                                        onClick={() => { uploadImgToDatabase() }}>ثبت تغییرات</RegularButton>
+                                        onClick={() => { trackPromise(uploadImgToDatabase()) }}>ثبت تغییرات</RegularButton>
                                     <RegularButton
                                         color="danger"
                                         size="sm"

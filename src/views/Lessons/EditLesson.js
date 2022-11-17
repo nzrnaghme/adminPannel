@@ -24,6 +24,7 @@ import "./lesson.css"
 import { getAllCategory } from "api/Core/Lesson";
 import { removeCourseById } from "api/Core/Course";
 import { updateLesson } from "api/Core/Lesson";
+import { trackPromise } from "react-promise-tracker";
 
 const styles = (theme) => ({
     cardCategoryWhite: {
@@ -69,7 +70,7 @@ export default function EditLEsson(props) {
         closePopUpEdit,
         dataLesson,
         courseByIdLesson } = props
-    const { setOpenToast, onToast, setConfirmPopupOpen, onConfirmSetter } = useContext(GeneralContext);
+    const { setConfirmPopupOpen, onConfirmSetter } = useContext(GeneralContext);
     const [photoLesson, setPhotoLesson] = useState()
     const [nameLesson, setNameLesson] = useState();
     const [categoryLesson, setCategoryLesson] = useState();
@@ -87,7 +88,7 @@ export default function EditLEsson(props) {
     const [rowsPerPage, setRowsPerPage] = useState(5);
 
     useEffect(() => {
-        getAllCategories()
+        trackPromise(getAllCategories())
     }, [])
 
     useEffect(() => {
@@ -172,8 +173,7 @@ export default function EditLEsson(props) {
 
     const uploadImgToDatabase = async () => {
         if (!filesImg) {
-            onToast('لطفا عکس انتخاب کنید!');
-            setOpenToast(true)
+            trackPromise(updateDataLesson(photoLesson))
         }
         else {
 
@@ -187,7 +187,7 @@ export default function EditLEsson(props) {
             })
                 .then(function (response) {
                     if (response.data.result)
-                        updateDataLesson(response.data.result)
+                        trackPromise(updateDataLesson(response.data.result))
 
                 })
                 .catch(function (response) {
@@ -314,7 +314,7 @@ export default function EditLEsson(props) {
                                         rowsCount={rowsPerPage}
                                         removeCourse={(id) => {
                                             onConfirmSetter("آیا برای حذف دوره اطمینان دارید؟", () => {
-                                                removeCourse(id)
+                                                trackPromise(removeCourse(id))
                                             })
                                             setConfirmPopupOpen(true)
                                         }}
@@ -335,7 +335,7 @@ export default function EditLEsson(props) {
                                     <RegularButton
                                         color="info"
                                         size="sm"
-                                        onClick={() => { uploadImgToDatabase() }}>ثبت تغییرات</RegularButton>
+                                        onClick={() => { trackPromise(uploadImgToDatabase()) }}>ثبت تغییرات</RegularButton>
                                     <RegularButton
                                         color="danger"
                                         size="sm"

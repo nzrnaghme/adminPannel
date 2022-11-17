@@ -22,6 +22,7 @@ import { deleteStudentById } from "api/Core/Student_Manage";
 import { getStudentById } from "api/Core/Student_Manage";
 import { deActiveStudentManage } from "api/Core/Student_Manage";
 import { activeStudentManage } from "api/Core/Student_Manage";
+import { trackPromise } from "react-promise-tracker";
 
 const styles = (theme) => ({
     cardCategoryWhite: {
@@ -76,7 +77,7 @@ export default function Students() {
     const [idForCourse, setIdForCourse] = useState()
 
     useEffect(() => {
-        getStudents();
+        trackPromise(getStudents());
     }, [])
 
     const getStudents = async () => {
@@ -186,7 +187,9 @@ export default function Students() {
                                     tableData={allStudents}
                                     currentPage={currentPage_MainbarMyCourses}
                                     rowsCount={rowsPerPage}
-                                    removeStudent={removeStudent}
+                                    removeStudent={()=>{
+                                        trackPromise(removeStudent())
+                                    }}
                                     editStudent={editStudent}
                                     changeActivate={changeActivate}
                                     editCourseStudent={editCourseStudent}

@@ -24,6 +24,7 @@ import AnswerComment from "./AnswerComment";
 
 import { getComment } from "api/Core/Comment"
 import { verifyComment } from "api/Core/Comment";
+import { trackPromise } from "react-promise-tracker";
 
 
 const styles = {
@@ -92,7 +93,7 @@ export default function Comments() {
     const [openAnswerPopUp, setOpenAnswerPopUp] = useState(false)
 
     useEffect(() => {
-        getAllComments()
+        trackPromise(getAllComments())
     }, [])
 
     const getAllComments = async () => {

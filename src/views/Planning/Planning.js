@@ -5,6 +5,7 @@ import timeGridPlugin from '@fullcalendar/timegrid'
 import interactionPlugin from '@fullcalendar/interaction'
 import { getItem } from 'api/storage/storage'
 import { getAllCourse } from 'api/Core/Course'
+import { trackPromise } from 'react-promise-tracker'
 
 export default function Planning() {
     const role = getItem('role');
@@ -17,7 +18,7 @@ export default function Planning() {
     const [coursePlaning, setCoursePlaning] = useState()
 
     useEffect(() => {
-        getAllCourses()
+        trackPromise(getAllCourses())
     }, [])
 
     const getAllCourses = async () => {

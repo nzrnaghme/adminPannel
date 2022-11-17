@@ -19,6 +19,7 @@ import { Avatar } from "@mui/material";
 import CustomeDatePicker from "components/CustomeDatePicker/CustomeDatePicker"
 
 import "./Course.css"
+import { trackPromise } from "react-promise-tracker";
 
 const styles = (theme) => ({
     cardCategoryWhite: {
@@ -147,8 +148,6 @@ export default function EditCourse(props) {
             lesson: lessonName
         }
 
-        console.log(data);
-        // EditSuccess()
         let response = await updateCourse(data);
         if (response.data.result) {
             EditSuccess()
@@ -281,7 +280,7 @@ export default function EditCourse(props) {
                                     <RegularButton
                                         color="info"
                                         size="sm"
-                                        onClick={() => { updateDataCourse(dataCourse._id) }}>ثبت تغییرات</RegularButton>
+                                        onClick={() => { trackPromise(updateDataCourse(dataCourse._id)) }}>ثبت تغییرات</RegularButton>
                                     <RegularButton
                                         color="danger"
                                         size="sm"

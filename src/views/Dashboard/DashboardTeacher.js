@@ -27,6 +27,7 @@ import { getItem } from "api/storage/storage";
 import { getEmployeeById } from "api/Core/Employe_Manage";
 import { getAllCourse } from "api/Core/Course";
 import { getAllLesson } from "api/Core/Lesson";
+import { trackPromise } from "react-promise-tracker";
 
 
 const useStyles = makeStyles(styles);
@@ -50,11 +51,11 @@ export default function DashboardTeacher() {
     const [rowsPerPageTeacher, setRowsPerPagTeacher] = useState(3);
 
     useEffect(() => {
-        getAllCourses()
+        trackPromise(getAllCourses())
         setCountStudents(10);
-        getAllLessons()
+        trackPromise(getAllLessons())
         if (userId)
-            getStudentsTeacher(userId);
+            trackPromise(getStudentsTeacher(userId));
     }, [])
 
 

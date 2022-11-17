@@ -16,6 +16,7 @@ import { GeneralContext } from "providers/GeneralContext";
 import { getCourseById } from "api/Core/Course";
 import { getAllStudet } from "api/Core/Student_Manage";
 import { addStudentToCourse } from "api/Core/Course";
+import { trackPromise } from "react-promise-tracker";
 
 const styles = (theme) => ({
     cardCategoryWhite: {
@@ -68,12 +69,12 @@ export default function AddStudentToCourse(props) {
     const { setConfirmPopupOpen, onConfirmSetter } = useContext(GeneralContext);
 
     useEffect(() => {
-        getAllStudent();
+        trackPromise(getAllStudent());
     }, [userIdCourse])
 
     useEffect(() => {
         if (allStudent && allStudent.length > 0)
-            getCurrentStudents(userIdCourse);
+        trackPromise(getCurrentStudents(userIdCourse));
     }, [allStudent])
 
 
@@ -148,7 +149,7 @@ export default function AddStudentToCourse(props) {
                                     rowsCount={rowsPerPage}
                                     addStudentToCourse={(id) => {
                                         onConfirmSetter('آیا برای اضافه کردن دانشجو اطمینان دارید؟', () => {
-                                            addStudentToCourses(id)
+                                            trackPromise(addStudentToCourses(id))
                                         })
                                         setConfirmPopupOpen(true)
                                     }}

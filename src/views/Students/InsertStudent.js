@@ -26,6 +26,7 @@ import PersonIcon from '@material-ui/icons/Person';
 import MailOutlineIcon from '@material-ui/icons/MailOutline';
 import { registerUser } from "api/Core/Login_Register";
 import photoPic from "assets/img/photo.png"
+import { trackPromise } from "react-promise-tracker";
 
 const styles = (theme) => ({
     cardCategoryWhite: {
@@ -122,7 +123,7 @@ export default function InsertStudent(props) {
 
     const uploadImgToDatabase = async () => {
         if (!filesImg) {
-            insertStudent(photo)
+            trackPromise(insertStudent(photo))
         }
         else {
 
@@ -136,7 +137,7 @@ export default function InsertStudent(props) {
             })
                 .then(function (response) {
                     if (response.data.result)
-                        insertStudent(response.data.result)
+                        trackPromise(insertStudent(response.data.result))
 
                 })
                 .catch(function (response) {
@@ -332,7 +333,9 @@ export default function InsertStudent(props) {
                                     <RegularButton
                                         color="info"
                                         size="sm"
-                                        onClick={() => { uploadImgToDatabase() }}>ثبت تغییرات</RegularButton>
+                                        onClick={() => {
+                                            trackPromise(uploadImgToDatabase())
+                                        }}>ثبت تغییرات</RegularButton>
                                     <RegularButton
                                         color="danger"
                                         size="sm"

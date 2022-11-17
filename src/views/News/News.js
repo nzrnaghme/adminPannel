@@ -24,6 +24,7 @@ import { getAllNews } from "api/Core/News";
 import { getNewsById } from "api/Core/News";
 import { deleteNews } from "api/Core/News";
 import CreateNews from "./CreateNews";
+import { trackPromise } from "react-promise-tracker";
 
 const styles = {
     cardCategoryWhite: {
@@ -81,7 +82,7 @@ export default function News() {
     const [openCreateNewsPopUp, setOpenCreateNewsPopUp] = useState(false);
 
     useEffect(() => {
-        getAllNews_Articles()
+        trackPromise(getAllNews_Articles())
 
     }, [])
 
@@ -192,7 +193,9 @@ export default function News() {
                                                 rowsCount={rowsPerPageNews}
                                                 allNewsShow
                                                 editNews={editNews}
-                                                removeNews={removeNews}
+                                                removeNews={(id) => {
+                                                    trackPromise(removeNews(id))
+                                                }}
                                                 handleChangePage={handleChangePageNews}
                                                 handleChangeRowsPerPage={handleChangeRowsPerPageNews}
                                             />}
@@ -210,7 +213,9 @@ export default function News() {
                                                 rowsCount={rowsPerPageArticles}
                                                 allNewsShow
                                                 editNews={editNews}
-                                                removeNews={removeArticles}
+                                                removeNews={(id) => {
+                                                    trackPromise(removeArticles(id))
+                                                }}
                                                 handleChangePage={handleChangePageArticles}
                                                 handleChangeRowsPerPage={handleChangeRowsPerPageArticles}
                                             />

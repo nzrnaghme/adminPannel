@@ -20,6 +20,7 @@ import { getEmployeeById } from "api/Core/Employe_Manage";
 import { updateEmployeeById } from "api/Core/Employe_Manage";
 import UploadPhoto from "components/UploadPhoto/UploadPhoto";
 import "./profile.css"
+import { trackPromise } from "react-promise-tracker";
 
 const styles = {
   cardCategoryWhite: {
@@ -62,10 +63,10 @@ export default function UserProfile() {
   const upsertImgRef = useRef(null);
 
   useEffect(() => {
-    getDataUser()
+    trackPromise(getDataUser(userId))
   }, [])
 
-  const getDataUser = async () => {
+  const getDataUser = async (userId) => {
     let response = await getEmployeeById(userId);
     if (response.data.result) {
       setDataUser(response.data.result)
@@ -123,7 +124,7 @@ export default function UserProfile() {
 
   const uploadImgToDatabase = async () => {
     if (!filesImg) {
-      updateUser(photoUser)
+      trackPromise(updateUser(photoUser))
     }
     else {
 
@@ -137,7 +138,7 @@ export default function UserProfile() {
       })
         .then(function (response) {
           if (response.data.result)
-            updateUser(response.data.result)
+            trackPromise(updateUser(response.data.result))
 
         })
         .catch(function (response) {
@@ -263,7 +264,7 @@ export default function UserProfile() {
 
               </CardBody>
               <CardFooter>
-                <Button color="info" onClick={() => { uploadImgToDatabase() }}>بروزرسانی</Button>
+                <Button color="info" onClick={() => { trackPromise(uploadImgToDatabase()) }}>بروزرسانی</Button>
               </CardFooter>
             </Card>
           </GridItem>

@@ -20,6 +20,7 @@ import { getItem } from "api/storage/storage";
 
 import "./Course.css"
 import { Avatar } from "@mui/material";
+import { trackPromise } from "react-promise-tracker";
 
 const styles = (theme) => ({
     cardCategoryWhite: {
@@ -84,8 +85,8 @@ export default function CreateCourse(props) {
     const [dateEnd, setDateEnd] = useState(null)
 
     useEffect(() => {
-        getAllTeacher()
-        getAllLessons()
+        trackPromise(getAllTeacher())
+        trackPromise(getAllLessons())
         if (userId) setTeacherName(userId)
     }, [])
 
@@ -279,7 +280,7 @@ export default function CreateCourse(props) {
                                 <RegularButton
                                     color="info"
                                     size="sm"
-                                    onClick={() => { createNewCourse() }}>ثبت تغییرات</RegularButton>
+                                    onClick={() => { trackPromise(createNewCourse()) }}>ثبت تغییرات</RegularButton>
                                 <RegularButton
                                     color="danger"
                                     size="sm"

@@ -10,12 +10,12 @@ import PublicRoundedIcon from '@material-ui/icons/PublicRounded';
 import UserProfile from "views/UserProfile/UserProfile.js";
 import CourseList from "views/CourseList/CourseList.js";
 import Teachers from "views/Teachers/Teachers.js";
-import Icons from "views/Icons/Icons.js";
 import Planning from "views/Planning/Planning.js";
 import DashboardPage from "views/Dashboard/Dashboard";
 import LessonList from "views/Lessons/Lessons";
 import Comments from "views/Comments/Comments";
 import News from "views/News/News";
+import Students from "views/Students/Students";
 
 const dashboardRoutes = [
   {
@@ -50,7 +50,7 @@ const dashboardRoutes = [
     path: "/students",
     name: "دانشجویان",
     icon: PeopleIcon,
-    component: Icons,
+    component: Students,
     layout: "/admin",
   },
   {
@@ -82,7 +82,7 @@ const dashboardRoutes = [
     component: Planning,
     layout: "/admin",
   },
-  
+
 ];
 
 export default dashboardRoutes;

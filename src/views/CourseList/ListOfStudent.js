@@ -14,6 +14,7 @@ import CardBody from "components/Card/CardBody.js";
 import { getCourseById } from "api/Core/Course";
 import { removeStudentToCourse } from "api/Core/Course";
 import { GeneralContext } from "providers/GeneralContext";
+import { trackPromise } from "react-promise-tracker";
 
 
 const styles = (theme) => ({
@@ -67,7 +68,7 @@ export default function ListOfStudents(props) {
         userIdCourse } = props
 
     useEffect(() => {
-        getCurrentStudents(userIdCourse)
+        trackPromise(getCurrentStudents(userIdCourse))
     }, [userIdCourse])
 
     const getCurrentStudents = async (id) => {
@@ -122,7 +123,7 @@ export default function ListOfStudents(props) {
                                     rowsCount={rowsPerPage}
                                     removeStudent={(id) => {
                                         onConfirmSetter('آیا برای حذف دانشجو مطمئن هستید؟', () => {
-                                            removeStudentInCourse(id)
+                                            trackPromise(removeStudentInCourse(id))
                                         })
                                         setConfirmPopupOpen(true)
 

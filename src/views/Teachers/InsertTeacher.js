@@ -28,6 +28,7 @@ import UploadPhoto from "components/UploadPhoto/UploadPhoto";
 import { GeneralContext } from "providers/GeneralContext";
 
 import "./teacher.css"
+import { trackPromise } from "react-promise-tracker";
 
 const styles = (theme) => ({
     cardCategoryWhite: {
@@ -139,7 +140,7 @@ export default function InsertTeacher(props) {
             })
                 .then(function (response) {
                     if (response.data.result)
-                        insertStudent(response.data.result)
+                        trackPromise(insertStudent(response.data.result))
 
                 })
                 .catch(function (response) {
@@ -359,7 +360,7 @@ export default function InsertTeacher(props) {
                                     <RegularButton
                                         color="info"
                                         size="sm"
-                                        onClick={() => { uploadImgToDatabase() }}>ثبت تغییرات</RegularButton>
+                                        onClick={() => { trackPromise(uploadImgToDatabase()) }}>ثبت تغییرات</RegularButton>
                                     <RegularButton
                                         color="danger"
                                         size="sm"

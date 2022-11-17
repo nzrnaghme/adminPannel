@@ -18,6 +18,7 @@ import { getAllLesson } from "api/Core/Lesson";
 import { getAllCategory } from "api/Core/Lesson";
 import { removeLesson } from "api/Core/Lesson";
 import { getLessonById } from "api/Core/Lesson";
+import { trackPromise } from "react-promise-tracker";
 
 
 const styles = {
@@ -72,8 +73,8 @@ export default function LessonList() {
     const [imgLesson, setImgLesson] = useState()
 
     useEffect(() => {
-        getAllCategories()
-        getLessons();
+        trackPromise(getAllCategories())
+        trackPromise(getLessons());
     }, [])
 
     const getAllCategories = async () => {
@@ -167,11 +168,13 @@ export default function LessonList() {
                                     rowsCount={rowsPerPage}
                                     removeLessons={(id) => {
                                         onConfirmSetter('آیا برای حذف درس اطمینان دارید؟', () => {
-                                            removeLessons(id)
+                                            trackPromise(removeLessons(id))
                                         })
                                         setConfirmPopupOpen(true)
                                     }}
-                                    editLessons={editLessons}
+                                    editLessons={(id) => {
+                                        trackPromise(editLessons(id))
+                                    }}
                                     addCourseToLesson={addCourseToLesson}
                                     lessons
                                     handleChangePage={handleChangePage}

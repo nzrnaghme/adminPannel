@@ -12,6 +12,7 @@ import CardHeader from "components/Card/CardHeader.js";
 import CardBody from "components/Card/CardBody.js";
 import "./comment.css"
 import { putAnswerToComment } from "api/Core/Comment";
+import { trackPromise } from "react-promise-tracker";
 
 const styles = (theme) => ({
     cardCategoryWhite: {
@@ -151,7 +152,7 @@ export default function AnswerComment(props) {
                                 <RegularButton
                                     color="info"
                                     size="sm"
-                                    onClick={() => { handleAnswerComment() }}>ثبت پاسخ کامنت</RegularButton>
+                                    onClick={() => { trackPromise(handleAnswerComment()) }}>ثبت پاسخ کامنت</RegularButton>
 
                                 <RegularButton
                                     color="info"

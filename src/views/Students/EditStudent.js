@@ -19,6 +19,7 @@ import UploadPhoto from "components/UploadPhoto/UploadPhoto";
 import imagePicker from "components/UploadPhoto/imagePicker"
 
 import "./students.css"
+import { trackPromise } from "react-promise-tracker";
 
 const styles = (theme) => ({
     cardCategoryWhite: {
@@ -128,9 +129,8 @@ export default function EditStudent(props) {
     }
 
     const uploadImgToDatabase = async () => {
-        console.log(filesImg, "filesImg");
         if (!filesImg) {
-            updateDataStudent(dataStudent._id, photo)
+            trackPromise(updateDataStudent(dataStudent._id, photo))
         }
         else {
 
@@ -144,7 +144,7 @@ export default function EditStudent(props) {
             })
                 .then(function (response) {
                     if (response.data.result)
-                        updateDataStudent(dataStudent._id, response.data.result)
+                    trackPromise(updateDataStudent(dataStudent._id, response.data.result))
 
                 })
                 .catch(function (response) {
@@ -270,7 +270,7 @@ export default function EditStudent(props) {
                                     <RegularButton
                                         color="info"
                                         size="sm"
-                                        onClick={() => { uploadImgToDatabase() }}>ثبت تغییرات</RegularButton>
+                                        onClick={() => { trackPromise(uploadImgToDatabase()) }}>ثبت تغییرات</RegularButton>
                                     <RegularButton
                                         color="danger"
                                         size="sm"

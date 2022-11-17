@@ -14,6 +14,7 @@ import { getStudentById } from "api/Core/Student_Manage";
 import "./students.css"
 import { removeStudentToCourse } from "api/Core/Course";
 import { GeneralContext } from "providers/GeneralContext";
+import { trackPromise } from "react-promise-tracker";
 
 
 const styles = (theme) => ({
@@ -67,7 +68,7 @@ export default function AllCoursesStudent(props) {
         successRemoveData } = props
 
     useEffect(() => {
-        getCoursesForStudent(userId)
+        trackPromise(getCoursesForStudent(userId))
     }, [userId])
 
     const getCoursesForStudent = async (id) => {
@@ -121,7 +122,7 @@ export default function AllCoursesStudent(props) {
                                     rowsCount={rowsPerPage}
                                     removeCourseFromStudent={(id) => {
                                         onConfirmSetter('آیا برای حذف دوره مطمئن هستید؟', () => {
-                                            removeCourseFromStudent(id)
+                                            trackPromise(removeCourseFromStudent(id))
                                         })
                                         setConfirmPopupOpen(true)
                                     }}

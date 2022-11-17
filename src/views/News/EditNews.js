@@ -23,6 +23,7 @@ import UploadPhoto from "components/UploadPhoto/UploadPhoto";
 import "./News.css"
 
 import { updateNewsById } from "api/Core/News";
+import { trackPromise } from "react-promise-tracker";
 
 const styles = (theme) => ({
     cardCategoryWhite: {
@@ -127,7 +128,7 @@ export default function EditNews(props) {
 
     const uploadImgToDatabase = async () => {
         if (!filesImg) {
-            updateNews(photoNews)
+            trackPromise(updateNews(photoNews))
         }
         else {
 
@@ -141,7 +142,7 @@ export default function EditNews(props) {
             })
                 .then(function (response) {
                     if (response.data.result)
-                        updateNews(response.data.result)
+                        trackPromise(updateNews(response.data.result))
 
                 })
                 .catch(function (response) {
@@ -238,7 +239,7 @@ export default function EditNews(props) {
                                     <RegularButton
                                         color="info"
                                         size="sm"
-                                        onClick={() => { uploadImgToDatabase() }}>ثبت تغییرات</RegularButton>
+                                        onClick={() => { trackPromise(uploadImgToDatabase()) }}>ثبت تغییرات</RegularButton>
 
                                     <RegularButton
                                         color="info"

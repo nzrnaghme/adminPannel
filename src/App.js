@@ -16,7 +16,7 @@ import { getItem } from "api/storage/storage";
 import PopUpAction from "components/PopUp/PopUpAction";
 import { GeneralContext } from "providers/GeneralContext";
 import Toast from "components/Toast/Toast";
-
+import Loading from "components/Loading/Loading"
 
 const theme = createTheme({
     direction: 'rtl', // Both here and <body dir="rtl">
@@ -62,6 +62,7 @@ export default function App() {
                     <BrowserRouter>
                         <PopUpAction />
                         <Toast />
+                        <Loading />
                         <Switch>
                             {userId && roleUser === 'admin' ?
                                 <Route path="/admin" component={Main} /> :

@@ -1,9 +1,8 @@
-import React, { useEffect, useState, useRef, useContext } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import PropTypes from "prop-types";
 import axios from "axios";
 
-import { GeneralContext } from "providers/GeneralContext";
 import RegularButton from "components/CustomButtons/Button";
 import PopUpCustome from "components/PopUp/PopUp";
 import CustomInput from "components/CustomInput/CustomInput.js";
@@ -16,6 +15,7 @@ import { updateEmployeeById } from "api/Core/Employe_Manage";
 import CustomeDatePicker from "components/CustomeDatePicker/CustomeDatePicker"
 import imagePicker from "components/UploadPhoto/imagePicker"
 import UploadPhoto from "components/UploadPhoto/UploadPhoto";
+import { trackPromise } from "react-promise-tracker";
 
 const styles = (theme) => ({
     cardCategoryWhite: {
@@ -56,7 +56,6 @@ const useStyles = makeStyles(styles);
 export default function EditTeacher(props) {
     var jalaali = require('jalaali-js')
     const classes = useStyles();
-    const { setOpenToast, onToast } = useContext(GeneralContext);
 
     const {
         openEditTeacherPopUp,
@@ -127,8 +126,7 @@ export default function EditTeacher(props) {
 
     const uploadImgToDatabase = async () => {
         if (!filesImg) {
-            onToast('لطفا عکس انتخاب کنید!');
-            setOpenToast(true)
+            trackPromise(updateDataTeacher(photo))
         }
         else {
 
@@ -142,7 +140,7 @@ export default function EditTeacher(props) {
             })
                 .then(function (response) {
                     if (response.data.result)
-                        updateDataTeacher(response.data.result)
+                    trackPromise(updateDataTeacher(response.data.result))
 
                 })
                 .catch(function (response) {
@@ -279,7 +277,7 @@ export default function EditTeacher(props) {
                                     <RegularButton
                                         color="info"
                                         size="sm"
-                                        onClick={() => { uploadImgToDatabase() }}>ثبت تغییرات</RegularButton>
+                                        onClick={() => { trackPromise(uploadImgToDatabase()) }}>ثبت تغییرات</RegularButton>
                                     <RegularButton
                                         color="danger"
                                         size="sm"

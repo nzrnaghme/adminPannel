@@ -18,6 +18,7 @@ import { getEmployeeById } from "api/Core/Employe_Manage";
 import { GeneralContext } from "providers/GeneralContext";
 import { removeEmployee } from "api/Core/Employe_Manage";
 import { getAllTeachers } from "api/Core/Employe_Manage";
+import { trackPromise } from "react-promise-tracker";
 
 const styles = {
   cardCategoryWhite: {
@@ -64,7 +65,7 @@ export default function Teachers() {
   const [dataTeacher, setDataTeacher] = useState()
 
   useEffect(() => {
-    getTeachers();
+    trackPromise(getTeachers());
   }, [])
 
 
@@ -172,7 +173,7 @@ export default function Teachers() {
                   changeActivate={changeActivate}
                   removeTeacher={(id) => {
                     onConfirmSetter('آیا برای حذف استاد مطمئن هستید؟', () => {
-                      removeTeacher(id)
+                      trackPromise(removeTeacher(id))
                     })
                     setConfirmPopupOpen(true)
                   }}
