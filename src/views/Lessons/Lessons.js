@@ -159,7 +159,7 @@ export default function LessonList() {
                             <h4 className={classes.cardTitleWhite}>تمام دروس</h4>
                         </CardHeader>
                         <CardBody>
-                            {allLessons.length > 0 &&
+                            {allLessons && allLessons.length > 0 ?
                                 <Table
                                     tableHeaderColor="info"
                                     tableHead={["", "اسم", "دسته بندی", "توضیحات", "تعداد دوره", ""]}
@@ -179,7 +179,16 @@ export default function LessonList() {
                                     lessons
                                     handleChangePage={handleChangePage}
                                     handleChangeRowsPerPage={handleChangeRowsPerPage}
-                                />}
+                                /> :
+                                <div style={{
+                                    textAlign: 'center',
+                                    marginTop: 10,
+                                    backgroundColor: "#ec7254",
+                                    color: "white",
+                                    borderRadius: 5,
+                                    paddingTop: 10,
+                                    paddingBottom: 10
+                                }}> درسی ثبت نشده</div>}
                         </CardBody>
                         <div>
 

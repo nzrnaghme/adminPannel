@@ -160,7 +160,7 @@ export default function Teachers() {
               <h4 className={classes.cardTitleWhite}>تمام اساتید</h4>
             </CardHeader>
             <CardBody>
-              {allTeachers.length > 0 &&
+              {allTeachers && allTeachers.length > 0 ?
                 <Table
                   tableHeaderColor="info"
                   tableHead={["", "اسم", "ایمیل", "شماره موبایل", "تعداد دوره ها", "", ""]}
@@ -178,7 +178,16 @@ export default function Teachers() {
                     setConfirmPopupOpen(true)
                   }}
                   teacher
-                />}
+                /> :
+                <div style={{
+                  textAlign: 'center',
+                  marginTop: 10,
+                  backgroundColor: "#ec7254",
+                  color: "white",
+                  borderRadius: 5,
+                  paddingTop: 10,
+                  paddingBottom: 10
+                }}> استادی ثبت نشده</div>}
             </CardBody>
             <div>
 

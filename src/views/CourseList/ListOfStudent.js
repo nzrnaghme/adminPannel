@@ -112,7 +112,7 @@ export default function ListOfStudents(props) {
                             <h4 className={classes.cardTitleWhite}>تمام دانشجویان</h4>
                         </CardHeader>
                         <CardBody>
-                            {currentStudents != undefined && currentStudents.length > 0 &&
+                            {currentStudents != undefined && currentStudents.length > 0 ?
                                 <Table
                                     tableHeaderColor="info"
                                     tableHead={["", "اسم", "ایمیل", ""]}
@@ -129,9 +129,16 @@ export default function ListOfStudents(props) {
 
                                     }}
                                     currentStudent
-                                />}
-                            {currentStudents && currentStudents.length === 0 &&
-                                <div style={{ textAlign: "center" }}>دانشجویی ثبت نام نکرده</div>}
+                                /> :
+                                <div style={{
+                                    textAlign: 'center',
+                                    marginTop: 10,
+                                    backgroundColor: "#ec7254",
+                                    color: "white",
+                                    borderRadius: 5,
+                                    paddingTop: 10,
+                                    paddingBottom: 10
+                                }}>دانشجویی ثبت نام نکرده</div>}
                         </CardBody>
                         {currentStudents != undefined && currentStudents.length > 0 &&
                             <div style={{ display: "flex", justifyContent: "center" }}>

@@ -11,7 +11,7 @@ import Sidebar from "components/Sidebar/Sidebar.js";
 import routes from "routesTeacher.js";
 import styles from "assets/jss/material-dashboard-react/layouts/rtlStyle.js";
 import bgImage from "assets/img/sidebar-2.jpg";
-import logo from "assets/img/reactlogo.png";
+import logo from "assets/img/logo.png";
 import Dashboard from "views/Dashboard/DashboardTeacher";
 import UserProfile from "views/UserProfile/UserProfile";
 import CourseList from "views/CourseList/CourseList";

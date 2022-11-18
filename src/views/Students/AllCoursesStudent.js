@@ -111,7 +111,7 @@ export default function AllCoursesStudent(props) {
                             <h4 className={classes.cardTitleWhite}>تمام دوره های دانشجو</h4>
                         </CardHeader>
                         <CardBody>
-                            {coursesStudent != undefined && coursesStudent.length > 0 &&
+                            {coursesStudent != undefined && coursesStudent.length > 0 ?
                                 <Table
                                     tableHeaderColor="info"
                                     tableHead={["عنوان", "استاد", "شروع دوره", "قیمت", "پایان دوره", ""]}
@@ -127,7 +127,16 @@ export default function AllCoursesStudent(props) {
                                         setConfirmPopupOpen(true)
                                     }}
                                     myCourses
-                                />}
+                                />:
+                                <div style={{
+                                    textAlign: 'center',
+                                    marginTop: 10,
+                                    backgroundColor: "#ec7254",
+                                    color: "white",
+                                    borderRadius: 5,
+                                    paddingTop: 10,
+                                    paddingBottom: 10
+                                }}> دوره ثبت نشده</div>}
                             {coursesStudent && coursesStudent.length === 0 &&
                                 <div style={{ textAlign: "center" }}>دوره ثبت نام نشده</div>}
                         </CardBody>

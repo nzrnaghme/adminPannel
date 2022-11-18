@@ -74,7 +74,7 @@ export default function AddStudentToCourse(props) {
 
     useEffect(() => {
         if (allStudent && allStudent.length > 0)
-        trackPromise(getCurrentStudents(userIdCourse));
+            trackPromise(getCurrentStudents(userIdCourse));
     }, [allStudent])
 
 
@@ -138,7 +138,7 @@ export default function AddStudentToCourse(props) {
                             <h4 className={classes.cardTitleWhite}>اضافه کردن دانشجو</h4>
                         </CardHeader>
                         <CardBody>
-                            {currentStudents != undefined && currentStudents.length > 0 &&
+                            {currentStudents != undefined && currentStudents.length > 0 ?
                                 <Table
                                     tableHeaderColor="info"
                                     tableHead={["", "اسم", "ایمیل", "تعداد کل دروس", "", ""]}
@@ -154,10 +154,19 @@ export default function AddStudentToCourse(props) {
                                         setConfirmPopupOpen(true)
                                     }}
                                     AllStudentInsertCourse
-                                />
+                                /> :
+                                <div style={{
+                                    textAlign: 'center',
+                                    marginTop: 10,
+                                    backgroundColor: "#ec7254",
+                                    color: "white",
+                                    borderRadius: 5,
+                                    paddingTop: 10,
+                                    paddingBottom: 10
+                                }}> دانشجویی وجود ندارد</div>
                             }
                             {currentStudents && currentStudents.length === 0 &&
-                                <div style={{ textAlign: "center" }}>دانشجویی ثبت نام نکرده</div>
+                                <div style={{ textAlign: "center" }}>دانشجویی وجود ندارد</div>
                             }
                         </CardBody>
                         {currentStudents != undefined && currentStudents.length > 0 &&

@@ -180,14 +180,14 @@ export default function Students() {
                             <h4 className={classes.cardTitleWhite}>تمام دانشجویان</h4>
                         </CardHeader>
                         <CardBody>
-                            {allStudents.length > 0 &&
+                            {allStudents && allStudents.length > 0 ?
                                 <Table
                                     tableHeaderColor="info"
                                     tableHead={["", "اسم", "ایمیل", "شماره موبایل", "تعداد دوره ها", "", ""]}
                                     tableData={allStudents}
                                     currentPage={currentPage_MainbarMyCourses}
                                     rowsCount={rowsPerPage}
-                                    removeStudent={()=>{
+                                    removeStudent={() => {
                                         trackPromise(removeStudent())
                                     }}
                                     editStudent={editStudent}
@@ -196,7 +196,16 @@ export default function Students() {
                                     handleChangePage={handleChangePage}
                                     handleChangeRowsPerPage={handleChangeRowsPerPage}
                                     student
-                                />}
+                                />:
+                                <div style={{
+                                    textAlign: 'center',
+                                    marginTop: 10,
+                                    backgroundColor: "#ec7254",
+                                    color: "white",
+                                    borderRadius: 5,
+                                    paddingTop: 10,
+                                    paddingBottom: 10
+                                }}> دانشجویی ثبت نشده</div>}
                         </CardBody>
                         <div>
 

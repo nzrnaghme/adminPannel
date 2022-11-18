@@ -26,6 +26,11 @@ import { getComment } from "api/Core/Comment"
 import { verifyComment } from "api/Core/Comment";
 import { trackPromise } from "react-promise-tracker";
 
+import {
+    infoCardHeader,
+    whiteColor,
+} from "assets/jss/material-dashboard-react.js";
+
 
 const styles = {
     cardCategoryWhite: {
@@ -58,6 +63,10 @@ const styles = {
     root: {
         flexGrow: 1,
         maxWidth: "100%",
+    },
+    color: whiteColor,
+    "&:not($cardHeaderIcon)": {
+        ...infoCardHeader,
     },
 };
 
@@ -100,9 +109,10 @@ export default function Comments() {
         let response = await getComment();
         if (response.data) {
             setAllComments(response.data)
-            setNotVerifiedComment(response.data.filter((item) => item.verified === false))
-            setVerifiedComment(response.data.filter((item) => item.verified === true))
-            setAnswerComment(response.data.filter((item) => item.answer))
+
+            setNotVerifiedComment(response.data.filter((item) => item.verified === false && item.postId.length === 24))
+            setVerifiedComment(response.data.filter((item) => item.verified === true && item.postId.length === 24))
+            setAnswerComment(response.data.filter((item) => item.answer && item.postId.length === 24))
         }
     }
 
@@ -197,7 +207,7 @@ export default function Comments() {
 
                                 {value === 1 &&
                                     <>
-                                        {allComments && allComments.length > 0 &&
+                                        {allComments && allComments.length > 0 ?
                                             <Table
                                                 tableHeaderColor="info"
                                                 tableHead={["اسم کاربر", "ایمیل کاربر", "تاریخ کامنت", "متن کامنت", "", ""]}
@@ -219,13 +229,22 @@ export default function Comments() {
                                                 verified
                                                 handleChangePage={handleChangePageAll}
                                                 handleChangeRowsPerPage={handleChangeRowsPerPageAll}
-                                            />}
+                                            /> :
+                                            <div style={{
+                                                textAlign: 'center',
+                                                marginTop: 10,
+                                                backgroundColor: "#ec7254",
+                                                color: "white",
+                                                borderRadius: 5,
+                                                paddingTop: 10,
+                                                paddingBottom: 10
+                                            }}> کامنتی ثبت نشده</div>}
                                     </>
                                 }
 
                                 {value === 2 &&
                                     <>
-                                        {VerifiedComment && VerifiedComment.length > 0 &&
+                                        {VerifiedComment && VerifiedComment.length > 0 ?
                                             <Table
                                                 tableHeaderColor="info"
                                                 tableHead={["اسم کاربر", "ایمیل کاربر", "تاریخ کامنت", "متن کامنت", "", ""]}
@@ -247,13 +266,22 @@ export default function Comments() {
                                                 handleChangePage={handleChangePageAccept}
                                                 handleChangeRowsPerPage={handleChangeRowsPerPageAccept}
                                                 rowsCount={rowsPerPageAccept}
-                                            />}
+                                            /> :
+                                            <div style={{
+                                                textAlign: 'center',
+                                                marginTop: 10,
+                                                backgroundColor: "#ec7254",
+                                                color: "white",
+                                                borderRadius: 5,
+                                                paddingTop: 10,
+                                                paddingBottom: 10
+                                            }}> کامنتی ثبت نشده</div>}
                                     </>
                                 }
 
                                 {value === 4 &&
                                     <>
-                                        {notVerifiedComment && notVerifiedComment.length > 0 &&
+                                        {notVerifiedComment && notVerifiedComment.length > 0 ?
                                             <Table
                                                 tableHeaderColor="info"
                                                 tableHead={["اسم کاربر", "ایمیل کاربر", "تاریخ کامنت", "متن کامنت", ""]}
@@ -270,13 +298,23 @@ export default function Comments() {
                                                 }}
                                                 allComment
                                                 verified
-                                            />}
+                                            /> :
+                                            <div style={{
+                                                textAlign: 'center',
+                                                marginTop: 10,
+                                                backgroundColor: "#ec7254",
+                                                color: "white",
+                                                borderRadius: 5,
+                                                paddingTop: 10,
+                                                paddingBottom: 10
+                                            }}> کامنتی ثبت نشده</div>
+                                        }
                                     </>
                                 }
 
                                 {value === 3 &&
                                     <>
-                                        {answerComment && answerComment.length > 0 &&
+                                        {answerComment && answerComment.length > 0 ?
                                             <Table
                                                 tableHeaderColor="info"
                                                 tableHead={["اسم کاربر", "ایمیل کاربر", "تاریخ کامنت", "متن کامنت", "پاسخ کامنت", "", ""]}
@@ -292,7 +330,17 @@ export default function Comments() {
                                                     setOpenPopUpShowDataComment(true);
                                                 }}
                                                 allComment
-                                            />}
+                                            /> :
+                                            <div style={{
+                                                textAlign: 'center',
+                                                marginTop: 10,
+                                                backgroundColor: "#ec7254",
+                                                color: "white",
+                                                borderRadius: 5,
+                                                paddingTop: 10,
+                                                paddingBottom: 10
+                                            }}> کامنتی ثبت نشده</div>
+                                        }
                                     </>
                                 }
                             </div>

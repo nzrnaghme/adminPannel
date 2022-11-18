@@ -32,7 +32,7 @@ const styles = (theme) => ({
         marginTop: "0px",
         minHeight: "auto",
         fontWeight: "300",
-      fontFamily: "bakh",
+        fontFamily: "bakh",
         marginBottom: "3px",
         textDecoration: "none",
         "& small": {
@@ -84,37 +84,38 @@ export default function AnswerComment(props) {
                         </CardHeader>
                         <CardBody className="bodyAnswerComment">
                             <div>
-                                <GridContainer>
-                                    <GridItem xs={12} sm={12} md={6}>
-                                        <CustomInput
-                                            rtlActive
-                                            labelText="اسم کاربر"
-                                            value={dataComment.username}
-                                            disabled
-                                            formControlProps={{
-                                                fullWidth: true,
-                                            }}
-                                        />
-                                    </GridItem>
-                                    <GridItem xs={12} sm={12} md={6}>
-                                        <CustomInput
-                                            rtlActive
-                                            labelText="ایمیل کاربر"
+                                {!props.support &&
+                                    <GridContainer>
+                                        <GridItem xs={12} sm={12} md={6}>
+                                            <CustomInput
+                                                rtlActive
+                                                labelText="اسم کاربر"
+                                                value={dataComment.username}
+                                                disabled
+                                                formControlProps={{
+                                                    fullWidth: true,
+                                                }}
+                                            />
+                                        </GridItem>
+                                        <GridItem xs={12} sm={12} md={6}>
+                                            <CustomInput
+                                                rtlActive
+                                                labelText="ایمیل کاربر"
 
-                                            formControlProps={{
-                                                fullWidth: true,
-                                            }}
-                                            value={dataComment.email}
-                                            disabled
-                                        />
-                                    </GridItem>
-                                </GridContainer>
+                                                formControlProps={{
+                                                    fullWidth: true,
+                                                }}
+                                                value={dataComment.email}
+                                                disabled
+                                            />
+                                        </GridItem>
+                                    </GridContainer>}
 
                                 <GridContainer>
                                     <GridItem xs={12} sm={12} md={12}>
                                         <CustomInput
                                             rtlActive
-                                            labelText="متن کامنت"
+                                            labelText={props.support ? "متن پیام" : "متن کامنت"}
                                             formControlProps={{
                                                 fullWidth: true,
                                             }}
@@ -127,7 +128,7 @@ export default function AnswerComment(props) {
 
                                     <GridItem xs={12} sm={12} md={12}>
                                         <CustomInput
-                                            labelText="پاسخ کامنت"
+                                            labelText={props.support ? "پاسخ به پیام" : "پاسخ کامنت"}
                                             onChange={(e) => {
                                                 setAnswer(e)
                                             }}
@@ -172,5 +173,6 @@ AnswerComment.propTypes = {
     openAnswerCommentPopUp: PropTypes.bool,
     closePopUpAnswerComment: PropTypes.func,
     dataComment: PropTypes.object,
-    setAnswerComment: PropTypes.func
+    setAnswerComment: PropTypes.func,
+    support: PropTypes.bool
 };

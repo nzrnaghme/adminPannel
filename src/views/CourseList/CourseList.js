@@ -180,7 +180,16 @@ export default function CourseList() {
                   handleChangePage={handleChangePage}
                   handleChangeRowsPerPage={handleChangeRowsPerPage}
                 /> :
-                <div style={{ textAlign: "center" }}>دوره وجود ندارد لطفا دوره اضافه کنید!</div>}
+                <div style={{
+                  textAlign: 'center',
+                  marginTop: 10,
+                  backgroundColor: "#ec7254",
+                  color: "white",
+                  borderRadius: 5,
+                  paddingTop: 10,
+                  paddingBottom: 10
+                }}> دوره وجود ندارد</div>
+              }
             </CardBody>
           </Card>
         </GridItem>
@@ -237,7 +246,7 @@ export default function CourseList() {
 
             setOpenToast(true)
             onToast("دانشجو به دوره اضافه شد", "success")
-            (getCourses());
+              (getCourses());
           }}
         />
       }

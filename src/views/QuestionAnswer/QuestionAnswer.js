@@ -139,72 +139,99 @@ export default function QuestionAnswer() {
                             <h4 className={classes.cardTitleWhite}>پرسش و پاسخ</h4>
                         </CardHeader>
                         <CardBody>
-                            {courseTeacher && courseTeacher.length > 0 ? <div>
-                                <Tabs
-                                    value={value}
-                                    onChange={handleChange}
-                                    variant="fullWidth"
-                                    indicatorColor="primary"
-                                    textColor="primary"
-                                    aria-label="icon label tabs example"
-                                >
-                                    <Tab icon={<DoneRoundedIcon />} value={1} label="سوال جواب داده نشده" />
-                                    <Tab icon={<MessageIcon />} value={2} label="سوالات جواب داده شده" />
+                            {courseTeacher && courseTeacher.length > 0 ?
+                                <div>
+                                    <Tabs
+                                        value={value}
+                                        onChange={handleChange}
+                                        variant="fullWidth"
+                                        indicatorColor="primary"
+                                        textColor="primary"
+                                        aria-label="icon label tabs example"
+                                    >
+                                        <Tab icon={<DoneRoundedIcon />} value={1} label="سوال جواب داده نشده" />
+                                        <Tab icon={<MessageIcon />} value={2} label="سوالات جواب داده شده" />
 
-                                </Tabs>
+                                    </Tabs>
 
 
-                                {value === 1 &&
-                                    <>
-                                        {questionWithOutAnswer && questionWithOutAnswer.length > 0 &&
-                                            <Table
-                                                tableHeaderColor="info"
-                                                tableHead={["اسم کاربر", "ایمیل", "تاریخ ایجاد سوال", "سوال", ""]}
-                                                tableData={questionWithOutAnswer}
-                                                currentPage={currentPage_MainbarArticles}
-                                                rowsCount={rowsPerPageArticles}
-                                                handleChangePage={handleChangePageNews}
-                                                handleChangeRowsPerPage={handleChangeRowsPerPageNews}
-                                                showAllData={(id) => {
-                                                    let correntComment = questionWithOutAnswer.filter((item) => item._id === id)
-                                                    setDataComment(correntComment)
-                                                    setOpenPopUpShowDataComment(true);
-                                                }}
-                                                answerToComment={(id) => {
-                                                    let correntComment = questionWithOutAnswer.filter((item) => item._id === id)
-                                                    setDataComment(correntComment)
-                                                    setOpenAnswerPopUp(true)
-                                                }}
-                                                questionAnswer
-                                            />
-                                        }
-                                    </>}
+                                    {value === 1 &&
+                                        <>
+                                            {questionWithOutAnswer && questionWithOutAnswer.length > 0 ?
+                                                <Table
+                                                    tableHeaderColor="info"
+                                                    tableHead={["اسم کاربر", "ایمیل", "تاریخ ایجاد سوال", "سوال", ""]}
+                                                    tableData={questionWithOutAnswer}
+                                                    currentPage={currentPage_MainbarArticles}
+                                                    rowsCount={rowsPerPageArticles}
+                                                    handleChangePage={handleChangePageNews}
+                                                    handleChangeRowsPerPage={handleChangeRowsPerPageNews}
+                                                    showAllData={(id) => {
+                                                        let correntComment = questionWithOutAnswer.filter((item) => item._id === id)
+                                                        setDataComment(correntComment)
+                                                        setOpenPopUpShowDataComment(true);
+                                                    }}
+                                                    answerToComment={(id) => {
+                                                        let correntComment = questionWithOutAnswer.filter((item) => item._id === id)
+                                                        setDataComment(correntComment)
+                                                        setOpenAnswerPopUp(true)
+                                                    }}
+                                                    questionAnswer
+                                                /> :
+                                                <div style={{
+                                                    textAlign: 'center',
+                                                    marginTop: 10,
+                                                    backgroundColor: "#ec7254",
+                                                    color: "white",
+                                                    borderRadius: 5,
+                                                    paddingTop: 10,
+                                                    paddingBottom: 10
+                                                }}> سوالی ثبت نشده</div>
+                                            }
+                                        </>}
 
-                                {value === 2 &&
-                                    <>
-                                        {questionWithAnswer && questionWithAnswer.length > 0 &&
-                                            <Table
-                                                tableHeaderColor="info"
-                                                tableHead={["اسم کاربر", "ایمیل", "تاریخ ایجاد سوال", "سوال", "جواب", ""]}
-                                                tableData={questionWithAnswer}
-                                                currentPage={currentPage_MainbarArticles}
-                                                rowsCount={rowsPerPageArticles}
-                                                handleChangePage={handleChangePageNews}
-                                                handleChangeRowsPerPage={handleChangeRowsPerPageNews}
-                                                showAllData={(id) => {
-                                                    let correntComment = questionWithAnswer.filter((item) => item._id === id)
-                                                    setDataComment(correntComment)
-                                                    setOpenPopUpShowDataComment(true);
-                                                }}
+                                    {value === 2 &&
+                                        <>
+                                            {questionWithAnswer && questionWithAnswer.length > 0 ?
+                                                <Table
+                                                    tableHeaderColor="info"
+                                                    tableHead={["اسم کاربر", "ایمیل", "تاریخ ایجاد سوال", "سوال", "جواب", ""]}
+                                                    tableData={questionWithAnswer}
+                                                    currentPage={currentPage_MainbarArticles}
+                                                    rowsCount={rowsPerPageArticles}
+                                                    handleChangePage={handleChangePageNews}
+                                                    handleChangeRowsPerPage={handleChangeRowsPerPageNews}
+                                                    showAllData={(id) => {
+                                                        let correntComment = questionWithAnswer.filter((item) => item._id === id)
+                                                        setDataComment(correntComment)
+                                                        setOpenPopUpShowDataComment(true);
+                                                    }}
 
-                                                questionAnswer
-                                            />
-                                        }
-                                    </>}
-                            </div> :
+                                                    questionAnswer
+                                                /> :
+                                                <div style={{
+                                                    textAlign: 'center',
+                                                    marginTop: 10,
+                                                    backgroundColor: "#ec7254",
+                                                    color: "white",
+                                                    borderRadius: 5,
+                                                    paddingTop: 10,
+                                                    paddingBottom: 10
+                                                }}> سوالی ثبت نشده</div>
+                                            }
+                                        </>
+                                    }
+                                </div> :
 
-                                <div style={{ textAlign: "center", marginTop: 10 }}>
-                                    دوره ثبت نشده برا استاد که پیام نشان داده شود!!
+                                <div style={{
+                                    textAlign: 'center',
+                                    marginTop: 10,
+                                    backgroundColor: "#ec7254",
+                                    color: "white",
+                                    borderRadius: 5,
+                                    paddingTop: 10,
+                                    paddingBottom: 10
+                                }}>  دوره ثبت نشده برا استاد که پیام نشان داده شود!!
                                 </div>
                             }
                         </CardBody>

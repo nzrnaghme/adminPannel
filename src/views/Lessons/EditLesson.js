@@ -301,7 +301,7 @@ export default function EditLEsson(props) {
                                     </GridItem>
                                 </GridContainer>
                             </div>
-                            {allCoursesLesson && allCoursesLesson.length > 0 &&
+                            {allCoursesLesson && allCoursesLesson.length > 0 ?
                                 <>
                                     <CardHeader color="info" className="headerCourse">
                                         <h4 className={classes.cardTitleWhite}>تمام دوره های درس</h4>
@@ -322,12 +322,21 @@ export default function EditLEsson(props) {
                                         handleChangePage={handleChangePage}
                                         handleChangeRowsPerPage={handleChangeRowsPerPage}
                                     />
-                                </>}
+                                </> :
+                                <div style={{
+                                    textAlign: 'center',
+                                    marginTop: 10,
+                                    backgroundColor: "#ec7254",
+                                    color: "white",
+                                    borderRadius: 5,
+                                    paddingTop: 10,
+                                    paddingBottom: 10
+                                }}>برای درس انتخابی دوره ثبت نشده</div>
+                            }
                             <div className="btnEditCourse">
                                 <div style={{
                                     display: "flex",
                                     flexDirection: "row",
-                                    // position: "absolute",
                                     bottom: 20,
                                     cursor: "pointer",
 

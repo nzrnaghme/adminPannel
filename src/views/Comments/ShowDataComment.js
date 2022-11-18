@@ -67,37 +67,38 @@ export default function ShowDataComment(props) {
                         </CardHeader>
                         <CardBody className="bodyShowDataComment">
                             <div>
+                                {!props.support &&
+                                    <GridContainer>
+                                        <GridItem xs={12} sm={12} md={6}>
+                                            <CustomInput
+                                                rtlActive
+                                                labelText="اسم کاربر"
+                                                value={dataComment.username}
+                                                disabled
+                                                formControlProps={{
+                                                    fullWidth: true,
+                                                }}
+                                            />
+                                        </GridItem>
+                                        <GridItem xs={12} sm={12} md={6}>
+                                            <CustomInput
+                                                rtlActive
+                                                labelText="ایمیل کاربر"
+
+                                                formControlProps={{
+                                                    fullWidth: true,
+                                                }}
+                                                value={dataComment.email}
+                                                disabled
+                                            />
+                                        </GridItem>
+                                    </GridContainer>}
+
                                 <GridContainer>
                                     <GridItem xs={12} sm={12} md={6}>
                                         <CustomInput
                                             rtlActive
-                                            labelText="اسم کاربر"
-                                            value={dataComment.username}
-                                            disabled
-                                            formControlProps={{
-                                                fullWidth: true,
-                                            }}
-                                        />
-                                    </GridItem>
-                                    <GridItem xs={12} sm={12} md={6}>
-                                        <CustomInput
-                                            rtlActive
-                                            labelText="ایمیل کاربر"
-
-                                            formControlProps={{
-                                                fullWidth: true,
-                                            }}
-                                            value={dataComment.email}
-                                            disabled
-                                        />
-                                    </GridItem>
-                                </GridContainer>
-
-                                <GridContainer>
-                                    <GridItem xs={12} sm={12} md={6}>
-                                        <CustomInput
-                                            rtlActive
-                                            labelText="متن کامنت"
+                                            labelText={props.support ? "متن پیام" : "متن کامنت"}
                                             formControlProps={{
                                                 fullWidth: true,
                                             }}
@@ -110,8 +111,7 @@ export default function ShowDataComment(props) {
                                     {dataComment.answer &&
                                         <GridItem xs={12} sm={12} md={6}>
                                             <CustomInput
-                                                labelText="پاسخ کامنت"
-
+                                                labelText={props.support ? "پاسخ به پیام" : "پاسخ کامنت"}
                                                 formControlProps={{
                                                     fullWidth: true,
                                                 }}
@@ -148,5 +148,6 @@ export default function ShowDataComment(props) {
 ShowDataComment.propTypes = {
     openDataCommentPopUp: PropTypes.bool,
     closePopUpDataComment: PropTypes.func,
-    dataComment: PropTypes.object
+    dataComment: PropTypes.object,
+    support: PropTypes.bool
 };

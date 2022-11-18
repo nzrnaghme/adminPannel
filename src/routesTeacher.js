@@ -2,7 +2,7 @@ import Dashboard from "@material-ui/icons/Dashboard";
 import Person from "@material-ui/icons/Person";
 import LocationOn from "@material-ui/icons/LocationOn";
 import PublicRoundedIcon from '@material-ui/icons/PublicRounded';
-import ContactSupportRoundedIcon from '@material-ui/icons/ContactSupportRounded';
+import QuestionAnswerRoundedIcon from '@material-ui/icons/QuestionAnswerRounded';
 // core components/views for Admin layout
 import UserProfile from "views/UserProfile/UserProfile.js";
 import CourseList from "views/CourseList/CourseList.js";
@@ -44,7 +44,7 @@ const dashboardRoutes = [
   {
     path: "/questionAnswer",
     name: "پرسش و پاسخ",
-    icon: ContactSupportRoundedIcon,
+    icon: QuestionAnswerRoundedIcon,
     component: QuestionAnswer,
     layout: "/teacher",
   },

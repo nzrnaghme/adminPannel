@@ -184,7 +184,7 @@ export default function News() {
 
                                 {value === 1 &&
                                     <>
-                                        {allNews && allNews.length > 0 &&
+                                        {allNews && allNews.length > 0 ?
                                             <Table
                                                 tableHeaderColor="info"
                                                 tableHead={["", "تیتر", "توضیحات", "دسته بندی", ""]}
@@ -198,13 +198,22 @@ export default function News() {
                                                 }}
                                                 handleChangePage={handleChangePageNews}
                                                 handleChangeRowsPerPage={handleChangeRowsPerPageNews}
-                                            />}
+                                            /> :
+                                            <div style={{
+                                                textAlign: 'center',
+                                                marginTop: 10,
+                                                backgroundColor: "#ec7254",
+                                                color: "white",
+                                                borderRadius: 5,
+                                                paddingTop: 10,
+                                                paddingBottom: 10
+                                            }}> حبر ثبت نشده</div>}
                                     </>
                                 }
 
                                 {value === 2 &&
                                     <>
-                                        {allArticles && allArticles.length > 0 &&
+                                        {allArticles && allArticles.length > 0 ?
                                             <Table
                                                 tableHeaderColor="info"
                                                 tableHead={["", "تیتر", "توضیحات", "دسته بندی", ""]}
@@ -218,7 +227,16 @@ export default function News() {
                                                 }}
                                                 handleChangePage={handleChangePageArticles}
                                                 handleChangeRowsPerPage={handleChangeRowsPerPageArticles}
-                                            />
+                                            />:
+                                            <div style={{
+                                                textAlign: 'center',
+                                                marginTop: 10,
+                                                backgroundColor: "#ec7254",
+                                                color: "white",
+                                                borderRadius: 5,
+                                                paddingTop: 10,
+                                                paddingBottom: 10
+                                            }}> مقاله ثبت نشده</div>
                                         }
                                     </>
                                 }
