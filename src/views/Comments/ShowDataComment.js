@@ -62,7 +62,7 @@ export default function ShowDataComment(props) {
             <GridContainer>
                 <GridItem xs={12} sm={12} md={12}>
                     <Card className="CardShowDataComment">
-                        <CardHeader color="primary">
+                        <CardHeader color="info">
                             <h4 className={classes.cardTitleWhite}>اطلاعات کامنت</h4>
                         </CardHeader>
                         <CardBody className="bodyShowDataComment">

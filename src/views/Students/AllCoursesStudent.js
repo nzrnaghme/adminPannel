@@ -107,13 +107,13 @@ export default function AllCoursesStudent(props) {
             <GridContainer>
                 <GridItem xs={12} sm={12} md={12}>
                     <Card>
-                        <CardHeader color="primary">
+                        <CardHeader color="info">
                             <h4 className={classes.cardTitleWhite}>تمام دوره های دانشجو</h4>
                         </CardHeader>
                         <CardBody>
                             {coursesStudent != undefined && coursesStudent.length > 0 &&
                                 <Table
-                                    tableHeaderColor="primary"
+                                    tableHeaderColor="info"
                                     tableHead={["عنوان", "استاد", "شروع دوره", "قیمت", "پایان دوره", ""]}
                                     tableData={coursesStudent}
                                     currentPage={currentPage_MainbarMyCourses}

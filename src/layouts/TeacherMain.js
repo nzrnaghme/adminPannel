@@ -67,7 +67,7 @@ export default function TeacherMain({ ...rest }) {
         image={bgImage}
         handleDrawerToggle={handleDrawerToggle}
         open={mobileOpen}
-        color={"green"}
+        color={"blue"}
         rtlActive
         {...rest}
       />

@@ -156,13 +156,13 @@ export default function Teachers() {
         </GridItem>
         <GridItem xs={12} sm={12} md={12}>
           <Card>
-            <CardHeader color="primary">
+            <CardHeader color="info">
               <h4 className={classes.cardTitleWhite}>تمام اساتید</h4>
             </CardHeader>
             <CardBody>
               {allTeachers.length > 0 &&
                 <Table
-                  tableHeaderColor="primary"
+                  tableHeaderColor="info"
                   tableHead={["", "اسم", "ایمیل", "شماره موبایل", "تعداد دوره ها", "", ""]}
                   tableData={allTeachers}
                   currentPage={currentPage_MainbarMyCourses}

@@ -125,7 +125,7 @@ const sidebarStyle = (theme) => ({
       content: '""',
       display: "block",
       background: blackColor,
-      opacity: ".8",
+      opacity: ".1",
     },
   },
   list: {
@@ -165,7 +165,7 @@ const sidebarStyle = (theme) => ({
     marginRight: "15px",
     textAlign: "center",
     verticalAlign: "middle",
-    color: "rgba(" + hexToRgb(whiteColor) + ", 0.8)",
+    color: infoColor[5],
   },
   itemIconRTL: {
     marginRight: "3px",

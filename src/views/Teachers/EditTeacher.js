@@ -176,7 +176,7 @@ export default function EditTeacher(props) {
             <GridContainer>
                 <GridItem xs={12} sm={12} md={12}>
                     <Card className="CardEditTeacher">
-                        <CardHeader color="primary">
+                        <CardHeader color="info">
                             <h4 className={classes.cardTitleWhite}>آپدیت استاد</h4>
                         </CardHeader>
                         <CardBody className="bodyEditTeacher">

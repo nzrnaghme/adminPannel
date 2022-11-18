@@ -176,13 +176,13 @@ export default function Students() {
                 </GridItem>
                 <GridItem xs={12} sm={12} md={12}>
                     <Card>
-                        <CardHeader color="primary">
+                        <CardHeader color="info">
                             <h4 className={classes.cardTitleWhite}>تمام دانشجویان</h4>
                         </CardHeader>
                         <CardBody>
                             {allStudents.length > 0 &&
                                 <Table
-                                    tableHeaderColor="primary"
+                                    tableHeaderColor="info"
                                     tableHead={["", "اسم", "ایمیل", "شماره موبایل", "تعداد دوره ها", "", ""]}
                                     tableData={allStudents}
                                     currentPage={currentPage_MainbarMyCourses}

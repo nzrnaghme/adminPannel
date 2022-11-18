@@ -181,7 +181,7 @@ export default function InsertStudent(props) {
             <GridContainer>
                 <GridItem xs={12} sm={12} md={12}>
                     <Card className="CardEditStudent">
-                        <CardHeader color="primary">
+                        <CardHeader color="info">
                             <h4 className={classes.cardTitleWhite}>افزودن دانشجو</h4>
                         </CardHeader>
                         <CardBody className="bodyCreateStudent">

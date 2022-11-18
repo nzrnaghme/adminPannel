@@ -176,7 +176,7 @@ export default function CreateNews(props) {
             <GridContainer>
                 <GridItem xs={12} sm={12} md={12}>
                     <Card className="CardShowEditNews">
-                        <CardHeader color="primary">
+                        <CardHeader color="info">
                             <h4 className={classes.cardTitleWhite}>ایجاد خبر یا مقاله جدید</h4>
                         </CardHeader>
                         <CardBody className="bodyShowEditNews">
@@ -230,8 +230,8 @@ export default function CreateNews(props) {
                                         <FormControl component="fieldset" style={{ width: "80%", marginTop: "20px" }}>
                                             <FormLabel component="legend" style={{ color: "gray", marginBottom: "-5px" }}>دسته بندی</FormLabel>
                                             <RadioGroup aria-label="news" name="news1" value={categoryNews} onChange={handleChange} style={{ width: "100%", display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
-                                                <FormControlLabel value="news" control={<Radio color="primary" />} label="اخبار" />
-                                                <FormControlLabel value="article" control={<Radio color="primary" />} label="مقاله" />
+                                                <FormControlLabel value="news" control={<Radio color="info" />} label="اخبار" />
+                                                <FormControlLabel value="article" control={<Radio color="info" />} label="مقاله" />
                                             </RadioGroup>
                                         </FormControl>
                                     </GridItem>

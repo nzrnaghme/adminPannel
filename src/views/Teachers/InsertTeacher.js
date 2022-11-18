@@ -185,7 +185,7 @@ export default function InsertTeacher(props) {
             <GridContainer>
                 <GridItem xs={12} sm={12} md={12}>
                     <Card className="CardInsertTeacher">
-                        <CardHeader color="primary">
+                        <CardHeader color="info">
                             <h4 className={classes.cardTitleWhite}>افزودن استاد</h4>
                         </CardHeader>
                         <CardBody className="bodyCreateTeacher">

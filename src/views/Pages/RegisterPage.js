@@ -252,8 +252,8 @@ export default function RegisterPage() {
                                 <FormControl component="fieldset" style={{ width: "80%", marginTop: "20px" }}>
                                     <FormLabel component="legend" style={{ color: "gray", marginBottom: "-5px" }}>نقش</FormLabel>
                                     <RadioGroup aria-label="teacher" name="teacher1" value={value} onChange={handleChange} style={{ width: "100%", display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
-                                        <FormControlLabel value="teacher" control={<Radio color="primary" />} label="استاد" />
-                                        <FormControlLabel value="admin" control={<Radio color="primary" />} label="ادمین" />
+                                        <FormControlLabel value="teacher" control={<Radio color="info" />} label="استاد" />
+                                        <FormControlLabel value="admin" control={<Radio color="info" />} label="ادمین" />
                                     </RadioGroup>
                                 </FormControl>
                             </CardBody>

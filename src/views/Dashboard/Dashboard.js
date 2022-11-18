@@ -314,7 +314,7 @@ export default function RTLPage() {
               </a>
             </CardAvatar>
             <CardBody profile>
-              <h6 className={classes.cardCategory}>مدیرعامل / مدیرفنی</h6>
+              <h6 className={classes.cardCategory}>مدیر سایت / طراح سایت</h6>
               <h4 className={classes.cardTitle}>امیرحسین بهبودی جویباری</h4>
               <p className={classes.description}>
                 دانش‌آموخته‌ی مهندسی کامپیوتر از دانشگاه علم و فناوری مازندران هستم.
@@ -323,7 +323,7 @@ export default function RTLPage() {
                 زمینه‌های فعالیتم به طراحی ui/ux و توسعه بخش front سایت معطوف می‌شود.
                 علاوه بر این‌ها علاقه‌ی زیادی به کار در زمینه‌ی هوش مصنوعی دارم.
               </p>
-              <Button color="primary" round>
+              <Button color="info" round>
                 دنبال‌کردن
               </Button>
             </CardBody>

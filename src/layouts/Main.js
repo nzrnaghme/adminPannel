@@ -16,7 +16,6 @@ import Dashboard from "views/Dashboard/Dashboard";
 import UserProfile from "views/UserProfile/UserProfile";
 import CourseList from "views/CourseList/CourseList";
 import Teachers from "views/Teachers/Teachers";
-import Icons from "views/Icons/Icons";
 import Students from "views/Students/Students"
 import LessonList from "views/Lessons/Lessons";
 import Comments from "views/Comments/Comments";
@@ -73,7 +72,7 @@ export default function Main({ ...rest }) {
         image={bgImage}
         handleDrawerToggle={handleDrawerToggle}
         open={mobileOpen}
-        color={"green"}
+        color={"blue"}
         rtlActive
         {...rest}
       />
@@ -95,7 +94,6 @@ export default function Main({ ...rest }) {
               <Route path={"/admin/user"} component={UserProfile} />
               <Route path={"/admin/courses"} component={CourseList} />
               <Route path={"/admin/Teachers"} component={Teachers} />
-              <Route path={"/admin/icons"} component={Icons} />
               <Route path={"/admin/students"} component={Students} />
               <Route path={"/admin/lessons"} component={LessonList} />
               <Route path={"/admin/comments"} component={Comments} />

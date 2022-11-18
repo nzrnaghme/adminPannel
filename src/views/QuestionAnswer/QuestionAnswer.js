@@ -135,7 +135,7 @@ export default function QuestionAnswer() {
             <GridContainer>
                 <GridItem xs={12} sm={12} md={12} >
                     <Card>
-                        <CardHeader color="primary">
+                        <CardHeader color="info">
                             <h4 className={classes.cardTitleWhite}>پرسش و پاسخ</h4>
                         </CardHeader>
                         <CardBody>
@@ -158,7 +158,7 @@ export default function QuestionAnswer() {
                                     <>
                                         {questionWithOutAnswer && questionWithOutAnswer.length > 0 &&
                                             <Table
-                                                tableHeaderColor="primary"
+                                                tableHeaderColor="info"
                                                 tableHead={["اسم کاربر", "ایمیل", "تاریخ ایجاد سوال", "سوال", ""]}
                                                 tableData={questionWithOutAnswer}
                                                 currentPage={currentPage_MainbarArticles}
@@ -184,7 +184,7 @@ export default function QuestionAnswer() {
                                     <>
                                         {questionWithAnswer && questionWithAnswer.length > 0 &&
                                             <Table
-                                                tableHeaderColor="primary"
+                                                tableHeaderColor="info"
                                                 tableHead={["اسم کاربر", "ایمیل", "تاریخ ایجاد سوال", "سوال", "جواب", ""]}
                                                 tableData={questionWithAnswer}
                                                 currentPage={currentPage_MainbarArticles}

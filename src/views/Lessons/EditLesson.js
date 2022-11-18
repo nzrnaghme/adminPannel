@@ -215,7 +215,7 @@ export default function EditLEsson(props) {
             <GridContainer>
                 <GridItem xs={12} sm={12} md={12}>
                     <Card className="CardEditCourse">
-                        <CardHeader color="primary">
+                        <CardHeader color="info">
                             <h4 className={classes.cardTitleWhite}>آپدیت درس</h4>
                         </CardHeader>
                         <CardBody className="bodyEditCourse">
@@ -307,7 +307,7 @@ export default function EditLEsson(props) {
                                         <h4 className={classes.cardTitleWhite}>تمام دوره های درس</h4>
                                     </CardHeader>
                                     <Table
-                                        tableHeaderColor="primary"
+                                        tableHeaderColor="info"
                                         tableHead={["عنوان", "شروع دوره", "پابان دوره", "قیمت", ""]}
                                         tableData={allCoursesLesson}
                                         currentPage={currentPage_MainbarMyCourses}

@@ -242,7 +242,7 @@ export default function DashboardTeacher() {
                                 زمینه‌های فعالیتم به طراحی ui/ux و توسعه بخش front سایت معطوف می‌شود.
                                 علاوه بر این‌ها علاقه‌ی زیادی به کار در زمینه‌ی هوش مصنوعی دارم.
                             </p>
-                            <Button color="primary" round>
+                            <Button color="info" round>
                                 دنبال‌کردن
                             </Button>
                         </CardBody>

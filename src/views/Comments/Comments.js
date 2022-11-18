@@ -175,7 +175,7 @@ export default function Comments() {
             <GridContainer>
                 <GridItem xs={12} sm={12} md={12} >
                     <Card>
-                        <CardHeader color="primary">
+                        <CardHeader color="info">
                             <h4 className={classes.cardTitleWhite}>کامنت ها</h4>
                         </CardHeader>
                         <CardBody>
@@ -199,7 +199,7 @@ export default function Comments() {
                                     <>
                                         {allComments && allComments.length > 0 &&
                                             <Table
-                                                tableHeaderColor="primary"
+                                                tableHeaderColor="info"
                                                 tableHead={["اسم کاربر", "ایمیل کاربر", "تاریخ کامنت", "متن کامنت", "", ""]}
                                                 tableData={allComments}
                                                 currentPage={currentPage_MainbarAll}
@@ -227,7 +227,7 @@ export default function Comments() {
                                     <>
                                         {VerifiedComment && VerifiedComment.length > 0 &&
                                             <Table
-                                                tableHeaderColor="primary"
+                                                tableHeaderColor="info"
                                                 tableHead={["اسم کاربر", "ایمیل کاربر", "تاریخ کامنت", "متن کامنت", "", ""]}
                                                 tableData={VerifiedComment}
                                                 currentPage={currentPage_MainbarAccept}
@@ -255,7 +255,7 @@ export default function Comments() {
                                     <>
                                         {notVerifiedComment && notVerifiedComment.length > 0 &&
                                             <Table
-                                                tableHeaderColor="primary"
+                                                tableHeaderColor="info"
                                                 tableHead={["اسم کاربر", "ایمیل کاربر", "تاریخ کامنت", "متن کامنت", ""]}
                                                 tableData={notVerifiedComment}
                                                 currentPage={currentPage_MainbarWaiting}
@@ -278,7 +278,7 @@ export default function Comments() {
                                     <>
                                         {answerComment && answerComment.length > 0 &&
                                             <Table
-                                                tableHeaderColor="primary"
+                                                tableHeaderColor="info"
                                                 tableHead={["اسم کاربر", "ایمیل کاربر", "تاریخ کامنت", "متن کامنت", "پاسخ کامنت", "", ""]}
                                                 tableData={answerComment}
                                                 currentPage={currentPage_MainbarAnswer}

@@ -155,13 +155,13 @@ export default function LessonList() {
                 </GridItem>
                 <GridItem xs={12} sm={12} md={12}>
                     <Card>
-                        <CardHeader color="primary">
+                        <CardHeader color="info">
                             <h4 className={classes.cardTitleWhite}>تمام دروس</h4>
                         </CardHeader>
                         <CardBody>
                             {allLessons.length > 0 &&
                                 <Table
-                                    tableHeaderColor="primary"
+                                    tableHeaderColor="info"
                                     tableHead={["", "اسم", "دسته بندی", "توضیحات", "تعداد دوره", ""]}
                                     tableData={allLessons}
                                     currentPage={currentPage_MainbarMyCourses}

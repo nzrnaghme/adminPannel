@@ -108,13 +108,13 @@ export default function ListOfStudents(props) {
             <GridContainer>
                 <GridItem xs={12} sm={12} md={12}>
                     <Card>
-                        <CardHeader color="primary">
+                        <CardHeader color="info">
                             <h4 className={classes.cardTitleWhite}>تمام دانشجویان</h4>
                         </CardHeader>
                         <CardBody>
                             {currentStudents != undefined && currentStudents.length > 0 &&
                                 <Table
-                                    tableHeaderColor="primary"
+                                    tableHeaderColor="info"
                                     tableHead={["", "اسم", "ایمیل", ""]}
                                     tableData={currentStudents}
                                     currentPage={currentPage_MainbarCurrentStudent}

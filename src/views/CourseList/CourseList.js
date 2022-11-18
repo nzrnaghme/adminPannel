@@ -156,13 +156,13 @@ export default function CourseList() {
         </GridItem>
         <GridItem xs={12} sm={12} md={12}>
           <Card>
-            <CardHeader color="primary">
+            <CardHeader color="info">
               <h4 className={classes.cardTitleWhite}>تمام دوره ها</h4>
             </CardHeader>
             <CardBody>
               {allCourse && allCourse.length > 0 ?
                 <Table
-                  tableHeaderColor="primary"
+                  tableHeaderColor="info"
                   tableHead={["عنوان", "استاد", "شروع دوره", "قیمت", "گنجایش", "تعداد دانشجویان دوره", ""]}
                   tableData={allCourse}
                   currentPage={currentPage_MainbarMyCourses}

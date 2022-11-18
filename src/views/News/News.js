@@ -163,7 +163,7 @@ export default function News() {
                 </GridItem>
                 <GridItem xs={12} sm={12} md={12} >
                     <Card>
-                        <CardHeader color="primary">
+                        <CardHeader color="info">
                             <h4 className={classes.cardTitleWhite}>اخبار و مقالات</h4>
                         </CardHeader>
                         <CardBody>
@@ -186,7 +186,7 @@ export default function News() {
                                     <>
                                         {allNews && allNews.length > 0 &&
                                             <Table
-                                                tableHeaderColor="primary"
+                                                tableHeaderColor="info"
                                                 tableHead={["", "تیتر", "توضیحات", "دسته بندی", ""]}
                                                 tableData={allNews}
                                                 currentPage={currentPage_MainbarNews}
@@ -206,7 +206,7 @@ export default function News() {
                                     <>
                                         {allArticles && allArticles.length > 0 &&
                                             <Table
-                                                tableHeaderColor="primary"
+                                                tableHeaderColor="info"
                                                 tableHead={["", "تیتر", "توضیحات", "دسته بندی", ""]}
                                                 tableData={allArticles}
                                                 currentPage={currentPage_MainbarArticles}

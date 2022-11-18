@@ -79,7 +79,7 @@ export default function AnswerComment(props) {
             <GridContainer>
                 <GridItem xs={12} sm={12} md={12}>
                     <Card className="CardShowDataComment">
-                        <CardHeader color="primary">
+                        <CardHeader color="info">
                             <h4 className={classes.cardTitleWhite}>ثبت جواب به کامنت</h4>
                         </CardHeader>
                         <CardBody className="bodyAnswerComment">
