@@ -23,6 +23,7 @@ import News from "views/News/News";
 import Planning from "views/Planning/Planning"
 import Support from "views/Support/Support";
 import QuestionAnswer from "views/QuestionAnswer/QuestionAnswer";
+import Suggest from "views/Suggest/Suggest";
 let ps;
 
 const useStyles = makeStyles(styles);
@@ -100,6 +101,8 @@ export default function Main({ ...rest }) {
               <Route path={"/admin/news"} component={News} />
               <Route path={"/admin/planning"} component={Planning} />
               <Route path={"/admin/support"} component={Support} />
+              <Route path={"/admin/contactMe"} component={Suggest} />
+
               <Route path={"/admin/questionAnswer"} component={QuestionAnswer} />
 
               <Redirect to="/admin/dashboard" from="/" />

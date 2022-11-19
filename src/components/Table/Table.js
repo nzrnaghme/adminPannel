@@ -75,6 +75,12 @@ export default function CustomTable(props) {
     questionAnswer,
     support } = props;
 
+  const changeDate = (date) => {
+    let Endate = new Date(date)
+    let PrDate = Endate.toLocaleDateString('fa-IR-u-nu-latn');
+    return PrDate
+  }
+
   return (
     <div className={classes.tableResponsive}>
       <Table className={classes.table}>
@@ -555,7 +561,7 @@ export default function CustomTable(props) {
             <TableRow key={index} className={classes.tableBodyRow} style={{ cursor: "pointer" }}>
               <TableCell className={classes.tableCell} onClick={() => { showAllData(row._id) }}>{row.username}</TableCell>
               <TableCell className={classes.tableCell} onClick={() => { showAllData(row._id) }}>{row.email}</TableCell>
-              <TableCell className={classes.tableCell} onClick={() => { showAllData(row._id) }}>{formatDate(row.createDate)}</TableCell>
+              <TableCell className={classes.tableCell} onClick={() => { showAllData(row._id) }}>{changeDate(row.createDate)}</TableCell>
               <TableCell className={classes.tableCell} onClick={() => { showAllData(row._id) }}>{row.comment.substring(0, 15) + "..."}</TableCell>
               {row.answer && !verified && <TableCell className={classes.tableCell}>{row.answer.substring(0, 15) + "..."}</TableCell>}
               <TableCell className={classes.tableCell}>
@@ -708,7 +714,7 @@ export default function CustomTable(props) {
             <TableRow key={index} className={classes.tableBodyRow} style={{ cursor: "pointer" }}>
               <TableCell className={classes.tableCell} onClick={() => { showAllData(row._id) }}>{row.username}</TableCell>
               <TableCell className={classes.tableCell} onClick={() => { showAllData(row._id) }}>{row.email}</TableCell>
-              <TableCell className={classes.tableCell} onClick={() => { showAllData(row._id) }}>{formatDate(row.createDate)}</TableCell>
+              <TableCell className={classes.tableCell} onClick={() => { showAllData(row._id) }}>{changeDate(row.createDate)}</TableCell>
               <TableCell className={classes.tableCell} onClick={() => { showAllData(row._id) }}>{row.comment.substring(0, 15) + "..."}</TableCell>
               {row.answer && <TableCell className={classes.tableCell}>{row.answer.substring(0, 15) + "..."}</TableCell>}
               {!row.answer && <TableCell
@@ -759,53 +765,9 @@ export default function CustomTable(props) {
           )) : ''}
 
           {support && tableData ? tableData.slice(currentPage * rowsCount, currentPage * rowsCount + rowsCount).map((row, index) => (
-            <TableRow key={index} className={classes.tableBodyRow} style={{ cursor: "pointer" }}>
-              <TableCell className={classes.tableCell} onClick={() => { showAllData(row._id) }}>{formatDate(row.createDate)}</TableCell>
+            <TableRow key={index} className={[classes.tableBodyRow, row.verified === false ? classes.showMessage : classes.hideMessage]} style={{ cursor: "pointer" }}>
+              <TableCell className={classes.tableCell} onClick={() => { showAllData(row._id) }}>{changeDate(row.createDate)}</TableCell>
               <TableCell className={classes.tableCell} onClick={() => { showAllData(row._id) }}>{row.comment.length > 30 ? row.comment.substring(0, 30) + "..." : row.comment}</TableCell>
-              {!row.answer && <TableCell
-                className={classes.tableCell}>
-                <Tooltip
-                  id="tooltip-top-start"
-                  title="پاسخ به پیام"
-                  placement="top"
-                  classes={{ tooltip: classes.tooltip }}
-                >
-                  <IconButton
-                    aria-label="Close"
-                    className={classes.tableActionButton}
-                    onClick={() => {
-                      answerToComment(row._id)
-                    }}
-                  >
-                    <TextsmsIcon
-                      className={
-                        classes.tableActionButtonIcon + " " + classes.Insert
-                      }
-                    />
-                  </IconButton>
-                </Tooltip>
-              </TableCell>}
-              {row.answer && <TableCell
-                className={classes.tableCell}>
-                <Tooltip
-                  id="tooltip-top-start"
-                  title="پیام جواب داده شده"
-                  placement="top"
-                  classes={{ tooltip: classes.tooltip }}
-                >
-                  <IconButton
-                    aria-label="Close"
-                    className={classes.tableActionButton}
-                    onClick={() => { showAllData(row._id) }}
-                  >
-                    <DoneAllIcon
-                      className={
-                        classes.tableActionButtonIcon + " " + classes.Add
-                      }
-                    />
-                  </IconButton>
-                </Tooltip>
-              </TableCell>}
             </TableRow>
           )) : ''}
         </TableBody>

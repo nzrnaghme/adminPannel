@@ -10,7 +10,7 @@ import GridContainer from "components/Grid/GridContainer.js";
 import Card from "components/Card/Card.js";
 import CardHeader from "components/Card/CardHeader.js";
 import CardBody from "components/Card/CardBody.js";
-import "./comment.css"
+import "views/Comments/comment.css"
 
 const styles = (theme) => ({
     cardCategoryWhite: {
@@ -51,14 +51,13 @@ export default function ShowDataComment(props) {
     const classes = useStyles();
     const {
         openDataCommentPopUp,
-        closePopUpDataComment,
         dataComment,
         closePopUpDataSuggest } = props;
 
     return (
         <PopUpCustome
             open={openDataCommentPopUp}
-            handleClose={() => { closePopUpDataComment(); closePopUpDataSuggest(dataComment._id,dataComment.verified) }}
+            handleClose={() => { closePopUpDataSuggest(dataComment._id, dataComment.verified) }}
             className="popUpShowDataComment">
             <GridContainer>
                 <GridItem xs={12} sm={12} md={12}>
@@ -68,38 +67,38 @@ export default function ShowDataComment(props) {
                         </CardHeader>
                         <CardBody className="bodyShowDataComment">
                             <div>
-                                {!props.support &&
-                                    <GridContainer>
-                                        <GridItem xs={12} sm={12} md={6}>
-                                            <CustomInput
-                                                rtlActive
-                                                labelText="اسم کاربر"
-                                                value={dataComment.username}
-                                                disabled
-                                                formControlProps={{
-                                                    fullWidth: true,
-                                                }}
-                                            />
-                                        </GridItem>
-                                        <GridItem xs={12} sm={12} md={6}>
-                                            <CustomInput
-                                                rtlActive
-                                                labelText="ایمیل کاربر"
-
-                                                formControlProps={{
-                                                    fullWidth: true,
-                                                }}
-                                                value={dataComment.email}
-                                                disabled
-                                            />
-                                        </GridItem>
-                                    </GridContainer>}
 
                                 <GridContainer>
                                     <GridItem xs={12} sm={12} md={6}>
                                         <CustomInput
                                             rtlActive
-                                            labelText={props.support ? "متن پیام" : "متن کامنت"}
+                                            labelText="اسم کاربر"
+                                            value={dataComment.username}
+                                            disabled
+                                            formControlProps={{
+                                                fullWidth: true,
+                                            }}
+                                        />
+                                    </GridItem>
+                                    <GridItem xs={12} sm={12} md={6}>
+                                        <CustomInput
+                                            rtlActive
+                                            labelText="ایمیل کاربر"
+
+                                            formControlProps={{
+                                                fullWidth: true,
+                                            }}
+                                            value={dataComment.email}
+                                            disabled
+                                        />
+                                    </GridItem>
+                                </GridContainer>
+
+                                <GridContainer>
+                                    <GridItem xs={12} sm={12} md={6}>
+                                        <CustomInput
+                                            rtlActive
+                                            labelText={"متن درخواست"}
                                             formControlProps={{
                                                 fullWidth: true,
                                             }}
@@ -109,21 +108,7 @@ export default function ShowDataComment(props) {
                                             rows={dataComment.comment.length > 70 ? 5 : 2}
                                         />
                                     </GridItem>
-                                    {dataComment.answer &&
-                                        <GridItem xs={12} sm={12} md={6}>
-                                            <CustomInput
-                                                labelText={props.support ? "پاسخ به پیام" : "پاسخ کامنت"}
-                                                formControlProps={{
-                                                    fullWidth: true,
-                                                }}
-                                                value={dataComment.answer}
-                                                disabled
-                                                rtlActive
-                                                multiline
-                                                rows={dataComment.comment.length > 70 ? 5 : 2}
 
-                                            />
-                                        </GridItem>}
                                 </GridContainer>
 
                             </div>
@@ -135,7 +120,7 @@ export default function ShowDataComment(props) {
                                     <RegularButton
                                         color="info"
                                         size="sm"
-                                        onClick={() => { closePopUpDataComment(); closePopUpDataSuggest(dataComment._id) }}>تایید</RegularButton>
+                                        onClick={() => { closePopUpDataSuggest(dataComment._id, dataComment.verified) }}>تایید</RegularButton>
                                 </div>
 
                             </div>
@@ -148,8 +133,6 @@ export default function ShowDataComment(props) {
 
 ShowDataComment.propTypes = {
     openDataCommentPopUp: PropTypes.bool,
-    closePopUpDataComment: PropTypes.func,
     dataComment: PropTypes.object,
-    support: PropTypes.bool,
     closePopUpDataSuggest: PropTypes.func
 };

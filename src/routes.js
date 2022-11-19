@@ -20,6 +20,7 @@ import News from "views/News/News";
 import Students from "views/Students/Students";
 import Support from "views/Support/Support";
 import QuestionAnswer from "views/QuestionAnswer/QuestionAnswer";
+import Suggest from "views/Suggest/Suggest";
 
 const dashboardRoutes = [
   {
@@ -94,6 +95,14 @@ const dashboardRoutes = [
     component: News,
     layout: "/admin",
   },
+  {
+    path: "/contactMe",
+    name: "ارتباط با ما",
+    icon: QuestionAnswerRoundedIcon,
+    component: Suggest,
+    layout: "/admin",
+  },
+
   {
     path: "/planning",
     name: "برنامه روزانه",

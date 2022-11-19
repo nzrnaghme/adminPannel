@@ -101,6 +101,17 @@ const tableStyle = (theme) => ({
     outline: "none",
     verticalAlign: "middle",
   },
+  showMessage: {
+    borderRightColor: 'blue',
+    borderRightWidth: 3,
+    borderRightStyle: 'solid',
+    backgroundColor: 'aliceblue',
+  },
+  hideMessage:{
+    backgroundColor: 'none',
+    borderRightStyle:'none',
+    borderRightColor:'none'
+  },
   tableActionButton: {
     width: "27px",
     height: "27px",
@@ -115,7 +126,7 @@ const tableStyle = (theme) => ({
     color: primaryColor[0],
     boxShadow: "none",
   },
-  Add:{
+  Add: {
     backgroundColor: "transparent",
     color: successColor[0],
     boxShadow: "none",
@@ -135,7 +146,7 @@ const tableStyle = (theme) => ({
     color: infoColor[0],
     boxShadow: "none",
   },
-  Insert:{
+  Insert: {
     backgroundColor: "transparent",
     color: infoColor[1],
     boxShadow: "none",
