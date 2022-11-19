@@ -14,13 +14,15 @@ import Card from "components/Card/Card.js";
 import CardHeader from "components/Card/CardHeader.js";
 import CardBody from "components/Card/CardBody.js";
 import Table from "components/Table/Table.js";
-import ShowDataComment from "views/Comments/ShowDataComment";
-import AnswerComment from "views/Comments/AnswerComment";
+import ShowDataComment from "./showAnswerQuestion";
+import AnswerComment from "./AnswerQuestion";
 
 import { getItem } from "api/storage/storage";
 import { trackPromise } from "react-promise-tracker";
 import { getComment } from "api/Core/Comment";
 import { getEmployeeById } from "api/Core/Employe_Manage";
+import { getCourseById } from "api/Core/Course";
+import { verifyComment } from "api/Core/Comment";
 
 
 const styles = {
@@ -67,6 +69,8 @@ export default function QuestionAnswer() {
 
     const [value, setValue] = useState(1);
 
+    const [detailCourse, setDetailCourse] = useState();
+
     const [questionWithOutAnswer, setQuestionWithOutAnswer] = useState()
     const [questionWithAnswer, setQuestionWithAnswer] = useState()
 
@@ -82,7 +86,9 @@ export default function QuestionAnswer() {
     const [courseTeacher, setCourseTeacher] = useState()
 
     useEffect(() => {
-        if (role === 'admin') trackPromise(getComments())
+        if (role === 'admin') {
+            trackPromise(getComments())
+        }
         else
             trackPromise(getCourseTeacher(userId))
     }, [role])
@@ -90,6 +96,7 @@ export default function QuestionAnswer() {
     const getComments = async () => {
         let response = await getComment();
         setCourseTeacher(response.data);
+
         setQuestionWithOutAnswer(response.data.filter((item) => item.postId.split('.')[1] === "question" && !item.answer))
         setQuestionWithAnswer(response.data.filter((item) => item.postId.split('.')[1] === "question" && item.answer))
     }
@@ -120,6 +127,26 @@ export default function QuestionAnswer() {
         }
     }
 
+    const getDetailCourse = async (id) => {
+        console.log(id, "id");
+        let response = await getCourseById(id);
+        console.log(response.data.result, "response.data.result");
+        if (response.data.result) {
+            setDetailCourse(response.data.result);
+            setOpenPopUpShowDataComment(true);
+        }
+    }
+
+    const getDetailCourseForAnswer = async (id) => {
+        console.log(id, "id");
+        let response = await getCourseById(id);
+        console.log(response.data.result, "response.data.result");
+        if (response.data.result) {
+            setDetailCourse(response.data.result);
+            setOpenAnswerPopUp(true)
+        }
+    }
+
     const handleChangePageNews = (event, newPage) => {
         setCurrentPage_MainbarArticles(newPage)
     }
@@ -128,6 +155,20 @@ export default function QuestionAnswer() {
         setRowsPerPageArticles(+event.target.value);
         setCurrentPage_MainbarArticles(0);
     };
+
+    const changeVerified = async (id, verififed) => {
+        if (verififed === false) {
+            const data = {
+                id
+            }
+            let response = await verifyComment(data);
+            if (response.data) {
+                onToast('کامنت تایید شد', 'success');
+                setOpenToast(true)
+                getComments()
+            }
+        }
+    }
 
 
     return (
@@ -160,22 +201,31 @@ export default function QuestionAnswer() {
                                             {questionWithOutAnswer && questionWithOutAnswer.length > 0 ?
                                                 <Table
                                                     tableHeaderColor="info"
-                                                    tableHead={["اسم کاربر", "ایمیل", "تاریخ ایجاد سوال", "سوال", ""]}
+                                                    tableHead={["اسم کاربر", "ایمیل", "تاریخ ایجاد سوال", "سوال", "", ""]}
                                                     tableData={questionWithOutAnswer}
                                                     currentPage={currentPage_MainbarArticles}
                                                     rowsCount={rowsPerPageArticles}
                                                     handleChangePage={handleChangePageNews}
                                                     handleChangeRowsPerPage={handleChangeRowsPerPageNews}
-                                                    showAllData={(id) => {
+                                                    showAllData={(id, postId) => {
                                                         let correntComment = questionWithOutAnswer.filter((item) => item._id === id)
                                                         setDataComment(correntComment)
-                                                        setOpenPopUpShowDataComment(true);
+                                                        console.log(correntComment, "correntComment");
+
+                                                        getDetailCourse(postId)
                                                     }}
-                                                    answerToComment={(id) => {
-                                                        let correntComment = questionWithOutAnswer.filter((item) => item._id === id)
-                                                        setDataComment(correntComment)
-                                                        setOpenAnswerPopUp(true)
+                                                    answerToComment={(id, postId, verified) => {
+                                                        console.log(verified,"verified");
+                                                        if (verified === true) {
+                                                            let correntComment = questionWithOutAnswer.filter((item) => item._id === id)
+                                                            setDataComment(correntComment)
+                                                            getDetailCourseForAnswer(postId)
+                                                        } else {
+                                                            onToast('ابتدا سوال را تایید کنید سپس جواب بدین!!','warning');
+                                                            setOpenToast(true)
+                                                        }
                                                     }}
+                                                    changeVerified={changeVerified}
                                                     questionAnswer
                                                 /> :
                                                 <div style={{
@@ -188,25 +238,26 @@ export default function QuestionAnswer() {
                                                     paddingBottom: 10
                                                 }}> سوالی ثبت نشده</div>
                                             }
-                                        </>}
+                                        </>
+                                    }
 
                                     {value === 2 &&
                                         <>
                                             {questionWithAnswer && questionWithAnswer.length > 0 ?
                                                 <Table
                                                     tableHeaderColor="info"
-                                                    tableHead={["اسم کاربر", "ایمیل", "تاریخ ایجاد سوال", "سوال", "جواب", ""]}
+                                                    tableHead={["اسم کاربر", "ایمیل", "تاریخ ایجاد سوال", "سوال", "جواب", "", ""]}
                                                     tableData={questionWithAnswer}
                                                     currentPage={currentPage_MainbarArticles}
                                                     rowsCount={rowsPerPageArticles}
                                                     handleChangePage={handleChangePageNews}
                                                     handleChangeRowsPerPage={handleChangeRowsPerPageNews}
-                                                    showAllData={(id) => {
+                                                    showAllData={(id, postId) => {
                                                         let correntComment = questionWithAnswer.filter((item) => item._id === id)
                                                         setDataComment(correntComment)
-                                                        setOpenPopUpShowDataComment(true);
+                                                        getDetailCourse(postId)
                                                     }}
-
+                                                    changeVerified={changeVerified}
                                                     questionAnswer
                                                 /> :
                                                 <div style={{
@@ -239,8 +290,9 @@ export default function QuestionAnswer() {
                 </GridItem>
             </GridContainer>
 
-            {openPopUpShowDataComment && dataComment &&
+            {openPopUpShowDataComment && dataComment && detailCourse &&
                 <ShowDataComment
+                    detailCourse={detailCourse}
                     openDataCommentPopUp={openPopUpShowDataComment}
                     dataComment={dataComment[0]}
                     closePopUpDataComment={() => {
@@ -250,8 +302,9 @@ export default function QuestionAnswer() {
                 />
             }
 
-            {openAnswerPopUp && dataComment &&
+            {openAnswerPopUp && dataComment && detailCourse &&
                 <AnswerComment
+                    detailCourse={detailCourse}
                     openAnswerCommentPopUp={openAnswerPopUp}
                     closePopUpAnswerComment={() => {
                         setOpenAnswerPopUp(false)

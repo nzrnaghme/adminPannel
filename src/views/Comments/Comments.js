@@ -30,6 +30,7 @@ import {
     infoCardHeader,
     whiteColor,
 } from "assets/jss/material-dashboard-react.js";
+import { getCourseById } from "api/Core/Course";
 
 
 const styles = {
@@ -100,6 +101,9 @@ export default function Comments() {
     const [dataComment, setDataComment] = useState()
 
     const [openAnswerPopUp, setOpenAnswerPopUp] = useState(false)
+
+    const [detailCourse, setDetailCourse] = useState();
+
 
     useEffect(() => {
         trackPromise(getAllComments())
@@ -179,6 +183,14 @@ export default function Comments() {
         setCurrentPage_MainbarWaiting(0);
     };
 
+    const getDetailCourse = async (id) => {
+        let response = await getCourseById(id);
+        if (response.data.result) {
+            setDetailCourse(response.data.result);
+        
+        }
+    }
+
 
     return (
         <>
@@ -217,12 +229,15 @@ export default function Comments() {
                                                 answerToComment={(id) => {
                                                     let correntComment = allComments.filter((item) => item._id === id)
                                                     setDataComment(correntComment)
+                                                    getDetailCourse(correntComment[0].postId)
                                                     setOpenAnswerPopUp(true)
                                                 }}
                                                 changeVerified={changeVerified}
                                                 showAllData={(id) => {
                                                     let correntComment = allComments.filter((item) => item._id === id)
                                                     setDataComment(correntComment)
+
+                                                    getDetailCourse(correntComment[0].postId)
                                                     setOpenPopUpShowDataComment(true);
                                                 }}
                                                 allComment
@@ -253,11 +268,13 @@ export default function Comments() {
                                                 answerToComment={(id) => {
                                                     let correntComment = allComments.filter((item) => item._id === id)
                                                     setDataComment(correntComment)
+                                                    getDetailCourse(correntComment[0].postId)
                                                     setOpenAnswerPopUp(true)
                                                 }}
                                                 showAllData={(id) => {
                                                     let correntComment = allComments.filter((item) => item._id === id)
                                                     setDataComment(correntComment)
+                                                    getDetailCourse(correntComment[0].postId)
                                                     setOpenPopUpShowDataComment(true);
                                                 }}
                                                 changeVerified={changeVerified}
@@ -294,6 +311,8 @@ export default function Comments() {
                                                 showAllData={(id) => {
                                                     let correntComment = allComments.filter((item) => item._id === id)
                                                     setDataComment(correntComment)
+
+                                                    getDetailCourse(correntComment[0].postId)
                                                     setOpenPopUpShowDataComment(true);
                                                 }}
                                                 allComment
@@ -327,6 +346,7 @@ export default function Comments() {
                                                 showAllData={(id) => {
                                                     let correntComment = allComments.filter((item) => item._id === id)
                                                     setDataComment(correntComment)
+                                                    getDetailCourse(correntComment[0].postId)
                                                     setOpenPopUpShowDataComment(true);
                                                 }}
                                                 allComment
@@ -349,8 +369,9 @@ export default function Comments() {
                 </GridItem>
             </GridContainer>
 
-            {openPopUpShowDataComment && dataComment &&
+            {openPopUpShowDataComment && dataComment && detailCourse &&
                 <ShowDataComment
+                    dataCourse={detailCourse}
                     openDataCommentPopUp={openPopUpShowDataComment}
                     dataComment={dataComment[0]}
                     closePopUpDataComment={() => {
@@ -359,8 +380,9 @@ export default function Comments() {
                     }} />
             }
 
-            {openAnswerPopUp && dataComment &&
+            {openAnswerPopUp && dataComment && detailCourse &&
                 <AnswerComment
+                    dataCourse={detailCourse}
                     openAnswerCommentPopUp={openAnswerPopUp}
                     closePopUpAnswerComment={() => {
                         setOpenAnswerPopUp(false)

@@ -73,7 +73,9 @@ export default function CustomTable(props) {
     teacherPannelLesson,
     teacherPannelCourses,
     questionAnswer,
-    support } = props;
+    support,
+    contactMe,
+    answerToSupport } = props;
 
   const changeDate = (date) => {
     let Endate = new Date(date)
@@ -712,11 +714,19 @@ export default function CustomTable(props) {
 
           {questionAnswer && tableData ? tableData.slice(currentPage * rowsCount, currentPage * rowsCount + rowsCount).map((row, index) => (
             <TableRow key={index} className={classes.tableBodyRow} style={{ cursor: "pointer" }}>
-              <TableCell className={classes.tableCell} onClick={() => { showAllData(row._id) }}>{row.username}</TableCell>
-              <TableCell className={classes.tableCell} onClick={() => { showAllData(row._id) }}>{row.email}</TableCell>
-              <TableCell className={classes.tableCell} onClick={() => { showAllData(row._id) }}>{changeDate(row.createDate)}</TableCell>
-              <TableCell className={classes.tableCell} onClick={() => { showAllData(row._id) }}>{row.comment.substring(0, 15) + "..."}</TableCell>
+              <TableCell className={classes.tableCell} onClick={() => { showAllData(row._id, row.postId.split('.')[0]) }}>{row.username}</TableCell>
+              <TableCell className={classes.tableCell} onClick={() => { showAllData(row._id, row.postId.split('.')[0]) }}>{row.email}</TableCell>
+              <TableCell className={classes.tableCell} onClick={() => { showAllData(row._id, row.postId.split('.')[0]) }}>{changeDate(row.createDate)}</TableCell>
+              <TableCell className={classes.tableCell} onClick={() => { showAllData(row._id, row.postId.split('.')[0]) }}>{row.comment.substring(0, 15) + "..."}</TableCell>
               {row.answer && <TableCell className={classes.tableCell}>{row.answer.substring(0, 15) + "..."}</TableCell>}
+              <TableCell className={classes.tableCell}>
+                <div onClick={(e) => {
+                  e.preventDefault();
+                  changeVerified(row._id, row.verified)
+                }} className={row.verified === true ? classes.ActiveTeacher : classes.deActiveTeacher}>
+                  <p style={{ color: "white", paddingTop: 3 }}>{row.verified === true ? "تایید شده" : "تایید نشده"}</p>
+                </div>
+              </TableCell>
               {!row.answer && <TableCell
                 className={classes.tableCell}>
                 <Tooltip
@@ -729,7 +739,7 @@ export default function CustomTable(props) {
                     aria-label="Close"
                     className={classes.tableActionButton}
                     onClick={() => {
-                      answerToComment(row._id)
+                      answerToComment(row._id, row.postId.split('.')[0], row.verified)
                     }}
                   >
                     <TextsmsIcon
@@ -765,6 +775,57 @@ export default function CustomTable(props) {
           )) : ''}
 
           {support && tableData ? tableData.slice(currentPage * rowsCount, currentPage * rowsCount + rowsCount).map((row, index) => (
+            <TableRow key={index} className={classes.tableBodyRow} style={{ cursor: "pointer" }}>
+              <TableCell className={classes.tableCell} onClick={() => { showAllData(row._id) }}>{changeDate(row.createDate)}</TableCell>
+              <TableCell className={classes.tableCell} onClick={() => { showAllData(row._id) }}>{row.comment.length > 30 ? row.comment.substring(0, 30) + "..." : row.comment}</TableCell>
+              {!row.answer && <TableCell
+                className={classes.tableCell}>
+                <Tooltip
+                  id="tooltip-top-start"
+                  title="پاسخ به کامنت"
+                  placement="top"
+                  classes={{ tooltip: classes.tooltip }}
+                >
+                  <IconButton
+                    aria-label="Close"
+                    className={classes.tableActionButton}
+                    onClick={() => {
+                      answerToSupport(row._id)
+                    }}
+                  >
+                    <TextsmsIcon
+                      className={
+                        classes.tableActionButtonIcon + " " + classes.Insert
+                      }
+                    />
+                  </IconButton>
+                </Tooltip>
+              </TableCell>}
+              {row.answer && <TableCell
+                className={classes.tableCell}>
+                <Tooltip
+                  id="tooltip-top-start"
+                  title="کامنت تایید شده و جواب داده شده"
+                  placement="top"
+                  classes={{ tooltip: classes.tooltip }}
+                >
+                  <IconButton
+                    aria-label="Close"
+                    className={classes.tableActionButton}
+                    onClick={() => { showAllData(row._id) }}
+                  >
+                    <DoneAllIcon
+                      className={
+                        classes.tableActionButtonIcon + " " + classes.Add
+                      }
+                    />
+                  </IconButton>
+                </Tooltip>
+              </TableCell>}
+            </TableRow>
+          )) : ''}
+
+          {contactMe && tableData ? tableData.slice(currentPage * rowsCount, currentPage * rowsCount + rowsCount).map((row, index) => (
             <TableRow key={index} className={[classes.tableBodyRow, row.verified === false ? classes.showMessage : classes.hideMessage]} style={{ cursor: "pointer" }}>
               <TableCell className={classes.tableCell} onClick={() => { showAllData(row._id) }}>{changeDate(row.createDate)}</TableCell>
               <TableCell className={classes.tableCell} onClick={() => { showAllData(row._id) }}>{row.comment.length > 30 ? row.comment.substring(0, 30) + "..." : row.comment}</TableCell>
@@ -855,5 +916,9 @@ CustomTable.propTypes = {
 
   questionAnswer: PropTypes.bool,
 
-  support: PropTypes.bool
+  support: PropTypes.bool,
+  answerToSupport:PropTypes.func,
+
+  contactMe: PropTypes.bool,
+
 };

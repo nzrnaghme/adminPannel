@@ -10,7 +10,7 @@ import GridContainer from "components/Grid/GridContainer.js";
 import Card from "components/Card/Card.js";
 import CardHeader from "components/Card/CardHeader.js";
 import CardBody from "components/Card/CardBody.js";
-import "./comment.css"
+import "views/Comments/comment.css"
 
 const styles = (theme) => ({
     cardCategoryWhite: {
@@ -53,7 +53,7 @@ export default function ShowDataComment(props) {
         openDataCommentPopUp,
         closePopUpDataComment,
         dataComment,
-        dataCourse } = props;
+        detailCourse } = props;
 
     return (
         <PopUpCustome
@@ -64,43 +64,16 @@ export default function ShowDataComment(props) {
                 <GridItem xs={12} sm={12} md={12}>
                     <Card className="CardShowDataComment">
                         <CardHeader color="info">
-                            <h4 className={classes.cardTitleWhite}>اطلاعات کامنت</h4>
+                            <h4 className={classes.cardTitleWhite}>اطلاعات سوال</h4>
                         </CardHeader>
                         <CardBody className="bodyShowDataComment">
                             <div>
-
-                                {!props.support && <GridContainer>
-                                    <GridItem xs={12} sm={12} md={6}>
-                                        <CustomInput
-                                            rtlActive
-                                            labelText="اسم کاربر"
-                                            value={dataComment.username}
-                                            disabled
-                                            formControlProps={{
-                                                fullWidth: true,
-                                            }}
-                                        />
-                                    </GridItem>
-                                    <GridItem xs={12} sm={12} md={6}>
-                                        <CustomInput
-                                            rtlActive
-                                            labelText="ایمیل کاربر"
-
-                                            formControlProps={{
-                                                fullWidth: true,
-                                            }}
-                                            value={dataComment.email}
-                                            disabled
-                                        />
-                                    </GridItem>
-                                </GridContainer>
-                                }
-                                {!props.support && <GridContainer>
+                                <GridContainer>
                                     <GridItem xs={12} sm={12} md={6}>
                                         <CustomInput
                                             rtlActive
                                             labelText="اسم دوره"
-                                            value={dataCourse.title}
+                                            value={detailCourse.title}
                                             disabled
                                             formControlProps={{
                                                 fullWidth: true,
@@ -110,23 +83,22 @@ export default function ShowDataComment(props) {
                                     <GridItem xs={12} sm={12} md={6}>
                                         <CustomInput
                                             rtlActive
-                                            labelText="مدرس دوره"
+                                            labelText="استاد"
 
                                             formControlProps={{
                                                 fullWidth: true,
                                             }}
-                                            value={dataCourse.teacher.fullName}
+                                            value={detailCourse.teacher.fullName}
                                             disabled
                                         />
                                     </GridItem>
                                 </GridContainer>
-                                }
 
                                 <GridContainer>
                                     <GridItem xs={12} sm={12} md={6}>
                                         <CustomInput
                                             rtlActive
-                                            labelText={props.support ? "متن پیام" : "متن کامنت"}
+                                            labelText={"متن پیام"}
                                             formControlProps={{
                                                 fullWidth: true,
                                             }}
@@ -139,7 +111,7 @@ export default function ShowDataComment(props) {
                                     {dataComment.answer &&
                                         <GridItem xs={12} sm={12} md={6}>
                                             <CustomInput
-                                                labelText={props.support ? "پاسخ به پیام" : "پاسخ کامنت"}
+                                                labelText={"پاسخ به پیام"}
                                                 formControlProps={{
                                                     fullWidth: true,
                                                 }}
@@ -150,7 +122,8 @@ export default function ShowDataComment(props) {
                                                 rows={dataComment.comment.length > 70 ? 5 : 2}
 
                                             />
-                                        </GridItem>}
+                                        </GridItem>
+                                    }
                                 </GridContainer>
 
                             </div>
@@ -177,6 +150,5 @@ ShowDataComment.propTypes = {
     openDataCommentPopUp: PropTypes.bool,
     closePopUpDataComment: PropTypes.func,
     dataComment: PropTypes.object,
-    support: PropTypes.bool,
-    dataCourse: PropTypes.object
+    detailCourse: PropTypes.object
 };

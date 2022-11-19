@@ -152,7 +152,7 @@ export default function Support() {
                                                 setDataComment(correntComment)
                                                 setOpenPopUpShowDataComment(true);
                                             }}
-                                            answerToComment={(id) => {
+                                            answerToSupport={(id) => {
                                                 let correntComment = supportUser.filter((item) => item._id === id)
                                                 setDataComment(correntComment)
                                                 setOpenAnswerPopUp(true)
@@ -187,7 +187,7 @@ export default function Support() {
                                                 setDataComment(correntComment)
                                                 setOpenPopUpShowDataComment(true);
                                             }}
-                                            answerToComment={(id) => {
+                                            answerToSupport={(id) => {
                                                 let correntComment = supportGuess.filter((item) => item._id === id)
                                                 setDataComment(correntComment)
                                                 setOpenAnswerPopUp(true)

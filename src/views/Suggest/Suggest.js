@@ -175,7 +175,7 @@ export default function Suggest() {
                                                 setDataComment(correntComment)
                                                 setOpenPopUpShowDataComment(true);
                                             }}
-                                            support
+                                            contactMe
                                         />
                                         : <div style={{
                                             textAlign: 'center',
@@ -205,7 +205,7 @@ export default function Suggest() {
                                                 setDataComment(correntComment)
                                                 setOpenPopUpShowDataComment(true);
                                             }}
-                                            support
+                                            contactMe
                                         />
                                         : <div style={{
                                             textAlign: 'center',
@@ -235,7 +235,7 @@ export default function Suggest() {
                                                 setDataComment(correntComment)
                                                 setOpenPopUpShowDataComment(true);
                                             }}
-                                            support
+                                            contactMe
                                         />
                                         : <div style={{
                                             textAlign: 'center',

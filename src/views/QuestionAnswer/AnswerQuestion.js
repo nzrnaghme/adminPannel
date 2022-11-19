@@ -10,7 +10,9 @@ import GridContainer from "components/Grid/GridContainer.js";
 import Card from "components/Card/Card.js";
 import CardHeader from "components/Card/CardHeader.js";
 import CardBody from "components/Card/CardBody.js";
-import "./comment.css"
+
+import "views/Comments/comment.css"
+
 import { putAnswerToComment } from "api/Core/Comment";
 import { trackPromise } from "react-promise-tracker";
 
@@ -50,14 +52,14 @@ const styles = (theme) => ({
 
 const useStyles = makeStyles(styles);
 
-export default function AnswerComment(props) {
+export default function AnswerQuestion(props) {
     const classes = useStyles();
     const {
         openAnswerCommentPopUp,
         closePopUpAnswerComment,
         dataComment,
         setAnswerComment,
-        dataCourse } = props;
+        detailCourse } = props;
 
     const [answer, setAnswer] = useState('')
 
@@ -85,38 +87,13 @@ export default function AnswerComment(props) {
                         </CardHeader>
                         <CardBody className="bodyAnswerComment">
                             <div>
-                                {!props.support &&
-                                    <GridContainer>
-                                        <GridItem xs={12} sm={12} md={6}>
-                                            <CustomInput
-                                                rtlActive
-                                                labelText="اسم کاربر"
-                                                value={dataComment.username}
-                                                disabled
-                                                formControlProps={{
-                                                    fullWidth: true,
-                                                }}
-                                            />
-                                        </GridItem>
-                                        <GridItem xs={12} sm={12} md={6}>
-                                            <CustomInput
-                                                rtlActive
-                                                labelText="ایمیل کاربر"
 
-                                                formControlProps={{
-                                                    fullWidth: true,
-                                                }}
-                                                value={dataComment.email}
-                                                disabled
-                                            />
-                                        </GridItem>
-                                    </GridContainer>}
-                                {!props.support && <GridContainer>
+                                <GridContainer>
                                     <GridItem xs={12} sm={12} md={6}>
                                         <CustomInput
                                             rtlActive
                                             labelText="اسم دوره"
-                                            value={dataCourse.title}
+                                            value={detailCourse.title}
                                             disabled
                                             formControlProps={{
                                                 fullWidth: true,
@@ -126,23 +103,22 @@ export default function AnswerComment(props) {
                                     <GridItem xs={12} sm={12} md={6}>
                                         <CustomInput
                                             rtlActive
-                                            labelText="مدرس دوره"
+                                            labelText="استاد"
 
                                             formControlProps={{
                                                 fullWidth: true,
                                             }}
-                                            value={dataCourse.teacher.fullName}
+                                            value={detailCourse.teacher.fullName}
                                             disabled
                                         />
                                     </GridItem>
                                 </GridContainer>
-                                }
 
                                 <GridContainer>
                                     <GridItem xs={12} sm={12} md={12}>
                                         <CustomInput
                                             rtlActive
-                                            labelText={props.support ? "متن پیام" : "متن کامنت"}
+                                            labelText={"متن سوال"}
                                             formControlProps={{
                                                 fullWidth: true,
                                             }}
@@ -155,7 +131,7 @@ export default function AnswerComment(props) {
 
                                     <GridItem xs={12} sm={12} md={12}>
                                         <CustomInput
-                                            labelText={props.support ? "پاسخ به پیام" : "پاسخ کامنت"}
+                                            labelText={"پاسخ به سوال"}
                                             onChange={(e) => {
                                                 setAnswer(e)
                                             }}
@@ -180,7 +156,7 @@ export default function AnswerComment(props) {
                                 <RegularButton
                                     color="info"
                                     size="sm"
-                                    onClick={() => { trackPromise(handleAnswerComment()) }}>ثبت پاسخ کامنت</RegularButton>
+                                    onClick={() => { trackPromise(handleAnswerComment()) }}>ثبت پاسخ سوال</RegularButton>
 
                                 <RegularButton
                                     color="info"
@@ -196,11 +172,10 @@ export default function AnswerComment(props) {
     )
 }
 
-AnswerComment.propTypes = {
+AnswerQuestion.propTypes = {
     openAnswerCommentPopUp: PropTypes.bool,
     closePopUpAnswerComment: PropTypes.func,
     dataComment: PropTypes.object,
     setAnswerComment: PropTypes.func,
-    support: PropTypes.bool,
-    dataCourse:PropTypes.object
+    detailCourse: PropTypes.object
 };

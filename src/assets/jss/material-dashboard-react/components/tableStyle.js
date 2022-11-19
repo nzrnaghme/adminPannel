@@ -15,7 +15,7 @@ const tableStyle = (theme) => ({
     height: theme.spacing(7),
   },
   ActiveTeacher: {
-    width: 50,
+    width: 60,
     height: 25,
     backgroundColor: successColor[3],
     textAlign: "center",
@@ -24,7 +24,7 @@ const tableStyle = (theme) => ({
     cursor: "pointer"
   },
   deActiveTeacher: {
-    width: 50,
+    width: 60,
     height: 25,
     backgroundColor: dangerColor[3],
     textAlign: "center",
