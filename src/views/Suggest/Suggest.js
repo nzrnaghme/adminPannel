@@ -84,9 +84,9 @@ export default function Suggest() {
     const getComments = async () => {
         let response = await getComment();
 
-        setSuggestTeacher(response.data.filter((item) => item.postId === "teacher"))
-        setSuggestCourse(response.data.filter((item) => item.postId === "course"))
-        setSuggestUser(response.data.filter((item) => item.postId === "idea"))
+        setSuggestTeacher(response.data.filter((item) => item.postId === ".teacher"))
+        setSuggestCourse(response.data.filter((item) => item.postId === ".course"))
+        setSuggestUser(response.data.filter((item) => item.postId === ".idea"))
     }
 
     const handleChange = (event, newValue) => {
@@ -131,7 +131,7 @@ export default function Suggest() {
                 setOpenPopUpShowDataComment(false);
                 setDataComment('')
             }
-        }
+        } else setOpenPopUpShowDataComment(false);
     }
 
     return (
@@ -233,6 +233,7 @@ export default function Suggest() {
                                             showAllData={(id) => {
                                                 let correntComment = suggestTeacher.filter((item) => item._id === id)
                                                 setDataComment(correntComment)
+
                                                 setOpenPopUpShowDataComment(true);
                                             }}
                                             contactMe
@@ -255,6 +256,7 @@ export default function Suggest() {
             </GridContainer>
             {openPopUpShowDataComment && dataComment &&
                 <ShowDataComment
+                    value={value}
                     openDataCommentPopUp={openPopUpShowDataComment}
                     dataComment={dataComment[0]}
                     closePopUpDataSuggest={(id, verififed) => {

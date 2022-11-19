@@ -1,7 +1,7 @@
 /*eslint-disable*/
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 // react plugin for creating charts
-// import ChartistGraph from "react-chartist";
+import ChartistGraph from "react-chartist";
 // @material-ui/core
 import { makeStyles } from "@material-ui/core/styles";
 // @material-ui/icons
@@ -10,8 +10,6 @@ import PeopleOutlineRoundedIcon from '@material-ui/icons/PeopleOutlineRounded';
 import LocalLibraryRoundedIcon from '@material-ui/icons/LocalLibraryRounded';
 import DateRange from "@material-ui/icons/DateRange";
 import Update from "@material-ui/icons/Update";
-// import ArrowUpward from "@material-ui/icons/ArrowUpward";
-// import AccessTime from "@material-ui/icons/AccessTime";
 // core components
 import Button from "components/CustomButtons/Button.js";
 import GridItem from "components/Grid/GridItem.js";
@@ -24,12 +22,6 @@ import CardIcon from "components/Card/CardIcon.js";
 import CardBody from "components/Card/CardBody.js";
 import CardFooter from "components/Card/CardFooter.js";
 
-// import {
-//   dailySalesChart,
-//   emailsSubscriptionChart,
-//   completedTasksChart,
-// } from "variables/charts.js";
-
 import styles from "assets/jss/material-dashboard-react/views/rtlStyle.js";
 
 import avatar from "assets/img/faces/admin.jpg";
@@ -37,6 +29,8 @@ import { getAllStudet } from "api/Core/Student_Manage";
 import { getAllTeachers } from "api/Core/Employe_Manage";
 import { getAllCourse } from "api/Core/Course";
 import { trackPromise } from "react-promise-tracker";
+import { getAllCategory } from "api/Core/Lesson";
+import { getAllLesson } from "api/Core/Lesson";
 
 const useStyles = makeStyles(styles);
 
@@ -59,10 +53,105 @@ export default function RTLPage() {
   const [currentPage_MainbarTeacher, setCurrentPage_MainbarTeacher] = useState(0);
   const [rowsPerPageTeacher, setRowsPerPagTeacher] = useState(3);
 
+  const [chartTeacher, setChartTeacher] = useState({});
+
+  const [chartLesson, setChartLesson] = useState({});
+  const labelLesson = useRef([])
+
+  var optionsChartTeacher = {
+    lineSmooth: Chartist.Interpolation.cardinal({
+      tension: 0,
+    }),
+    low: 0,
+    high: 20, // creative tim: we recommend you to set the high sa the biggest value + something for a better look
+    chartPadding: {
+      top: 0,
+      right: 0,
+      bottom: 0,
+      left: 0,
+    },
+  }
+
+  var optionsChartLesson = {
+    lineSmooth: Chartist.Interpolation.cardinal({
+      tension: 0,
+    }),
+    low: 0,
+    high: 20, // creative tim: we recommend you to set the high sa the biggest value + something for a better look
+    chartPadding: {
+      top: 0,
+      right: 0,
+      bottom: 0,
+      left: 0,
+    },
+  }
+
+  var animation = {
+    draw: function (data) {
+      if (data.type === "line" || data.type === "area") {
+        data.element.animate({
+          d: {
+            begin: 600,
+            dur: 700,
+            from: data.path
+              .clone()
+              .scale(1, 0)
+              .translate(0, data.chartRect.height())
+              .stringify(),
+            to: data.path.clone().stringify(),
+            easing: Chartist.Svg.Easing.easeOutQuint,
+          },
+        });
+      } else if (data.type === "point") {
+        data.element.animate({
+          opacity: {
+            begin: (data.index + 1) * 80,
+            dur: 500,
+            from: 0,
+            to: 1,
+            easing: "ease",
+          },
+        });
+      }
+    },
+  }
+
+  var animationChartLesson = {
+    draw: function (data) {
+      if (data.type === "line" || data.type === "area") {
+        data.element.animate({
+          d: {
+            begin: 600,
+            dur: 700,
+            from: data.path
+              .clone()
+              .scale(1, 0)
+              .translate(0, data.chartRect.height())
+              .stringify(),
+            to: data.path.clone().stringify(),
+            easing: Chartist.Svg.Easing.easeOutQuint,
+          },
+        });
+      } else if (data.type === "point") {
+        data.element.animate({
+          opacity: {
+            begin: (data.index + 1) * 80,
+            dur: 500,
+            from: 0,
+            to: 1,
+            easing: "ease",
+          },
+        });
+      }
+    },
+  }
+
   useEffect(() => {
     trackPromise(getAllUser());
     trackPromise(getTeacher());
     trackPromise(getAllCourses());
+    trackPromise(getCategory());
+    trackPromise(getAllLessons());
   }, [])
 
   const changeDate = (date) => {
@@ -87,7 +176,20 @@ export default function RTLPage() {
       setCountTeachers(response.data.result.length);
       const sortedActivities = (response.data.result.sort((a, b) => b.registerDate - a.registerDate));
       setNearTeachers(changeDate(sortedActivities[0].registerDate))
-      setAllTeacher(response.data.result)
+      setAllTeacher(response.data.result);
+      let chartlabel = response.data.result.map((item) =>
+        item.fullName
+      )
+
+      let chartSeries = response.data.result.map((item) =>
+        item.courses.length
+      )
+
+      const data = {
+        labels: chartlabel,
+        series: [chartSeries]
+      }
+      setChartTeacher(data)
     }
   }
 
@@ -98,6 +200,67 @@ export default function RTLPage() {
       const sortedActivities = (response.data.result.sort((a, b) => b.endDate - a.endDate));
       setNearCourses(sortedActivities[0].endDate.split("T")[0])
     }
+  }
+
+  const getCategory = async () => {
+    let response = await getAllCategory();
+    if (response.data.result) {
+      let category = response.data.result.map((item) => item.name);
+      labelLesson.current = category
+    }
+  }
+
+  const getAllLessons = async () => {
+    let response = await getAllLesson();
+    if (response.data.result) {
+      let category1 = response.data.result.filter((item) => item.category === 1)
+      let lengthCourse1 = category1.map((item) => item.courses.length)
+      let countCourses1 = sumCourse(lengthCourse1);
+
+      let category2 = response.data.result.filter((item) => item.category === 2)
+      let lengthCourse2 = category2.map((item) => item.courses.length);
+      let countCourses2 = sumCourse(lengthCourse2);
+
+      let category3 = response.data.result.filter((item) => item.category === 3)
+      let lengthCourse3 = category3.map((item) => item.courses.length);
+      let countCourses3 = sumCourse(lengthCourse3);
+
+      let category4 = response.data.result.filter((item) => item.category === 4)
+      let lengthCourse4 = category4.map((item) => item.courses.length);
+      let countCourses4 = sumCourse(lengthCourse4);
+
+      let category5 = response.data.result.filter((item) => item.category === 5)
+      let lengthCourse5 = category5.map((item) => item.courses.length);
+      let countCourses5 = sumCourse(lengthCourse5);
+
+      let category6 = response.data.result.filter((item) => item.category === 6)
+      let lengthCourse6 = category6.map((item) => item.courses.length);
+      let countCourses6 = sumCourse(lengthCourse6);
+
+      let category7 = response.data.result.filter((item) => item.category === 7)
+      let lengthCourse7 = category7.map((item) => item.courses.length);
+      let countCourses7 = sumCourse(lengthCourse7);
+
+      let category8 = response.data.result.filter((item) => item.category === 8)
+      let lengthCourse8 = category8.map((item) => item.courses.length);
+      let countCourses8 = sumCourse(lengthCourse8);
+
+      const data = {
+        labels: labelLesson.current,
+        series: [[countCourses1, countCourses2, countCourses3, countCourses4, countCourses5, countCourses6, countCourses7, countCourses8]]
+      }
+
+      setChartLesson(data)
+    }
+  }
+
+  const sumCourse = (allCourse) => {
+    const initialValue = 0;
+    const sumWithInitial = allCourse.reduce(
+      (accumulator, currentValue) => accumulator + currentValue,
+      initialValue
+    );
+    return sumWithInitial
   }
 
   const handleChangePageStudents = (event, newPage) => {
@@ -117,6 +280,8 @@ export default function RTLPage() {
     setRowsPerPagTeacher(+event.target.value);
     setCurrentPage_MainbarTeacher(0);
   };
+
+  console.log(chartLesson, "=========");
 
   return (
     <div>
@@ -183,80 +348,44 @@ export default function RTLPage() {
         </GridItem>
 
       </GridContainer>
-      {/* <GridContainer>
-        <GridItem xs={12} sm={12} md={4}>
+      <GridContainer>
+        <GridItem xs={12} sm={12} md={6}>
           <Card chart>
             <CardHeader color="success">
-              <ChartistGraph
-                className="ct-chart"
-                data={dailySalesChart.data}
-                type="Line"
-                options={dailySalesChart.options}
-                listener={dailySalesChart.animation}
-              />
+              {chartTeacher &&
+                <ChartistGraph
+                  className="ct-chart"
+                  data={chartTeacher}
+                  type="Line"
+                  options={optionsChartTeacher}
+                  listener={animation}
+                />}
             </CardHeader>
             <CardBody>
-              <h4 className={classes.cardTitle}>فروش روزانه</h4>
-              <p className={classes.cardCategory}>
-                <span className={classes.successText}>
-                  <ArrowUpward className={classes.upArrowCardCategory} /> 55%
-                </span>{" "}
-                رشد در فروش امروز.
-              </p>
+              <h4 className={classes.cardTitle}>دروس اساتید</h4>
+             
             </CardBody>
-            <CardFooter chart>
-              <div className={classes.stats}>
-                <AccessTime /> ۴ دقیقه پیش
-              </div>
-            </CardFooter>
+           
           </Card>
         </GridItem>
-        <GridItem xs={12} sm={12} md={4}>
-          <Card chart>
-            <CardHeader color="warning">
-              <ChartistGraph
-                className="ct-chart"
-                data={emailsSubscriptionChart.data}
-                type="Bar"
-                options={emailsSubscriptionChart.options}
-                responsiveOptions={emailsSubscriptionChart.responsiveOptions}
-                listener={emailsSubscriptionChart.animation}
-              />
-            </CardHeader>
-            <CardBody>
-              <h4 className={classes.cardTitle}>دنبال کننده‌های ایمیلی</h4>
-              <p className={classes.cardCategory}>کارایی آخرین کمپین</p>
-            </CardBody>
-            <CardFooter chart>
-              <div className={classes.stats}>
-                <AccessTime /> کمپین دو روز پیش ارسال شد
-              </div>
-            </CardFooter>
-          </Card>
-        </GridItem>
-        <GridItem xs={12} sm={12} md={4}>
+        <GridItem xs={12} sm={12} md={6}>
           <Card chart>
             <CardHeader color="danger">
-              <ChartistGraph
-                className="ct-chart"
-                data={completedTasksChart.data}
-                type="Line"
-                options={completedTasksChart.options}
-                listener={completedTasksChart.animation}
-              />
+              {chartLesson &&
+                <ChartistGraph
+                  className="ct-chart"
+                  data={chartLesson}
+                  type="Line"
+                  options={optionsChartLesson}
+                  listener={animationChartLesson}
+                />}
             </CardHeader>
             <CardBody>
-              <h4 className={classes.cardTitle}>وظایف انجام شده</h4>
-              <p className={classes.cardCategory}>کارایی آخرین کمپین</p>
+              <h4 className={classes.cardTitle}>دوره های هر درس</h4>
             </CardBody>
-            <CardFooter chart>
-              <div className={classes.stats}>
-                <AccessTime /> کمپین دو روز پیش ارسال شد
-              </div>
-            </CardFooter>
           </Card>
         </GridItem>
-      </GridContainer> */}
+      </GridContainer>
       <GridContainer>
         <GridItem xs={12} sm={12} md={6}>
           {allStudent && allStudent.length > 0 &&

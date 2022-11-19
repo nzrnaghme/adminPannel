@@ -52,7 +52,8 @@ export default function ShowDataComment(props) {
     const {
         openDataCommentPopUp,
         dataComment,
-        closePopUpDataSuggest } = props;
+        closePopUpDataSuggest,
+        value } = props;
 
     return (
         <PopUpCustome
@@ -72,7 +73,9 @@ export default function ShowDataComment(props) {
                                     <GridItem xs={12} sm={12} md={6}>
                                         <CustomInput
                                             rtlActive
-                                            labelText="اسم کاربر"
+                                            labelText={value === 2 ? "نام کاربر" :
+                                                value === 3 ? "ایمیل کاربر" :
+                                                    "اسم کاربر"}
                                             value={dataComment.username}
                                             disabled
                                             formControlProps={{
@@ -83,8 +86,8 @@ export default function ShowDataComment(props) {
                                     <GridItem xs={12} sm={12} md={6}>
                                         <CustomInput
                                             rtlActive
-                                            labelText="ایمیل کاربر"
-
+                                            labelText={value === 2 ? "نام دوره" :
+                                                value === 3 ? "نوع تخصص" : "ایمیل کاربر"}
                                             formControlProps={{
                                                 fullWidth: true,
                                             }}
@@ -134,5 +137,6 @@ export default function ShowDataComment(props) {
 ShowDataComment.propTypes = {
     openDataCommentPopUp: PropTypes.bool,
     dataComment: PropTypes.object,
-    closePopUpDataSuggest: PropTypes.func
+    closePopUpDataSuggest: PropTypes.func,
+    value: PropTypes.number
 };

@@ -109,7 +109,7 @@ export default function EditCourse(props) {
         setTitle(dataCourse.title)
         setTeacherName(dataCourse.teacher._id)
         setCost(dataCourse.cost)
-        setCapacity(dataCourse.capacity)
+        setCapacity(dataCourse.capacity + dataCourse.students.length)
         setLessonName(dataCourse.lesson._id)
 
 
