@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState, useContext, useRef } from "react";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
 import Tab from '@material-ui/core/Tab';
@@ -83,7 +83,7 @@ export default function QuestionAnswer() {
     const [openAnswerPopUp, setOpenAnswerPopUp] = useState(false)
 
     //teacherPanel
-    const [courseTeacher, setCourseTeacher] = useState()
+    const courseTeacher = useRef()
 
     useEffect(() => {
         if (role === 'admin') {
@@ -95,7 +95,7 @@ export default function QuestionAnswer() {
 
     const getComments = async () => {
         let response = await getComment();
-        setCourseTeacher(response.data);
+        courseTeacher.current = (response.data);
 
         setQuestionWithOutAnswer(response.data.filter((item) => item.postId.split('.')[1] === "question" && !item.answer))
         setQuestionWithAnswer(response.data.filter((item) => item.postId.split('.')[1] === "question" && item.answer))
@@ -109,7 +109,8 @@ export default function QuestionAnswer() {
         let response = await getEmployeeById(userId);
         if (response.data.result) {
             let rightData = response.data.result.courses.map((item) => item._id)
-            setCourseTeacher(rightData);
+            console.log(rightData, "rightData");
+            courseTeacher.current = (rightData);
 
             if (rightData && rightData.length > 0) {
                 trackPromise(getCommentTeacher())
@@ -119,8 +120,11 @@ export default function QuestionAnswer() {
 
     const getCommentTeacher = async () => {
         let response = await getComment();
-        if (response.data) {
-            courseTeacher.map((idCourse) => {
+        if (response.data && courseTeacher.current && courseTeacher.current.length > 0) {
+            console.log(response.data.filter((item) => item.postId.split('.')[1] === "question" && !item.answer), "response.data");
+            courseTeacher.current.map((idCourse) => {
+                console.log(idCourse, "id");
+
                 setQuestionWithOutAnswer(response.data.filter((item) => item.postId.split('.')[1] === "question" && item.postId.split('.')[0] === idCourse && !item.answer))
                 setQuestionWithAnswer(response.data.filter((item) => item.postId.split('.')[1] === "question" && item.postId.split('.')[0] === idCourse && item.answer))
             })
@@ -157,6 +161,7 @@ export default function QuestionAnswer() {
     };
 
     const changeVerified = async (id, verififed) => {
+
         if (verififed === false) {
             const data = {
                 id
@@ -165,7 +170,9 @@ export default function QuestionAnswer() {
             if (response.data) {
                 onToast('کامنت تایید شد', 'success');
                 setOpenToast(true)
-                getComments()
+                if (role === 'admin')
+                    getComments()
+                else getCommentTeacher()
             }
         }
     }
@@ -180,7 +187,7 @@ export default function QuestionAnswer() {
                             <h4 className={classes.cardTitleWhite}>پرسش و پاسخ</h4>
                         </CardHeader>
                         <CardBody>
-                            {courseTeacher && courseTeacher.length > 0 ?
+                            {courseTeacher.current && courseTeacher.current.length > 0 ?
                                 <div>
                                     <Tabs
                                         value={value}
@@ -215,13 +222,13 @@ export default function QuestionAnswer() {
                                                         getDetailCourse(postId)
                                                     }}
                                                     answerToComment={(id, postId, verified) => {
-                                                        console.log(verified,"verified");
+                                                        console.log(verified, "verified");
                                                         if (verified === true) {
                                                             let correntComment = questionWithOutAnswer.filter((item) => item._id === id)
                                                             setDataComment(correntComment)
                                                             getDetailCourseForAnswer(postId)
                                                         } else {
-                                                            onToast('ابتدا سوال را تایید کنید سپس جواب بدین!!','warning');
+                                                            onToast('ابتدا سوال را تایید کنید سپس جواب بدین!!', 'warning');
                                                             setOpenToast(true)
                                                         }
                                                     }}
@@ -313,7 +320,9 @@ export default function QuestionAnswer() {
                     setAnswerComment={() => {
                         onToast('جواب به کامنت ثبت شد.', "success")
                         setOpenToast(true)
-                        trackPromise(getComments());
+                        if (role === 'admin')
+                            trackPromise(getComments())
+                        else trackPromise(getCommentTeacher())
                         setOpenAnswerPopUp(false)
                     }}
                 />

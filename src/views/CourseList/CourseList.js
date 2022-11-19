@@ -179,6 +179,7 @@ export default function CourseList() {
                   courses
                   handleChangePage={handleChangePage}
                   handleChangeRowsPerPage={handleChangeRowsPerPage}
+                  teacherRole={roleUser === 'teacher'}
                 /> :
                 <div style={{
                   textAlign: 'center',

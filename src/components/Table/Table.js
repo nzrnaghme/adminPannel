@@ -175,7 +175,7 @@ export default function CustomTable(props) {
                   </IconButton>
                 </Tooltip>
 
-                <Tooltip
+                {!props.teacherRole && <Tooltip
                   id="tooltip-top-start"
                   title="اضافه کردن دانشجو"
                   placement="top"
@@ -194,7 +194,7 @@ export default function CustomTable(props) {
                       }
                     />
                   </IconButton>
-                </Tooltip>
+                </Tooltip>}
 
               </TableCell>
             </TableRow>
@@ -874,6 +874,7 @@ CustomTable.propTypes = {
   editCourse: PropTypes.func,
   showStudents: PropTypes.func,
   addStudentToCourse: PropTypes.func,
+  teacherRole:PropTypes.bool,
 
   teacher: PropTypes.bool,
   editTeacher: PropTypes.func,
@@ -917,7 +918,7 @@ CustomTable.propTypes = {
   questionAnswer: PropTypes.bool,
 
   support: PropTypes.bool,
-  answerToSupport:PropTypes.func,
+  answerToSupport: PropTypes.func,
 
   contactMe: PropTypes.bool,
 

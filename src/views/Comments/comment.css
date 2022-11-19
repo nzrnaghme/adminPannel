@@ -58,7 +58,7 @@
 
     .bodyShowDataComment {
         display: flex;
-        flex-direction: column-reverse;
+        flex-direction: column;
     }
 
     .bodyShowDataComment div .makeStyles-grid-99 {
