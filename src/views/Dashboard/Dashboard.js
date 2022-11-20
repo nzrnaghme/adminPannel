@@ -164,9 +164,9 @@ export default function RTLPage() {
     let response = await getAllStudet();
     if (response.data.result) {
       setCountStudents(response.data.result.length);
-      const sortedActivities = (response.data.result.sort((a, b) => b.registerDate - a.registerDate));
+      const sortedActivities = (response.data.result.reverse());
       setNearStudents(changeDate(sortedActivities[0].registerDate))
-      setAllStudent(response.data.result)
+      setAllStudent(sortedActivities)
     }
   }
 
@@ -174,9 +174,9 @@ export default function RTLPage() {
     let response = await getAllTeachers();
     if (response.data.result) {
       setCountTeachers(response.data.result.length);
-      const sortedActivities = (response.data.result.sort((a, b) => b.registerDate - a.registerDate));
+      const sortedActivities = (response.data.result.reverse());
       setNearTeachers(changeDate(sortedActivities[0].registerDate))
-      setAllTeacher(response.data.result);
+      setAllTeacher(sortedActivities);
       let chartlabel = response.data.result.map((item) =>
         item.fullName
       )

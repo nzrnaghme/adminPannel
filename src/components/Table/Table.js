@@ -13,6 +13,8 @@ import Tooltip from "@material-ui/core/Tooltip";
 import IconButton from "@material-ui/core/IconButton";
 import MenuBookIcon from '@material-ui/icons/MenuBook';
 import DoneAllIcon from '@material-ui/icons/DoneAll';
+import DoneRoundedIcon from '@material-ui/icons/DoneRounded';
+
 import { formatDate } from "constants/usefulFunc";
 // core components
 import styles from "assets/jss/material-dashboard-react/components/tableStyle.js";
@@ -565,7 +567,7 @@ export default function CustomTable(props) {
               <TableCell className={classes.tableCell} onClick={() => { showAllData(row._id) }}>{row.email}</TableCell>
               <TableCell className={classes.tableCell} onClick={() => { showAllData(row._id) }}>{changeDate(row.createDate)}</TableCell>
               <TableCell className={classes.tableCell} onClick={() => { showAllData(row._id) }}>{row.comment.substring(0, 15) + "..."}</TableCell>
-              {row.answer && !verified && <TableCell className={classes.tableCell}>{row.answer.substring(0, 15) + "..."}</TableCell>}
+              {row.answer && verified && <TableCell className={classes.tableCell}>{row.answer.substring(0, 15) + "..."}</TableCell>}
               <TableCell className={classes.tableCell}>
                 <div onClick={(e) => {
                   e.preventDefault();
@@ -592,6 +594,27 @@ export default function CustomTable(props) {
                     <TextsmsIcon
                       className={
                         classes.tableActionButtonIcon + " " + classes.Insert
+                      }
+                    />
+                  </IconButton>
+                </Tooltip>
+              </TableCell>}
+              {!row.answer && !row.verified && <TableCell
+                className={classes.tableCell}>
+                <Tooltip
+                  id="tooltip-top-start"
+                  title="تایید نشده و جواب داده نشده"
+                  placement="top"
+                  classes={{ tooltip: classes.tooltip }}
+                >
+                  <IconButton
+                    aria-label="Close"
+                    className={classes.tableActionButton}
+                    
+                  >
+                    <DoneRoundedIcon
+                      className={
+                        classes.tableActionButtonIcon + " " + classes.close
                       }
                     />
                   </IconButton>

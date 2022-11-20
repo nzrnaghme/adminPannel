@@ -97,8 +97,8 @@ export default function QuestionAnswer() {
         let response = await getComment();
         courseTeacher.current = (response.data);
 
-        setQuestionWithOutAnswer(response.data.filter((item) => item.postId.split('.')[1] === "question" && !item.answer))
-        setQuestionWithAnswer(response.data.filter((item) => item.postId.split('.')[1] === "question" && item.answer))
+        setQuestionWithOutAnswer(response.data.filter((item) => item.postId.split('.')[1] === "question" && !item.answer).reverse())
+        setQuestionWithAnswer(response.data.filter((item) => item.postId.split('.')[1] === "question" && item.answer).reverse())
     }
 
     const handleChange = (event, newValue) => {

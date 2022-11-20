@@ -85,8 +85,8 @@ export default function Support() {
     const getComments = async () => {
         let response = await getComment();
 
-        setSupportUser(response.data.filter((item) => item.postId.split('.')[1] === "userr" && item.postId.split('.')[2] === "chatt"))
-        setSupportGuess(response.data.filter((item) => item.postId.split('.')[1] === "guess" && item.postId.split('.')[2] === "chatt"))
+        setSupportUser(response.data.filter((item) => item.postId.split('.')[1] === "userr" && item.postId.split('.')[2] === "chatt").reverse())
+        setSupportGuess(response.data.filter((item) => item.postId.split('.')[1] === "guess" && item.postId.split('.')[2] === "chatt").reverse())
     }
 
 

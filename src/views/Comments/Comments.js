@@ -112,11 +112,11 @@ export default function Comments() {
     const getAllComments = async () => {
         let response = await getComment();
         if (response.data) {
-            setAllComments(response.data)
+            setAllComments(response.data.reverse())
 
-            setNotVerifiedComment(response.data.filter((item) => item.verified === false && item.postId.length === 24))
-            setVerifiedComment(response.data.filter((item) => item.verified === true && item.postId.length === 24))
-            setAnswerComment(response.data.filter((item) => item.answer && item.postId.length === 24))
+            setNotVerifiedComment(response.data.filter((item) => item.verified === false && item.postId.length === 24).reverse())
+            setVerifiedComment(response.data.filter((item) => item.verified === true && item.postId.length === 24 && !item.answer))
+            setAnswerComment(response.data.filter((item) => item.answer && item.postId.length === 24).reverse())
         }
     }
 
@@ -301,7 +301,7 @@ export default function Comments() {
                                         {notVerifiedComment && notVerifiedComment.length > 0 ?
                                             <Table
                                                 tableHeaderColor="info"
-                                                tableHead={["اسم کاربر", "ایمیل کاربر", "تاریخ کامنت", "متن کامنت", ""]}
+                                                tableHead={["اسم کاربر", "ایمیل کاربر", "تاریخ کامنت", "متن کامنت", "",""]}
                                                 tableData={notVerifiedComment}
                                                 currentPage={currentPage_MainbarWaiting}
                                                 handleChangePage={handleChangePageWaiting}

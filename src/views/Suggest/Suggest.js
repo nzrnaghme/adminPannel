@@ -84,9 +84,9 @@ export default function Suggest() {
     const getComments = async () => {
         let response = await getComment();
 
-        setSuggestTeacher(response.data.filter((item) => item.postId === ".teacher"))
-        setSuggestCourse(response.data.filter((item) => item.postId === ".course"))
-        setSuggestUser(response.data.filter((item) => item.postId === ".idea"))
+        setSuggestTeacher(response.data.filter((item) => item.postId === ".teacher").reverse())
+        setSuggestCourse(response.data.filter((item) => item.postId === ".course").reverse())
+        setSuggestUser(response.data.filter((item) => item.postId === ".idea").reverse())
     }
 
     const handleChange = (event, newValue) => {
