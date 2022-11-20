@@ -15,7 +15,7 @@ import CardHeader from "components/Card/CardHeader.js";
 import CardBody from "components/Card/CardBody.js";
 import Table from "components/Table/Table.js";
 import ShowDataComment from "views/Comments/ShowDataComment";
-import AnswerComment from "views/Comments/AnswerComment";
+import AnswerComment from "./AnswerSuggort";
 
 import { getComment } from "api/Core/Comment";
 import { trackPromise } from "react-promise-tracker";
