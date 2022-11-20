@@ -187,8 +187,8 @@ export default function Students() {
                                     tableData={allStudents}
                                     currentPage={currentPage_MainbarMyCourses}
                                     rowsCount={rowsPerPage}
-                                    removeStudent={() => {
-                                        removeStudent()
+                                    removeStudent={(id) => {
+                                        removeStudent(id)
                                     }}
                                     editStudent={editStudent}
                                     changeActivate={changeActivate}
