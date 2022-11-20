@@ -61,6 +61,7 @@ export default function AddStudentToCourse(props) {
         AddSuccess,
         closePopUpAdd,
         userIdCourse } = props;
+
     const [currentPage_MainbarCurrentStudent, setCurrentPage_MainbarCurrentStudent] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(5);
 
@@ -174,7 +175,9 @@ export default function AddStudentToCourse(props) {
                                 <RegularButton
                                     color="success"
                                     size="sm"
-                                    onClick={() => { AddSuccess() }}>ثبت تغییرات</RegularButton>
+                                    onClick={AddSuccess}>
+                                    ثبت تغییرات
+                                </RegularButton>
                             </div>}
                     </Card>
                 </GridItem>

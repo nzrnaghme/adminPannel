@@ -206,7 +206,7 @@ export default function CourseList() {
 
             setOpenToast(true)
             onToast("دوره بروزرسانی شد", "success")
-              (getCourses())
+            getCourses()
           }} />}
 
       {openPopUpStudentsCourse && idForStudents &&
@@ -217,7 +217,7 @@ export default function CourseList() {
           RemoveSuccess={() => {
             setOpenPopUpStudentsCourse(false)
 
-              (getCourses())
+            getCourses()
           }}
         />}
 
@@ -229,7 +229,7 @@ export default function CourseList() {
 
             setOpenToast(true)
             onToast("دوره اضافه شد", "success")
-              (getCourses());
+            getCourses();
           }}
           closePopUpCreate={() => {
             setOpenPopUpCreateCourse(false)
@@ -247,7 +247,7 @@ export default function CourseList() {
 
             setOpenToast(true)
             onToast("دانشجو به دوره اضافه شد", "success")
-              (getCourses());
+            getCourses();
           }}
         />
       }

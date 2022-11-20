@@ -188,7 +188,7 @@ export default function Students() {
                                     currentPage={currentPage_MainbarMyCourses}
                                     rowsCount={rowsPerPage}
                                     removeStudent={() => {
-                                        trackPromise(removeStudent())
+                                        removeStudent()
                                     }}
                                     editStudent={editStudent}
                                     changeActivate={changeActivate}
@@ -196,7 +196,7 @@ export default function Students() {
                                     handleChangePage={handleChangePage}
                                     handleChangeRowsPerPage={handleChangeRowsPerPage}
                                     student
-                                />:
+                                /> :
                                 <div style={{
                                     textAlign: 'center',
                                     marginTop: 10,
